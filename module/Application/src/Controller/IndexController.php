@@ -7,13 +7,15 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\View\Model\JsonModel;
 
-class IndexController extends AbstractActionController
+class IndexController extends AbstractRestfulController
 {
     public function indexAction()
     {
-        return new ViewModel();
+    	$this->response->setStatusCode(200);
+        $this->response->setContent('Sucesso');
+        return new JsonModel(array("teste"));
     }
 }
