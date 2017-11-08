@@ -14,8 +14,7 @@ class IndexController extends AbstractRestfulController
 {
     public function indexAction()
     {
-    	$this->response->setStatusCode(200);
-        $this->response->setContent('Sucesso');
-        return new JsonModel(array("teste"));
+
+       	return new JsonModel(array("teste"));
     }
 }
