@@ -25,10 +25,10 @@ return [
                     ],
                 ],
             ],
-            'application' => [
+            'shop' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/shop[/:controller][/:action]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
@@ -41,10 +41,15 @@ return [
         'factories' => [
             /* controllers que não precisam de factory */
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\ProdutoController::class => InvokableFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
             //Controller\IndexController::class => Factory\IndexControllerFactory::class,
+        ],
+        'aliases' => [
+            'produto' => 'Application\Controller\ProdutoController',
+            'index' => 'Application\Controller\IndexController',
         ],
     ],
     'view_manager' => [
