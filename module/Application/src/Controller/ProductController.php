@@ -10,11 +10,25 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
-class ProdutoController extends AbstractRestfulController
+class ProductController extends AbstractRestfulController
 {
     public function indexAction()
     {
+       	return new JsonModel(array("ação não encontrada"));
+    }
 
-       	return new JsonModel(array("produto"));
+    public function getAction()
+    {
+       	return new JsonModel(array("getProduto"));
+    }
+
+    public function addAction()
+    {
+    	return new JsonModel(array("addProduto"));	
+    }
+
+    public function updateAction()
+    {
+    	return new JsonModel(array("updateProduto"));	
     }
 }
