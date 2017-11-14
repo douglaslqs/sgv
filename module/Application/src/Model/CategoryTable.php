@@ -22,4 +22,15 @@ class CategoryTable
 		$resultSet = $this->tableGateway->select();
 		return $resultSet;
 	}
+
+	public function fetchRow($name)
+	{
+		$resultSet = $this->tableGateway->select(array("name" => $name));
+		return $resultSet->current();
+	}
+
+	public function insert($arrData)
+	{
+		return $this->tableGateway->insert($arrData);
+	}
 }
