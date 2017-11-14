@@ -32,18 +32,21 @@ class CategoryController extends AbstractRestfulController
 
     public function addAction()
     {
-        //$categoryTable = $this->getServiceLocator()->get('Application\Model\CategoryTable');
         $categorias = $this->categoryTable->fetchAll();
+        return new JsonModel($categorias->toArray());
         $request = $this->getRequest();
         if ($request->isPost()) {
-            
+            $this->response->setStatusCode(200);
+            $this->response->setContent('Success');
+            $dataReturn['message']['responseType'] = "Success";
+            $dataReturn['message']['responseMessage'] = "Method POST";            
         } else {
             $dataReturn['message']['responseType'] = "Erro";
             $dataReturn['message']['responseMessage'] = "Waiting for a POST method";
             $this->response->setStatusCode(404);
             $this->response->setContent('Error');
         }
-        return new JsonModel($categorias->toArray());
+        return new JsonModel($dataReturn);
     }
 
     public function updateAction()

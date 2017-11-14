@@ -8,6 +8,8 @@
 namespace Application;
 
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Adapter\AdapterInterface;
 use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
 use Zend\Db\TableGateway\TableGateway;
@@ -47,7 +49,7 @@ class Module
 	    				return $table;
 	    			},
     			'CategoryTableGateway' => function ($sm) {
-    				$dbAdapter = $sm->get('config')['db']['adapters']['store'];
+    				$dbAdapter = $sm->get('store-adapter');
     				$resultSetPrototype = new ResultSet();
     				$resultSetPrototype->setArrayObjectPrototype(new CategoryEntity());
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
