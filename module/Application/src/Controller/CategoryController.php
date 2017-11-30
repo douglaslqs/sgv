@@ -13,11 +13,17 @@ use Application\Model\CategoryTable;
 
 class CategoryController extends AbstractRestfulController
 {
-    //private $categoryTable;
+    private $categoryTable;
+    private $form;
 
     public function __construct(CategoryTable $categoryTable)
     {
         $this->categoryTable = $categoryTable;
+    }
+
+    public function setForm($form)
+    {
+        $this->form = $form;
     }
 
     public function indexAction()
@@ -35,7 +41,8 @@ class CategoryController extends AbstractRestfulController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $arrParams = $request->getPost()->toArray();
-            if (isset($arrParams['name'])) {
+            $this->form->setData($arrParams);
+            if ($this->form->isValid()) {
                 $category = $this->categoryTable->fetchRow($arrParams['name']);                
                 if (!isset($category->name)) {
                     $returnInsert = $this->categoryTable->insert($arrParams);
