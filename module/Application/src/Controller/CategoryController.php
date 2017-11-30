@@ -33,7 +33,41 @@ class CategoryController extends AbstractRestfulController
 
     public function getAction()
     {
-       	return new JsonModel(array("getCategoria"));
+       	$request = $this->getRequest();
+        if($request->isGet()){            
+            $arrParams = $request->getQuery()->toArray();
+            if(!empty($arrParams)){
+                $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+                try {
+                    $category = $this->categoryTable->fetchAll($arrParams)->toArray();
+                    if(!empty($category)){
+                        $dataReturn['data'] = $category;
+                    } else {
+                        $dataReturn['data'] = "The query returned empty";
+                    }
+                    $this->response->setStatusCode(200);
+                    $this->response->setContent('Success');
+                    $dataReturn['message']['responseType'] = "Success";
+                    $dataReturn['message']['responseMessage'] = "Successful request";
+                } catch (Exception $e) {
+                    $data['message']['responseType'] = "Erro";
+                    $data['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
+                    $this->response->setStatusCode(404);
+                    $this->response->setContent('Error');
+                }
+            } else {
+                $dataReturn['message']['responseType'] = "Erro";
+                $dataReturn['message']['responseMessage'] = "Required parameter not found";
+                $this->response->setStatusCode(400);
+                $this->response->setContent('Error');
+            }
+        } else{
+            $dataReturn['message']['responseType'] = "Erro";
+            $dataReturn['message']['responseMessage'] = "Waiting for a POST method";
+            $this->response->setStatusCode(400);
+            $this->response->setContent('Error');
+        }
+        return new JsonModel($dataReturn);
     }
 
     public function addAction()
@@ -41,6 +75,7 @@ class CategoryController extends AbstractRestfulController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $arrParams = $request->getPost()->toArray();
+            $arrParams = array_change_key_case($arrParams, CASE_LOWER);
             $this->form->setData($arrParams);
             if ($this->form->isValid()) {
                 $category = $this->categoryTable->fetchRow($arrParams['name']);                
@@ -53,19 +88,19 @@ class CategoryController extends AbstractRestfulController
                 } else {
                     $dataReturn['message']['responseType'] = "Erro";
                     $dataReturn['message']['responseMessage'] = "Category already exists";
-                    $this->response->setStatusCode(404);
+                    $this->response->setStatusCode(400);
                     $this->response->setContent('Error');
                 }
             } else {
                 $dataReturn['message']['responseType'] = "Erro";
                 $dataReturn['message']['responseMessage'] = "Required parameter not found";
-                $this->response->setStatusCode(404);
+                $this->response->setStatusCode(400);
                 $this->response->setContent('Error');
             }
         } else {
             $dataReturn['message']['responseType'] = "Erro";
             $dataReturn['message']['responseMessage'] = "Waiting for a POST method";
-            $this->response->setStatusCode(404);
+            $this->response->setStatusCode(400);
             $this->response->setContent('Error');
         }
         return new JsonModel($dataReturn);

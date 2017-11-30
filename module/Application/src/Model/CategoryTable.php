@@ -17,20 +17,33 @@ class CategoryTable
 		return $this->tableGateway;
 	}
 
-	public function fetchAll()
+	public function fetchAll($arrFilter = null)
 	{
-		$resultSet = $this->tableGateway->select();
+		try {
+			$resultSet = $this->tableGateway->select($arrFilter);			
+		} catch (Exception $e) {
+			$resultSet = $e->getMessage();
+		}
 		return $resultSet;
 	}
 
 	public function fetchRow($name)
 	{
-		$resultSet = $this->tableGateway->select(array("name" => $name));
+		try {
+			$resultSet = $this->tableGateway->select(array("name" => $name));			
+		} catch (Exception $e) {
+			$resultSet = $e->getMessage();	
+		}
 		return $resultSet->current();
 	}
 
 	public function insert($arrData)
 	{
-		return $this->tableGateway->insert($arrData);
+		try {
+			$resultSet = $this->tableGateway->insert($arrData);
+		} catch (Exception $e) {
+			$resultSet = $e->getMessage();	
+		}
+		return $resultSet;
 	}
 }

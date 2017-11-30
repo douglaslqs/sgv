@@ -30,15 +30,16 @@ class CategoryForm extends Form
 	                'name' => 'notEmpty',
 	                'options' => array(
 	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'),
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
 	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
-	                     'min' => 5,
-	                     'max' => 60,
+	                     'min' => 3,
+	                     'max' => 40,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun chacacteres not reached',
+	                         'stringLengthTooShort' => 'Maximun 40 chacacteres ultrapassed',
+	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
 	                     ),
 	                 ),
 	            ),	        

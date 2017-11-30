@@ -19,12 +19,47 @@ class Module
 {
     const VERSION = '3.0.2';
 
-    /*public function onBootstrap(MvcEvent $e)
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-
+        $application = $e->getApplication();
+        $em = $application->getEventManager();
+        //handle the dispatch error (exception)
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));   
     }
 
-    public function onRoute(MvcEvent $e)
+    public function onRenderError(\Zend\Mvc\MvcEvent $e)
+    {
+        $response = $e->getApplication()->getResponse();
+        $cod = $response->getStatusCode();
+        if ($cod === 404) {
+            $dataReturn['message']['responseType'] = "Erro";
+            $dataReturn['message']['responseMessage'] = "Check the url! Error message: Page not Found";
+            $view = new \Zend\View\Model\JsonModel($dataReturn);
+            echo $view->serialize();exit();
+        }
+    }
+
+    /**
+     * Method for handling error
+     */
+    public function handleError(\Zend\Mvc\MvcEvent $e)
+    {
+        $exception = $e->getParam('exception');
+        $dataReturn['message']['responseType'] = "Erro";
+        $dataReturn['message']['responseMessage'] = "Verify all params and url router! Error message: ";
+        if (!empty($exception)) {
+            $msgException = $e->getParam('exception')->getMessage();
+            $dataReturn['message']['responseMessage'] .= $e->getParam('exception')->getMessage();
+        }
+        $response = $e->getApplication()->getResponse();
+        $response->setStatusCode(400);
+        $response->setContent('Error');
+        $view = new \Zend\View\Model\JsonModel($dataReturn);
+        echo $view->serialize();exit();
+    }   
+
+    /*public function onRoute(MvcEvent $e)
     {
 
     }
