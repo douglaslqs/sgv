@@ -6,11 +6,15 @@
 </head>
 <body>
 	<button onclick="enviar()">Enviar</button>
+	<div id="container"> 
+		
+	</div>
 	<script type="text/javascript">
 function enviar()
 {
+	$("#container").html("");
 	$.ajax({
-        url: "http://sgv.local/store/category/ge?name=Computadore",
+        url: "http://sgv.local/store/category/get",
         "method": "GET",
 		  "headers": {
 		    "content-type": "application/x-www-form-urlencoded",
@@ -18,14 +22,18 @@ function enviar()
 		    "cache-control": "no-cache",
 		    "postman-token": "aef6ea03-3cf0-8cf5-5da7-70cd7538180f"
 		  },
-        data: {"nome": "primeira categoria"},
+        //data: {"name": "Computadores"},
         dataType: "json",
         beforeSend: function () {
             $('#carregando').show();
         },
         success: function (retorno) {
         	console.log(retorno);
-            alert(retorno);
+            if (retorno.data) {
+            	retorno.data.forEach(function(value, key){            		
+            		$("#container").append(value.name + "<br>");
+            	})
+            }
 
         },
         error: function (retorno) {

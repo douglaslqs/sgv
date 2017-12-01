@@ -36,31 +36,28 @@ class CategoryController extends AbstractRestfulController
        	$request = $this->getRequest();
         if($request->isGet()){            
             $arrParams = $request->getQuery()->toArray();
-            if(!empty($arrParams)){
-                $arrParams = array_change_key_case($arrParams, CASE_LOWER);
-                try {
+            try {
+                if(!empty($arrParams)){
+                    $arrParams = array_change_key_case($arrParams, CASE_LOWER);
                     $category = $this->categoryTable->fetchAll($arrParams)->toArray();
-                    if(!empty($category)){
-                        $arrReturn['data'] = $category;
-                        $arrReturn['message']['responseMessage'] = "Successful request";
-                    } else {
-                        $arrReturn['message']['responseMessage'] = "The query returned empty";
-                    }
-                    $this->response->setStatusCode(200);
-                    $this->response->setContent('Success');
-                    $arrReturn['message']['responseType'] = "Success";
-                } catch (Exception $e) {
-                    $arrReturn['message']['responseType'] = "Erro";
-                    $arrReturn['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
-                    $this->response->setStatusCode(404);
-                    $this->response->setContent('Error');
+                } else {
+                    $category = $this->categoryTable->fetchAll()->toArray();
                 }
-            } else {
+                if(!empty($category)){
+                    $arrReturn['data'] = $category;
+                    $arrReturn['message']['responseMessage'] = "Successful request";
+                } else {
+                    $arrReturn['message']['responseMessage'] = "The query returned empty";
+                }
+                $this->response->setStatusCode(200);
+                $this->response->setContent('Success');
+                $arrReturn['message']['responseType'] = "Success";
+            } catch (Exception $e) {
                 $arrReturn['message']['responseType'] = "Erro";
-                $arrReturn['message']['responseMessage'] = "Required parameter not found";
-                $this->response->setStatusCode(400);
+                $arrReturn['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
+                $this->response->setStatusCode(404);
                 $this->response->setContent('Error');
-            }
+            }            
         } else{
             $arrReturn['message']['responseType'] = "Erro";
             $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
