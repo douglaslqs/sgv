@@ -41,33 +41,33 @@ class CategoryController extends AbstractRestfulController
                 try {
                     $category = $this->categoryTable->fetchAll($arrParams)->toArray();
                     if(!empty($category)){
-                        $dataReturn['data'] = $category;
+                        $arrReturn['data'] = $category;
+                        $arrReturn['message']['responseMessage'] = "Successful request";
                     } else {
-                        $dataReturn['data'] = "The query returned empty";
+                        $arrReturn['message']['responseMessage'] = "The query returned empty";
                     }
                     $this->response->setStatusCode(200);
                     $this->response->setContent('Success');
-                    $dataReturn['message']['responseType'] = "Success";
-                    $dataReturn['message']['responseMessage'] = "Successful request";
+                    $arrReturn['message']['responseType'] = "Success";
                 } catch (Exception $e) {
-                    $data['message']['responseType'] = "Erro";
-                    $data['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
+                    $arrReturn['message']['responseType'] = "Erro";
+                    $arrReturn['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
                     $this->response->setStatusCode(404);
                     $this->response->setContent('Error');
                 }
             } else {
-                $dataReturn['message']['responseType'] = "Erro";
-                $dataReturn['message']['responseMessage'] = "Required parameter not found";
+                $arrReturn['message']['responseType'] = "Erro";
+                $arrReturn['message']['responseMessage'] = "Required parameter not found";
                 $this->response->setStatusCode(400);
                 $this->response->setContent('Error');
             }
         } else{
-            $dataReturn['message']['responseType'] = "Erro";
-            $dataReturn['message']['responseMessage'] = "Waiting for a POST method";
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
             $this->response->setStatusCode(400);
             $this->response->setContent('Error');
         }
-        return new JsonModel($dataReturn);
+        return new JsonModel($arrReturn);
     }
 
     public function addAction()
@@ -83,27 +83,27 @@ class CategoryController extends AbstractRestfulController
                     $returnInsert = $this->categoryTable->insert($arrParams);
                     $this->response->setStatusCode(200);
                     $this->response->setContent('Success');
-                    $dataReturn['message']['responseType'] = "Success";
-                    $dataReturn['message']['responseMessage'] = "Successful request";
+                    $arrReturn['message']['responseType'] = "Success";
+                    $arrReturn['message']['responseMessage'] = "Successful request";
                 } else {
-                    $dataReturn['message']['responseType'] = "Erro";
-                    $dataReturn['message']['responseMessage'] = "Category already exists";
+                    $arrReturn['message']['responseType'] = "Erro";
+                    $arrReturn['message']['responseMessage'] = "Category already exists";
                     $this->response->setStatusCode(400);
                     $this->response->setContent('Error');
                 }
             } else {
-                $dataReturn['message']['responseType'] = "Erro";
-                $dataReturn['message']['responseMessage'] = "Required parameter not found";
+                $arrReturn['message']['responseType'] = "Erro";
+                $arrReturn['message']['responseMessage'] = "Required parameter not found";
                 $this->response->setStatusCode(400);
                 $this->response->setContent('Error');
             }
         } else {
-            $dataReturn['message']['responseType'] = "Erro";
-            $dataReturn['message']['responseMessage'] = "Waiting for a POST method";
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
             $this->response->setStatusCode(400);
             $this->response->setContent('Error');
         }
-        return new JsonModel($dataReturn);
+        return new JsonModel($arrReturn);
     }
 
     public function updateAction()

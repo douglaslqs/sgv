@@ -32,29 +32,30 @@ class Module
         $response = $e->getApplication()->getResponse();
         $cod = $response->getStatusCode();
         if ($cod === 404) {
-            $dataReturn['data'] = "Check the url!";
-            $dataReturn['message']['responseType'] = "Erro";
-            $dataReturn['message']['responseMessage'] = "Page not Found";
-            $view = new \Zend\View\Model\JsonModel($dataReturn);
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "Page not Found. Check the url!";
+            $view = new \Zend\View\Model\JsonModel($arrReturn);
+            echo $view->serialize();exit;
+        } else if ($cod !== 200) {
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "An error unknow occurred! Cod. error: ".$cod;
+            $view = new \Zend\View\Model\JsonModel($arrReturn);
             echo $view->serialize();exit;
         }
     }
 
-    /**
-     * Method for handling error
-     */
     public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
         if ($e->isError()) {
             $exception = $e->getParam('exception');
-            $dataReturn['data'] = "Verify all params and url router!";
-            $dataReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "Verify all params and url router!";
+            $arrReturn['message']['responseType'] = "Erro";
             if (!empty($exception)) {
-                $dataReturn['message']['responseMessage'] = $e->getParam('exception')->getMessage();
+                $arrReturn['message']['responseMessage'] .= $e->getParam('exception')->getMessage();
             }
             $response = $e->getApplication()->getResponse();
             $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
-            $jsonModel = new \Zend\View\Model\JsonModel($dataReturn);            
+            $jsonModel = new \Zend\View\Model\JsonModel($arrReturn);            
             echo $jsonModel->serialize();exit;
         }
     }  
