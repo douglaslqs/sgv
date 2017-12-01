@@ -19,12 +19,48 @@ class Module
 {
     const VERSION = '3.0.2';
 
-    /*public function onBootstrap(MvcEvent $e)
+    public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-
+        $application = $e->getApplication();
+        $em = $application->getEventManager();
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));  
     }
 
-    public function onRoute(MvcEvent $e)
+    public function onRenderError(\Zend\Mvc\MvcEvent $e)
+    {        
+        $response = $e->getApplication()->getResponse();
+        $cod = $response->getStatusCode();
+        if ($cod === 404) {
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "Page not Found. Check the url!";
+            $view = new \Zend\View\Model\JsonModel($arrReturn);
+            echo $view->serialize();exit;
+        } else if ($cod !== 200) {
+            $arrReturn['message']['responseType'] = "Erro";
+            $arrReturn['message']['responseMessage'] = "An error unknow occurred! Cod. error: ".$cod;
+            $view = new \Zend\View\Model\JsonModel($arrReturn);
+            echo $view->serialize();exit;
+        }
+    }
+
+    public function onDispatchError(\Zend\Mvc\MvcEvent $e)
+    {
+        if ($e->isError()) {
+            $exception = $e->getParam('exception');
+            $arrReturn['message']['responseMessage'] = "Verify all params and url router!";
+            $arrReturn['message']['responseType'] = "Erro";
+            if (!empty($exception)) {
+                $arrReturn['message']['responseMessage'] .= $e->getParam('exception')->getMessage();
+            }
+            $response = $e->getApplication()->getResponse();
+            $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+            $jsonModel = new \Zend\View\Model\JsonModel($arrReturn);            
+            echo $jsonModel->serialize();exit;
+        }
+    }  
+
+    /*public function onRoute(MvcEvent $e)
     {
 
     }
