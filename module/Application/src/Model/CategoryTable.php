@@ -20,7 +20,7 @@ class CategoryTable
 	public function fetchAll($arrFilter = null)
 	{
 		try {
-			$resultSet = $this->tableGateway->select($arrFilter);			
+			$resultSet = $this->tableGateway->select($arrFilter);		
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();
 		}
