@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teste</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<button onclick="enviar()">Enviar</button>
+	<script type="text/javascript">
+function enviar()
+{
+	$.ajax({
+        url: "http://sgv.local/store/category/ge?name=Computadore",
+        "method": "GET",
+		  "headers": {
+		    "content-type": "application/x-www-form-urlencoded",
+		    "x-auth-token": "c68b6d3785fd4ab5b873da6ca7d6534d",
+		    "cache-control": "no-cache",
+		    "postman-token": "aef6ea03-3cf0-8cf5-5da7-70cd7538180f"
+		  },
+        data: {"nome": "primeira categoria"},
+        dataType: "json",
+        beforeSend: function () {
+            $('#carregando').show();
+        },
+        success: function (retorno) {
+        	console.log(retorno);
+            alert(retorno);
+
+        },
+        error: function (retorno) {
+            console.log(retorno);
+            alert(retorno);
+        }
+    });	
+}
+
+
+	/*$.ajax(
+	{
+		"async": true,
+	  "crossDomain": true,
+	  "url": "http://sgv.local/store/category/get?nam=Computadore",
+	  "method": "GET",
+	  "headers": {
+	    "content-type": "application/x-www-form-urlencoded",
+	    "x-auth-token": "c68b6d3785fd4ab5b873da6ca7d6534d",
+	    "cache-control": "no-cache",
+	    "postman-token": "aef6ea03-3cf0-8cf5-5da7-70cd7538180f"
+	  },
+	  "data": {
+	    "nome": "primeira categoria"
+	  }
+	}, 
+	success: function (response) {
+		console.log(response);
+  		alert(response);
+	},
+	error: function (response) {
+		console.log(response);
+  		alert(response);
+	}
+	).done(function (response) {
+	  console.log(response);
+	  alert(response);
+	}); */
+
+
+	</script>
+</body>
+</html>

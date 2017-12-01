@@ -23,41 +23,41 @@ class Module
     {
         $application = $e->getApplication();
         $em = $application->getEventManager();
-        //handle the dispatch error (exception)
-        $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'handleError'));
-        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));   
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));  
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
-    {
+    {        
         $response = $e->getApplication()->getResponse();
         $cod = $response->getStatusCode();
         if ($cod === 404) {
+            $dataReturn['data'] = "Check the url!";
             $dataReturn['message']['responseType'] = "Erro";
-            $dataReturn['message']['responseMessage'] = "Check the url! Error message: Page not Found";
+            $dataReturn['message']['responseMessage'] = "Page not Found";
             $view = new \Zend\View\Model\JsonModel($dataReturn);
-            echo $view->serialize();exit();
+            echo $view->serialize();exit;
         }
     }
 
     /**
      * Method for handling error
      */
-    public function handleError(\Zend\Mvc\MvcEvent $e)
+    public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
-        $exception = $e->getParam('exception');
-        $dataReturn['message']['responseType'] = "Erro";
-        $dataReturn['message']['responseMessage'] = "Verify all params and url router! Error message: ";
-        if (!empty($exception)) {
-            $msgException = $e->getParam('exception')->getMessage();
-            $dataReturn['message']['responseMessage'] .= $e->getParam('exception')->getMessage();
+        if ($e->isError()) {
+            $exception = $e->getParam('exception');
+            $dataReturn['data'] = "Verify all params and url router!";
+            $dataReturn['message']['responseType'] = "Erro";
+            if (!empty($exception)) {
+                $dataReturn['message']['responseMessage'] = $e->getParam('exception')->getMessage();
+            }
+            $response = $e->getApplication()->getResponse();
+            $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+            $jsonModel = new \Zend\View\Model\JsonModel($dataReturn);            
+            echo $jsonModel->serialize();exit;
         }
-        $response = $e->getApplication()->getResponse();
-        $response->setStatusCode(400);
-        $response->setContent('Error');
-        $view = new \Zend\View\Model\JsonModel($dataReturn);
-        echo $view->serialize();exit();
-    }   
+    }  
 
     /*public function onRoute(MvcEvent $e)
     {
