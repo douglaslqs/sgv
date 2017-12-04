@@ -60,7 +60,7 @@ class CategoryController extends AbstractRestfulController
             }            
         } else{
             $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
+            $arrReturn['message']['responseMessage'] = "Waiting for a GET method";
             $this->response->setStatusCode(400);
             $this->response->setContent('Error');
         }

@@ -36,11 +36,6 @@ class Module
             $arrReturn['message']['responseMessage'] = "Page not Found. Check the url!";
             $view = new \Zend\View\Model\JsonModel($arrReturn);
             echo $view->serialize();exit;
-        } else if ($cod !== 200) {
-            $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "An error unknow occurred! Cod. error: ".$cod;
-            $view = new \Zend\View\Model\JsonModel($arrReturn);
-            echo $view->serialize();exit;
         }
     }
 
