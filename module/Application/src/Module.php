@@ -90,6 +90,9 @@ class Module
     				$resultSetPrototype->setArrayObjectPrototype(new CategoryEntity());
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
     			},
+                'Application\Service\ResponseService' => function($sm) {
+                    return new Application\Service\ResponseService();
+                }
     		)
     	);
     }
