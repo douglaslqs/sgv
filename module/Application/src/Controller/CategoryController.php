@@ -10,14 +10,17 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 use Application\Model\CategoryTable;
+use Application\Service\ResponseService;
 
 class CategoryController extends AbstractRestfulController
 {
     private $categoryTable;
     private $form;
+    private $responseService;
 
-    public function __construct(CategoryTable $categoryTable)
+    public function __construct(ResponseService $responseService, CategoryTable $categoryTable)
     {
+        $this->responseService = $responseService;
         $this->categoryTable = $categoryTable;
     }
 
@@ -28,13 +31,13 @@ class CategoryController extends AbstractRestfulController
 
     public function indexAction()
     {
-       	return new JsonModel(array("ação não encontrada"));
+       	return new JsonModel('Bem vindo!');
     }
 
     public function getAction()
     {
        	$request = $this->getRequest();
-        if($request->isGet()){            
+        if($request->isGet()){
             $arrParams = $request->getQuery()->toArray();
             try {
                 if(!empty($arrParams)){
@@ -44,27 +47,19 @@ class CategoryController extends AbstractRestfulController
                     $category = $this->categoryTable->fetchAll()->toArray();
                 }
                 if(!empty($category)){
-                    $arrReturn['data'] = $category;
-                    $arrReturn['message']['responseMessage'] = "Successful request";
+                    $this->responseService->setData($category);
+                    $this->responseService->setCode(ResponseService::CODE_SUCCESS);
                 } else {
-                    $arrReturn['message']['responseMessage'] = "The query returned empty";
+                    $this->responseService->setCode(ResponseService::CODE_QUERY_EMPTY);
                 }
-                $this->response->setStatusCode(200);
-                $this->response->setContent('Success');
-                $arrReturn['message']['responseType'] = "Success";
             } catch (Exception $e) {
-                $arrReturn['message']['responseType'] = "Erro";
-                $arrReturn['message']['responseMessage'] = "A error uncurred: " .$e->getMessage();
-                $this->response->setStatusCode(404);
-                $this->response->setContent('Error');
-            }            
-        } else{
-            $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
-            $this->response->setStatusCode(400);
-            $this->response->setContent('Error');
+                $this->responseService->setCode(ResponseService::CODE_ERROR);
+                //gravar log aqui $e->getMessage();
+            }
+        } else {
+            $this->responseService->setCode(ResponseService::CODE_METHOD_INCORRECT);
         }
-        return new JsonModel($arrReturn);
+        return new JsonModel($this->responseService->getArrayCopy());
     }
 
     public function addAction()
@@ -73,40 +68,38 @@ class CategoryController extends AbstractRestfulController
         if ($request->isPost()) {
             $arrParams = $request->getPost()->toArray();
             $arrParams = array_change_key_case($arrParams, CASE_LOWER);
-            $this->form->setData($arrParams);
-            if ($this->form->isValid()) {
-                $category = $this->categoryTable->fetchRow($arrParams['name']);                
-                if (!isset($category->name)) {
-                    $returnInsert = $this->categoryTable->insert($arrParams);
-                    $this->response->setStatusCode(200);
-                    $this->response->setContent('Success');
-                    $arrReturn['message']['responseType'] = "Success";
-                    $arrReturn['message']['responseMessage'] = "Successful request";
+            try {
+                $this->form->setData($arrParams);
+                if ($this->form->isValid()) {
+                    $category = $this->categoryTable->fetchRow($arrParams['name']);
+                    if (!isset($category->name)) {
+                        $returnInsert = $this->categoryTable->insert($arrParams);
+                        if ($returnInsert !== 1) {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            //Gravar Log
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_SUCCESS);
+                        }
+                    } else {
+                        $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                    }
                 } else {
-                    $arrReturn['message']['responseType'] = "Erro";
-                    $arrReturn['message']['responseMessage'] = "Category already exists";
-                    $this->response->setStatusCode(400);
-                    $this->response->setContent('Error');
+                    $this->responseService->setCode(ResponseService::CODE_NOT_PARAMS_VALIDATED);
                 }
-            } else {
-                $arrReturn['message']['responseType'] = "Erro";
-                $arrReturn['message']['responseMessage'] = "Required parameter not found";
-                $this->response->setStatusCode(400);
-                $this->response->setContent('Error');
+            } catch (Exception $e) {
+                $this->responseService->setCode(ResponseService::CODE_ERROR);
+                //Gravar Log
             }
         } else {
-            $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "Waiting for a POST method";
-            $this->response->setStatusCode(400);
-            $this->response->setContent('Error');
+            $this->responseService->setCode(ResponseService::CODE_METHOD_INCORRECT);
         }
-        return new JsonModel($arrReturn);
+        return new JsonModel($this->responseService->getArrayCopy());
     }
 
     public function updateAction()
     {
-        //Metodo PUT;
-    	parse_str($this->getRequest()->getContent(), $output);        
+        //Metodo PUT; só funcionou com x-www-form-urlencoded
+    	parse_str($this->getRequest()->getContent(), $output);
         return new JsonModel($output);
     }
 }

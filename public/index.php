@@ -4,6 +4,13 @@ use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 
 /**
+ * Libera acesso de qualquer origem, incluindo outros servidores.
+ * Libera headers especificados
+ */
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Cache-Control, Origin, Content-Type, X-Auth-Token');
+
+/**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
