@@ -12,6 +12,7 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
+use Application\Service\ResponseService;
 use Zend\Db\TableGateway\TableGateway;
 
 
@@ -29,17 +30,21 @@ class Module
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
     {        
-        $response = $e->getApplication()->getResponse();
+        $response = $e->getApplication()->getResponse();        
         $cod = $response->getStatusCode();
+        $response = $e->getApplication()->getResponse();
+        $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
         if ($cod === 404) {
-            $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "Page not Found. Check the url!";
-            $view = new \Zend\View\Model\JsonModel($arrReturn);
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            $responseService->setCode(ResponseService::CODE_ERROR);
+            $responseService->setMessage("Page not Found. Check the url!");
+            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $view->serialize();exit;
         } else if ($cod !== 200) {
-            $arrReturn['message']['responseType'] = "Erro";
-            $arrReturn['message']['responseMessage'] = "An error unknow occurred! Cod. error: ".$cod;
-            $view = new \Zend\View\Model\JsonModel($arrReturn);
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            $responseService->setCode(ResponseService::CODE_ERROR);
+            $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod);
+            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $view->serialize();exit;
         }
     }
@@ -47,15 +52,16 @@ class Module
     public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
         if ($e->isError()) {
-            $exception = $e->getParam('exception');
-            $arrReturn['message']['responseMessage'] = "Verify all params and url router!";
-            $arrReturn['message']['responseType'] = "Erro";
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            $exception = $e->getParam('exception');            
+            $responseService->setCode(ResponseService::CODE_ERROR);
+            $responseService->setMessage("Verify all params and url router!");            
             if (!empty($exception)) {
-                $arrReturn['message']['responseMessage'] .= $e->getParam('exception')->getMessage();
+                $responseService->setMessage($responseService->getMessage()."-".$e->getParam('exception')->getMessage());
             }
             $response = $e->getApplication()->getResponse();
             $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
-            $jsonModel = new \Zend\View\Model\JsonModel($arrReturn);            
+            $jsonModel = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());            
             echo $jsonModel->serialize();exit;
         }
     }  

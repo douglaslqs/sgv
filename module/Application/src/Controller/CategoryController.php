@@ -29,7 +29,7 @@ class CategoryController extends AbstractRestfulController
 
     public function indexAction()
     {
-        return new JsonModel('Bem-vindo!');
+        return new JsonModel(array('Bem-vindo!'));
     }
 
     public function getAction()
