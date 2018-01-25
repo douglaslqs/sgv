@@ -3,7 +3,7 @@
 /**
 *
 */
-namespace Application\Factory;
+namespace Application\Controller\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
@@ -11,6 +11,7 @@ use Application\Model\CategoryTable;
 use Application\Form\CategoryForm;
 use Application\Controller\CategoryController;
 use Application\Service\ResponseService;
+use Application\Service\LoggerService;
 
 class CategoryFactory implements FactoryInterface
 {
@@ -18,8 +19,11 @@ class CategoryFactory implements FactoryInterface
 	public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
 	{
 	    $categoryTable = $container->get(CategoryTable::class);
-	    $categoryControler = new CategoryController(new ResponseService(), $categoryTable);
-	    $categoryControler->setForm(new CategoryForm());
-	    return $categoryControler;
+	    $responseService = $container->get(ResponseService::class);
+	    $loggerService = $container->get(LoggerService::class);
+	    $categoryController = new $requestedName($responseService, $categoryTable);
+	    $categoryController->setLogger($container->get(LoggerService::class));
+	    $categoryController->setForm(new CategoryForm());
+	    return $categoryController;
 	}
 }

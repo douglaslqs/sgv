@@ -91,7 +91,10 @@ class Module
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
     			},
                 'Application\Service\ResponseService' => function($sm) {
-                    return new Application\Service\ResponseService();
+                    return new Factory\ResponseFactory();
+                },
+                'Application\Service\LoggerService' => function($sm) {
+                    return new Application\Service\LoogerService();
                 }
     		)
     	);
