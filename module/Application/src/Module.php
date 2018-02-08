@@ -25,12 +25,34 @@ class Module
         $application = $e->getApplication();
         $em = $application->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
-        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));  
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
+
+        /**
+         * Tratamento para verificar se o usuário tem acesso ao banco de dados
+         * Verificamos o $username para saber se o token é valido ou se nao existe token
+         */        
+        $serviceManager = $application->getServiceManager();
+        $config = $serviceManager->get('Config');
+        $usernameDb = $config['db']['adapters']['store-adapter']['username'];
+        if(!isset($usernameDb)){
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
+            $responseService->setMessage("Invalid Access Token!");
+            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+            echo $view->serialize();exit;
+        }
+        if ($usernameDb === false) {
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
+            $responseService->setMessage("Access Token Not Found!");
+            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+            echo $view->serialize();exit;
+        }        
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
-    {        
-        $response = $e->getApplication()->getResponse();        
+    {
+        $response = $e->getApplication()->getResponse();
         $cod = $response->getStatusCode();
         $response = $e->getApplication()->getResponse();
         $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
@@ -53,18 +75,18 @@ class Module
     {
         if ($e->isError()) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $exception = $e->getParam('exception');            
+            $exception = $e->getParam('exception');
             $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("Verify all params and url router!");            
+            $responseService->setMessage("Verify all params and url router!");
             if (!empty($exception)) {
                 $responseService->setMessage($responseService->getMessage()."-".$e->getParam('exception')->getMessage());
             }
             $response = $e->getApplication()->getResponse();
             $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
-            $jsonModel = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());            
+            $jsonModel = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $jsonModel->serialize();exit;
         }
-    }  
+    }
 
     /*public function onRoute(MvcEvent $e)
     {

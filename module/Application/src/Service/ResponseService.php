@@ -9,6 +9,7 @@ namespace Application\Service;
 class ResponseService
 {
 
+	const CODE_TOKEN_INVALID = -1;
 	const CODE_SUCCESS = 0;
 	const CODE_ERROR = 1;
 	const CODE_NOT_PARAMS_VALIDATED = 2;
