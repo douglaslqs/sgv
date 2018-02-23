@@ -9,6 +9,7 @@ use Zend\Stdlib\ArrayUtils;
  */
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Cache-Control, Origin, Content-Type, X-Auth-Token');
+header('Access-Control-Allow-Methods: POST, GET, PUT');
 
 /**
  * This makes our life easier when dealing with paths. Everything is relative

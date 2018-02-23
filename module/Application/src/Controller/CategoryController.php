@@ -99,9 +99,12 @@ class CategoryController extends AbstractRestfulController
 
     public function updateAction()
     {
-        //Metodo PUT; só funcionou com x-www-form-urlencoded
-        parse_str($this->getRequest()->getContent(), $output);
-        return new JsonModel($output);
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $arrParams = $request->getPost()->toArray();
+            $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+        }
+        return new JsonModel($arrParams);
     }
 
     public function setForm($form)
