@@ -1,0 +1,14 @@
+Produto:
+- unidade de medida
+- preço compra e preço venda
+- categorias
+
+Clientes
+- Dados obrigatórios para o cadastro
+
+Pedidos
+- Controle de entrega
+- Controle de pagamento
+
+PS.: Antes de finalizar uma compra, verificar se houve alteração de preço de produto e mostrar ao usuário para ele reconfirmar a compra
+- Verificar se já tem uma sessão ativa do usuário. Permitir apenas uma sessão por usuário

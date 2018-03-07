@@ -84,6 +84,7 @@ class CategoryController extends AbstractRestfulController
                         $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
                     }
                 } else {
+                    $this->responseService->setData($this->form->getInputFilter()->getMessages());
                     $this->responseService->setCode(ResponseService::CODE_NOT_PARAMS_VALIDATED);
                 }
             } catch (Exception $e) {
