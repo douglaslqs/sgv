@@ -26,6 +26,8 @@ class ResponseService
 
 	const TYPE_ERROR = "ERROR";
 	const TYPE_SUCCESS = "SUCCESS";
+	const TYPE_INFO = "INFO";
+	const TYPE_ALERT = "ALERT";
 	const TYPE_WARNING = "WARNING";
 
 	private $response;
@@ -50,19 +52,19 @@ class ResponseService
 				break;
 			case self::CODE_QUERY_EMPTY :
 				$this->response['message'] = self::MESSAGE_QUERY_EMPTY;
-				$this->response['type']    = self::TYPE_WARNING;
+				$this->response['type']    = self::TYPE_INFO;
 				break;
 			case self::CODE_NOT_PARAMS_VALIDATED :
 				$this->response['message'] = self::MESSAGE_NOT_PARAMS_VALIDATED;
-				$this->response['type']    = self::TYPE_WARNING;
+				$this->response['type']    = self::TYPE_ALERT;
 				break;
 			case self::CODE_METHOD_INCORRECT :
 				$this->response['message'] = self::MESSAGE_METHOD_INCORRECT;
-				$this->response['type']    = self::TYPE_ERROR;
+				$this->response['type']    = self::TYPE_WARNING;
 				break;
 			case self::CODE_ALREADY_EXISTS :
 				$this->response['message'] = self::MESSAGE_ALREADY_EXISTS;
-				$this->response['type']    = self::TYPE_WARNING;
+				$this->response['type']    = self::TYPE_INFO;
 				break;
 			default:
 				$this->response['message'] = self::MESSAGE_ERROR;
