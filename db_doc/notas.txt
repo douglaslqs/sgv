@@ -12,3 +12,6 @@ Pedidos
 
 PS.: Antes de finalizar uma compra, verificar se houve alteração de preço de produto e mostrar ao usuário para ele reconfirmar a compra
 - Verificar se já tem uma sessão ativa do usuário. Permitir apenas uma sessão por usuário
+
+- Usar SQL STAMENTS para evitar SQL INJECT $st = $pdo->prepare("SELECT * FROM tbl WHERE x = ?");
+e e where com parâmetro $select->where( $db->quoteInto('last_name=?', $lname) );

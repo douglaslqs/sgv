@@ -20,7 +20,11 @@ class CategoryTable
 	public function fetchAll($arrFilter = null)
 	{
 		try {
-			$resultSet = $this->tableGateway->select($arrFilter);		
+		    $sql = $this->tableGateway->getSql();
+			$select = $sql->select()->where($arrFilter);
+			// output query
+			//echo $sql->getSqlStringForSqlObject($select);exit;
+			$resultSet = $this->tableGateway->selectWith($select);
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();
 		}
@@ -30,9 +34,9 @@ class CategoryTable
 	public function fetchRow($name)
 	{
 		try {
-			$resultSet = $this->tableGateway->select(array("name" => $name));			
+			$resultSet = $this->tableGateway->select(array("name" => $name));
 		} catch (Exception $e) {
-			$resultSet = $e->getMessage();	
+			$resultSet = $e->getMessage();
 		}
 		return $resultSet->current();
 	}
@@ -42,7 +46,7 @@ class CategoryTable
 		try {
 			$resultSet = $this->tableGateway->insert($arrData);
 		} catch (Exception $e) {
-			$resultSet = $e->getMessage();	
+			$resultSet = $e->getMessage();
 		}
 		return $resultSet;
 	}
