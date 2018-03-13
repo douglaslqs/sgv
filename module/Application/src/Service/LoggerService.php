@@ -35,6 +35,9 @@ class LoggerService
     	if(is_null($this->getFileName())){
     		$this->setFileName(date("d-m-Y"));
     	}
+        $headersObj = apache_request_headers();
+        $headers    = (array)$headersObj;
+        $strMessage = 'Token Access: '.$headers['Authorization']." - ".$strMessage;
 
         $pathToSave = dirname(dirname(dirname(dirname(dirname(__FILE__)))))."/data/logs/";
         $fp = fopen($pathToSave. $strLogError.$strType.'_'.$this->getFileName().'.txt', "a+");

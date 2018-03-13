@@ -80,7 +80,7 @@ class ResponseService
 
 	public function getData()
 	{
-		$this->data;
+		return $this->data;
 	}
 
 	public function setMessage($message)
@@ -90,12 +90,12 @@ class ResponseService
 
 	public function getMessage()
 	{
-		$this->response['message'];
+		return $this->response['message'];
 	}
 
 	public function getResponse()
 	{
-		$this->response;
+		return $this->response;
 	}
 
 	public function setCode($code)
@@ -106,7 +106,7 @@ class ResponseService
 
 	public function getCode()
 	{
-		$this->response['code'];
+		return $this->response['code'];
 	}
 
 	public function setType($type)
@@ -116,7 +116,7 @@ class ResponseService
 
 	public function getType()
 	{
-		$this->response['type'];
+		return $this->response['type'];
 	}
 
 	public function getArrayCopy()

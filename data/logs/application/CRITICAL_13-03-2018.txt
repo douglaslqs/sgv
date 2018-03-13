@@ -1,0 +1,20 @@
+21:19:15 : Application\Module::onDispatchError line:93 - Token Aceess: 123456 Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:21:50 : Application\Module::onDispatchError line:93 - Token Aceess: 123456 Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:23:10 : Application\Module::onDispatchError line:93 - Token Aceess: 123456 Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:23:39 : Application\Module::onDispatchError line:93 - Token Aceess: 123456 Msg Error: Predicate cannot be null
+21:24:34 : Application\Module::onDispatchError line:93 - Token Aceess: 123456 Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:28:14 : Application\Module::onDispatchError line:93 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:29:27 : Application\Module::onDispatchError line:89 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:34:17 : Application\Module::onDispatchError line:89 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:34:17 : Application\Module::onRenderError line:68 - Token Access: 123456 - COD STATUS: 500
+21:34:57 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:35:34 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:36:06 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:37:26 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:38:28 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:38:28 : Application\Module::onRenderError line:69 - Token Access: 123456 - COD STATUS: 500 - MSG ERROR: Internal Server Error
+21:42:07 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:42:07 : Application\Module::onRenderError line:69 - Token Access: 123456 - COD STATUS: 500 - MSG ERROR: Internal Server Error
+21:42:54 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')
+21:42:54 : Application\Module::onRenderError line:69 - Token Access: 123456 - COD STATUS: 500 - MSG ERROR: Internal Server Error
+21:44:10 : Application\Module::onDispatchError line:90 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'nome' in 'where clause')

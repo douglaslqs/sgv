@@ -13,6 +13,7 @@ use Zend\Db\Adapter\AdapterInterface;
 use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
 use Application\Service\ResponseService;
+use Application\Service\LoggerService;
 use Zend\Db\TableGateway\TableGateway;
 
 
@@ -30,7 +31,7 @@ class Module
         /**
          * Tratamento para verificar se o usuário tem acesso ao banco de dados
          * Verificamos o $username para saber se o token é valido ou se nao existe token
-         */        
+         */
         $serviceManager = $application->getServiceManager();
         $config = $serviceManager->get('Config');
         $usernameDb = $config['db']['adapters']['store-adapter']['username'];
@@ -47,13 +48,14 @@ class Module
             $responseService->setMessage("Access Token Not Found!");
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $view->serialize();exit;
-        }        
+        }
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
     {
         $response = $e->getApplication()->getResponse();
         $cod = $response->getStatusCode();
+        $messageError = $response->getReasonPhrase();
         $response = $e->getApplication()->getResponse();
         $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
         if ($cod === 404) {
@@ -63,9 +65,13 @@ class Module
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $view->serialize();exit;
         } else if ($cod !== 200) {
+            $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
+            $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+            $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"COD STATUS: ".$cod." - MSG ERROR: ".$messageError);
+
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod);
+            $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod." - MSG ERROR: ".$messageError);
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             echo $view->serialize();exit;
         }
@@ -77,9 +83,14 @@ class Module
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $exception = $e->getParam('exception');
             $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("Verify all params and url router!");
+            $responseService->setMessage("Verify all params and url router then try again!");
             if (!empty($exception)) {
-                $responseService->setMessage($responseService->getMessage()."-".$e->getParam('exception')->getMessage());
+                $messageError = $e->getParam('exception')->getMessage();
+                $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
+                $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+                $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"Msg Error: ".$messageError);
+
+                $responseService->setMessage($responseService->getMessage()." - DETAILS ERROR: ".$messageError);
             }
             $response = $e->getApplication()->getResponse();
             $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
@@ -122,7 +133,7 @@ class Module
                     return new Factory\ResponseFactory();
                 },
                 'Application\Service\LoggerService' => function($sm) {
-                    return new Application\Service\LoogerService();
+                    return new Application\Service\LoggerService();
                 }
     		)
     	);

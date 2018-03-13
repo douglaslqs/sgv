@@ -40,10 +40,8 @@ class CategoryController extends AbstractRestfulController
             try {
                 if(!empty($arrParams)){
                     $arrParams = array_change_key_case($arrParams, CASE_LOWER);
-                    $category = $this->categoryTable->fetchAll($arrParams)->toArray();
-                } else {
-                    $category = $this->categoryTable->fetchAll()->toArray();
                 }
+                $category = $this->categoryTable->fetch($arrParams);
                 if(!empty($category)){
                     $this->responseService->setData($category);
                     $this->responseService->setCode(ResponseService::CODE_SUCCESS);
