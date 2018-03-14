@@ -40,62 +40,61 @@ class Module
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Invalid Access Token!");
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            echo $view->serialize();exit;
+            $e->setViewModel($view);
         }
         if ($usernameDb === false) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Access Token Not Found!");
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            echo $view->serialize();exit;
+            $e->setViewModel($view);
         }
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
     {
-        $response = $e->getApplication()->getResponse();
+        $response = $e->getResponse();
         $cod = $response->getStatusCode();
         $messageError = $response->getReasonPhrase();
-        $response = $e->getApplication()->getResponse();
-        $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
-        if ($cod === 404) {
-            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("Page not Found. Check the url!");
-            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            echo $view->serialize();exit;
-        } else if ($cod !== 200) {
-            $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
-            $loggerService->setMethodAndLine(__METHOD__, __LINE__);
-            $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"COD STATUS: ".$cod." - MSG ERROR: ".$messageError);
+        $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+        if (empty($responseService->getCode())) {
+            if ($cod === 404) {                
+                $responseService->setCode(ResponseService::CODE_ERROR);
+                $responseService->setMessage("Page not Found. Check the url!");
+                $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                $e->setViewModel($view);
+            } else if ($cod !== 200) {
+                $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
+                $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+                $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"COD STATUS: ".$cod." - MSG ERROR: ".$messageError);
 
-            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod." - MSG ERROR: ".$messageError);
-            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            echo $view->serialize();exit;
+                $responseService->setCode(ResponseService::CODE_ERROR);
+                $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod." - MSG ERROR: ".$messageError);
+            }
         }
+        $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+        $e->setViewModel($view);
     }
 
     public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
         if ($e->isError()) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $exception = $e->getParam('exception');
-            $responseService->setCode(ResponseService::CODE_ERROR);
-            $responseService->setMessage("Verify all params and url router then try again!");
-            if (!empty($exception)) {
-                $messageError = $e->getParam('exception')->getMessage();
-                $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
-                $loggerService->setMethodAndLine(__METHOD__, __LINE__);
-                $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"Msg Error: ".$messageError);
+            if (empty($responseService->getCode())) {
+                $responseService->setCode(ResponseService::CODE_ERROR);
+                $responseService->setMessage("Verify all params and url router then try again!");
+                $exception = $e->getParam('exception');
+                if (!empty($exception)) {
+                    $messageError = $e->getParam('exception')->getMessage();
+                    $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
+                    $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+                    $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"Msg Error: ".$messageError);
 
-                $responseService->setMessage($responseService->getMessage()." - DETAILS ERROR: ".$messageError);
+                    $responseService->setMessage($responseService->getMessage()." - DETAILS ERROR: ".$messageError);
+                }
+                $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                $e->setViewModel($view);
             }
-            $response = $e->getApplication()->getResponse();
-            $response->getHeaders()->addHeaderLine('Content-Type', 'application/json');
-            $jsonModel = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            echo $jsonModel->serialize();exit;
         }
     }
 
@@ -129,12 +128,12 @@ class Module
     				$resultSetPrototype->setArrayObjectPrototype(new CategoryEntity());
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
     			},
-                'Application\Service\ResponseService' => function($sm) {
+                /*'Application\Service\ResponseService' => function($sm) {
                     return new Factory\ResponseFactory();
                 },
                 'Application\Service\LoggerService' => function($sm) {
                     return new Application\Service\LoggerService();
-                }
+                } */
     		)
     	);
     }

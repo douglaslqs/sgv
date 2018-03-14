@@ -35,7 +35,11 @@ class ResponseService
 
 	public function __construct()
 	{
-		$this->response = array();
+		$this->response = array(
+			'code'=> null,
+			'message' => null,
+			'type' => null,
+		);
 	}
 
 

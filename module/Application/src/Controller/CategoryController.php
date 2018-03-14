@@ -68,8 +68,8 @@ class CategoryController extends AbstractRestfulController
             try {
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
-                    $category = $this->categoryTable->fetchRow($arrParams['name']);
-                    if (!isset($category->name)) {
+                    $category = $this->categoryTable->fetchRow(array('name' => $arrParams['name']));
+                    if (empty($category)) {
                         $returnInsert = $this->categoryTable->insert($arrParams);
                         if ($returnInsert !== 1) {
                             $this->responseService->setCode(ResponseService::CODE_ERROR);
@@ -79,7 +79,13 @@ class CategoryController extends AbstractRestfulController
                             $this->responseService->setCode(ResponseService::CODE_SUCCESS);
                         }
                     } else {
-                        $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                        if (!is_string($category)) {
+                            $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                            $this->logger->save(Logger::LOG_APPLICATION,Logger::WARNING,$category);
+                        }
                     }
                 } else {
                     $this->responseService->setData($this->form->getInputFilter()->getMessages());

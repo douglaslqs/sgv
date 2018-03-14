@@ -18,7 +18,21 @@ class CategoryTable
 	}
 
 	public function fetch($arrFilter = array())
-	{		
+	{
+		try {
+		    $sql = $this->tableGateway->getSql();
+			$select = $sql->select()->where($arrFilter);
+			// output query
+			//echo $sql->getSqlStringForSqlObject($select);exit;
+			$resultSet = $this->tableGateway->selectWith($select)->toArray();
+		} catch (Exception $e) {
+			$resultSet = $e->getMessage();
+		}
+		return $resultSet;
+	}
+
+	public function fetchRow($arrFilter)
+	{
 		try {
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
