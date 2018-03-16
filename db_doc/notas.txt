@@ -10,7 +10,9 @@ Pedidos
 - Controle de entrega
 - Controle de pagamento
 
-PS.: Antes de finalizar uma compra, verificar se houve alteração de preço de produto e mostrar ao usuário para ele reconfirmar a compra
+PS.: 
+- Antes de finalizar uma compra, verificar se houve alteração de preço de produto e mostrar ao usuário para ele reconfirmar a compra (ou guardar o preço na sessão?)
+- Verificar também se ainda há o estoque disponível no momento da aprovação do pedido.
 - Verificar se já tem uma sessão ativa do usuário. Permitir apenas uma sessão por usuário
 
 - Usar SQL STAMENTS para evitar SQL INJECT $st = $pdo->prepare("SELECT * FROM tbl WHERE x = ?");
