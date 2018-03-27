@@ -41,7 +41,15 @@ class CategoryForm extends Form
 	                         'stringLengthTooShort' => 'Maximun 40 chacacteres ultrapassed',
 	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
 	                     ),
-	                 ),
+	                ),
+	                 /* PESQUISAR MAIS SOBRE ISSO!!
+	                'name' => 'Alnum',
+	                 'options' => array(
+	                    'allowWhiteSpace' => true,	                     
+	                    'messages' => array(
+	                        'allowWhiteSpace' => 'Spaces white duple not permission',
+	                    ),
+	                ), */
 	            ),	        
 	        ),
 	    ));

@@ -17,3 +17,6 @@ PS.:
 
 - Usar SQL STAMENTS para evitar SQL INJECT $st = $pdo->prepare("SELECT * FROM tbl WHERE x = ?");
 e e where com parâmetro $select->where( $db->quoteInto('last_name=?', $lname) );
+
+-- BIBLIOTECA QUE PODE SER UTILIZADA PARA CALCULAR FRETE
+http://boxpacker.readthedocs.io/en/stable/principles.html
