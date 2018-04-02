@@ -37,7 +37,7 @@ class CategoryTable
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
 			// output query
-			//echo $sql->getSqlStringForSqlObject($select);exit;
+			//echo $sql->getSqlStringForSqlObject($select);
 			$resultSet = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();
@@ -53,5 +53,21 @@ class CategoryTable
 			$resultSet = $e->getMessage();
 		}
 		return $resultSet;
+	}
+
+	public function update($arrSet, $arrWhere)
+	{
+		try {
+		    // Here is the catch
+		    $update = $this->tableGateway->getSql()->update();
+		    //var_dump($arrWhere);exit;
+		    $update->set($arrSet);
+		    $update->where($arrWhere);
+		    // Execute the query
+		    return $this->tableGateway->updateWith($update);
+			
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	}
 }
