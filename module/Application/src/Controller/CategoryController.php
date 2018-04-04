@@ -68,8 +68,9 @@ class CategoryController extends AbstractRestfulController
             try {
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
-                    $category = $this->categoryTable->fetchRow(array('name' => $arrParams['name']));
-                    if (empty($category)) {
+                    $category = $this->categoryTable->fetch(array('name' => $arrParams['name']));
+                    $categoryParent = $this->categoryTable->fetch(array('name_parent' => $arrParams['name_parent']), 1);
+                    if (empty($category) && is_array($categoryParent)) {
                         $returnInsert = $this->categoryTable->insert($arrParams);
                         if ($returnInsert !== 1) {
                             $this->responseService->setCode(ResponseService::CODE_ERROR);
@@ -79,7 +80,7 @@ class CategoryController extends AbstractRestfulController
                             $this->responseService->setCode(ResponseService::CODE_SUCCESS);
                         }
                     } else {
-                        if (!is_string($category)) {
+                        if (is_array($category)) {
                             $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
                         } else {
                             $this->responseService->setCode(ResponseService::CODE_ERROR);
@@ -105,10 +106,41 @@ class CategoryController extends AbstractRestfulController
     public function updateAction()
     {
         $request = $this->getRequest();
+        $arrParams = $request->getPost()->toArray();
+        $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+        $this->form->setData($arrParams);
         if ($request->isPost()) {
-            $arrParams = $request->getPost()->toArray();
-            $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+            if ($this->form->isValid()) {
+                $category = $this->categoryTable->fetch(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
+                if (is_array($category) && !empty($category)) {
+                    $arrSet = array();
+                    foreach ($arrParams as $key => $value) {
+                        if (strpos($key, 'new_') !== false) {
+                            $newKey = str_replace('new_', '', $key);
+                            $arrSet[$newKey] = $arrParams[$key];
+                            unset($arrParams[$key]);
+                        }
+                    }
+                    $returnUpdate = $this->categoryTable->update($arrSet,$arrParams);
+                    if (is_numeric($returnUpdate)) {
+                        $this->responseService->setCode(ResponseService::CODE_SUCCESS);
+                    } else {
+                        $this->responseService->setCode(ResponseService::CODE_ERROR);
+                        $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                        $this->logger->save(Logger::LOG_APPLICATION,Logger::ALERT,$returnUpdate);
+                    }
+                } else {
+                    if (is_array($category)) {
+                        $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                    } else {
+                        $this->responseService->setCode(ResponseService::CODE_ERROR);
+                        $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                        $this->logger->save(Logger::LOG_APPLICATION,Logger::WARNING,$category);
+                    }
+                }
+            }
         }
+        //var_dump($arrParams);exit;
         return new JsonModel($arrParams);
     }
 
