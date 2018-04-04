@@ -111,12 +111,18 @@ class CategoryController extends AbstractRestfulController
         $arrParams = array_change_key_case($arrParams, CASE_LOWER);
         $this->form->setData($arrParams);
         if ($request->isPost()) {
-            if ($this->form->isValid() && isset($arrParams['new_name']) && !empty($arrParams['new_name'])) {
+            if ($this->form->isValid()) {
                 $category = $this->categoryTable->fetchRow(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
                 if (is_array($category) && !empty($category)) {
-                    $arrNewName = array("name" => $arrParams['new_name']);
-                    unset($arrParams['new_name']);
-                    $returnUpdate = $this->categoryTable->update($arrNewName,$arrParams);
+                    $arrSet = array();
+                    foreach ($arrParams as $key => $value) {
+                        if (strpos($key, 'new_') !== false) {
+                            $newKey = str_replace('new_', '', $key);
+                            $arrSet[$newKey] = $arrParams[$key];
+                            unset($arrParams[$key]);
+                        }
+                    }
+                    $returnUpdate = $this->categoryTable->update($arrSet,$arrParams);
                     if (is_numeric($returnUpdate)) {
                         $this->responseService->setCode(ResponseService::CODE_SUCCESS);
                     } else {

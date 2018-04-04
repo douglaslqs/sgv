@@ -57,12 +57,15 @@ class CategoryTable
 
 	public function update($arrSet, $arrWhere)
 	{
+		if (empty($arrSet)) return 0;
 		try {
 		    // Here is the catch
 		    $update = $this->tableGateway->getSql()->update();
 		    //var_dump($arrWhere);exit;
 		    $update->set($arrSet);
 		    $update->where($arrWhere);
+		    //output query
+			//echo $this->tableGateway->getSql()->getSqlStringForSqlObject($update);exit;
 		    // Execute the query
 		    return $this->tableGateway->updateWith($update);
 			

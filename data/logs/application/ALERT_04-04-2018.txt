@@ -1,0 +1,5 @@
+17:56:38 : Application\Controller\CategoryController::updateAction line:127 - Token Access: 123456 - UPDATE `category` SET `name` = 'Acessórios de fruta', `name_parent` = 'Frutas'
+17:59:09 : Application\Controller\CategoryController::updateAction line:128 - Token Access: 123456 - UPDATE `category` SET `name` = 'Acessórios de fruta', `name_parent` = 'Frutas'
+18:00:07 : Application\Controller\CategoryController::updateAction line:128 - Token Access: 123456 - 
+18:00:35 : Application\Controller\CategoryController::updateAction line:128 - Token Access: 123456 - Array
+18:05:22 : Application\Controller\CategoryController::updateAction line:130 - Token Access: 123456 - UPDATE `category` SET `name` = 'Acessórios de fruta', `name_parent` = 'Frutas' WHERE `name` = 'Acessórios' AND `name_parent` = 'Celulares'
