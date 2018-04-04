@@ -17,13 +17,16 @@ class CategoryTable
 		return $this->tableGateway;
 	}
 
-	public function fetch($arrFilter = array())
+	public function fetch($arrFilter = array(), $limit = null)
 	{
 		try {
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
+			if (!empty($limit)) {
+				$select->limit(1);
+			}
 			// output query
-			//echo $sql->getSqlStringForSqlObject($select);exit;
+			//return $sql->getSqlStringForSqlObject($select);exit;
 			$resultSet = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();
@@ -36,8 +39,11 @@ class CategoryTable
 		try {
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
+			if (!empty($limit)) {
+				$select->limit(1);
+			}
 			// output query
-			//echo $sql->getSqlStringForSqlObject($select);
+			//return $sql->getSqlStringForSqlObject($select);exit;
 			$resultSet = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();

@@ -68,9 +68,8 @@ class CategoryController extends AbstractRestfulController
             try {
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
-                    $category = $this->categoryTable->fetchRow(array('name' => $arrParams['name']));
-                    //MUDAR PARA LIMIT 1 NESTA CONSULTA
-                    $categoryParent = $this->categoryTable->fetchRow(array('name_parent' => $arrParams['name_parent']));
+                    $category = $this->categoryTable->fetch(array('name' => $arrParams['name']));
+                    $categoryParent = $this->categoryTable->fetch(array('name_parent' => $arrParams['name_parent']), 1);
                     if (empty($category) && is_array($categoryParent)) {
                         $returnInsert = $this->categoryTable->insert($arrParams);
                         if ($returnInsert !== 1) {
@@ -112,7 +111,7 @@ class CategoryController extends AbstractRestfulController
         $this->form->setData($arrParams);
         if ($request->isPost()) {
             if ($this->form->isValid()) {
-                $category = $this->categoryTable->fetchRow(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
+                $category = $this->categoryTable->fetch(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
                 if (is_array($category) && !empty($category)) {
                     $arrSet = array();
                     foreach ($arrParams as $key => $value) {
