@@ -11,6 +11,7 @@ use Application\Model\CategoryTable;
 use Application\Form\CategoryForm;
 use Application\Controller\CategoryController;
 use Application\Service\ResponseService;
+use Application\Service\FilterService;
 use Application\Service\LoggerService;
 
 class CategoryFactory implements FactoryInterface
@@ -20,9 +21,9 @@ class CategoryFactory implements FactoryInterface
 	{
 	    $categoryTable = $container->get(CategoryTable::class);
 	    $responseService = $container->get(ResponseService::class);
-	    $loggerService = $container->get(LoggerService::class);
 	    $categoryController = new $requestedName($responseService, $categoryTable);
 	    $categoryController->setLogger($container->get(LoggerService::class));
+	    $categoryController->setFilterService($container->get(FilterService::class));
 	    $categoryController->setForm(new CategoryForm());
 	    return $categoryController;
 	}
