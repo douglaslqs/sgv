@@ -18,6 +18,7 @@ class CategoryController extends AbstractRestfulController
     private $categoryTable;
     private $form;
     private $responseService;
+    private $filterService;
     private $logger;
 
     public function __construct(ResponseService $responseService, CategoryTable $categoryTable)
@@ -68,6 +69,7 @@ class CategoryController extends AbstractRestfulController
             try {
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
+                    $arrParams = $this->filterService->setData($arrParams)->getData();
                     $category = $this->categoryTable->fetch(array('name' => $arrParams['name']));
                     $categoryParent = $this->categoryTable->fetch(array('name_parent' => $arrParams['name_parent']), 1);
                     if (empty($category) && is_array($categoryParent)) {
@@ -106,47 +108,56 @@ class CategoryController extends AbstractRestfulController
     public function updateAction()
     {
         $request = $this->getRequest();
-        $arrParams = $request->getPost()->toArray();
-        $arrParams = array_change_key_case($arrParams, CASE_LOWER);
-        $this->form->setData($arrParams);
         if ($request->isPost()) {
-            if ($this->form->isValid()) {
-                $category = $this->categoryTable->fetch(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
-                if (is_array($category) && !empty($category)) {
-                    $arrSet = array();
-                    foreach ($arrParams as $key => $value) {
-                        if (strpos($key, 'new_') !== false) {
-                            $newKey = str_replace('new_', '', $key);
-                            $arrSet[$newKey] = $arrParams[$key];
-                            unset($arrParams[$key]);
+            $arrParams = $request->getPost()->toArray();
+            $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+            try {
+                $this->form->setData($arrParams);
+                //Neste caso, podemos utilizar o validador form. Ver a necessidade de um "formUpdate"
+                if ($this->form->isValid()) {
+                    $arrParams = $this->filterService->setData($arrParams)->getData();
+                    $category = $this->categoryTable->fetch(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
+                    if (is_array($category) && !empty($category)) {
+                        $arrSet = $this->filterService->getArraySet();
+                        $arrWhere = $this->filterService->getArrayWhere();
+                        $returnUpdate = $this->categoryTable->update($arrSet,$arrWhere);
+                        if (is_numeric($returnUpdate)) {
+                            $this->responseService->setCode(ResponseService::CODE_SUCCESS);
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                            $this->logger->save(Logger::LOG_APPLICATION,Logger::ALERT,$returnUpdate);
+                        }
+                    } else {
+                        if (is_array($category)) {
+                            $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                            $this->logger->save(Logger::LOG_APPLICATION,Logger::WARNING,$category);
                         }
                     }
-                    $returnUpdate = $this->categoryTable->update($arrSet,$arrParams);
-                    if (is_numeric($returnUpdate)) {
-                        $this->responseService->setCode(ResponseService::CODE_SUCCESS);
-                    } else {
-                        $this->responseService->setCode(ResponseService::CODE_ERROR);
-                        $this->logger->setMethodAndLine(__METHOD__, __LINE__);
-                        $this->logger->save(Logger::LOG_APPLICATION,Logger::ALERT,$returnUpdate);
-                    }
                 } else {
-                    if (is_array($category)) {
-                        $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
-                    } else {
-                        $this->responseService->setCode(ResponseService::CODE_ERROR);
-                        $this->logger->setMethodAndLine(__METHOD__, __LINE__);
-                        $this->logger->save(Logger::LOG_APPLICATION,Logger::WARNING,$category);
-                    }
+                    $this->responseService->setData($this->form->getInputFilter()->getMessages());
+                    $this->responseService->setCode(ResponseService::CODE_NOT_PARAMS_VALIDATED);
                 }
+            } catch (Exception $e) {
+                $this->responseService->setCode(ResponseService::CODE_ERROR);
+                $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
             }
         }
-        //var_dump($arrParams);exit;
-        return new JsonModel($arrParams);
+        return new JsonModel($this->responseService->getArrayCopy());
     }
 
     public function setForm($form)
     {
         $this->form = $form;
+    }
+
+    public function setFilterService($filterService)
+    {
+        $this->filterService = $filterService;
     }
 
     public function setLogger($objLogger)

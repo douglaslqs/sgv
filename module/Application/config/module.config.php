@@ -41,6 +41,7 @@ return [
         'factories' => [
             Service\ResponseService::class => Service\Factory\ResponseFactory::class,
             Service\LoggerService::class => Service\Factory\LoggerFactory::class,
+            Service\FilterService::class => Service\Factory\FilterFactory::class,
         ],
     ],
     'controllers' => [
