@@ -11,7 +11,7 @@ class ProductForm extends Form
 	{
 		parent::__construct('product');
 		$this->setAttribute('method', 'post');
-		$this->addInputFilter();
+		//$this->addInputFilter();
 	}
 
 	public function addInputFilter($boolUpdate = false)
@@ -34,8 +34,8 @@ class ProductForm extends Form
 	                     'min' => 3,
 	                     'max' => 160,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 160 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 160 chacacteres ultrapassed',
 	                     ),
 	                ),
 	                 /* PERMITE APENAS ALPHA NUMERICO!!
@@ -66,8 +66,8 @@ class ProductForm extends Form
 	                     'min' => 3,
 	                     'max' => 80,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 80 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
 	                     ),
 	                ),
 	            ),
@@ -90,8 +90,8 @@ class ProductForm extends Form
 	                     'min' => 3,
 	                     'max' => 80,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 80 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
 	                     ),
 	                ),
 	            ),
@@ -114,8 +114,8 @@ class ProductForm extends Form
 	                     'min' => 3,
 	                     'max' => 64,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 64 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
 	                     ),
 	                ),
 	            ),

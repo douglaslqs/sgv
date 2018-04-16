@@ -20,35 +20,21 @@ class ProductTable
 	public function fetch($arrFilter = array(), $limit = null)
 	{
 		try {
+			$arrLikes = array();
+			foreach ($arrFilter as $key => $value) {
+				array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
+		    }
 		    $sql = $this->tableGateway->getSql();
-
-
-		    $where = new \Zend\Db\Sql\Where();
-
-			// Alternatively, a shortcut
-			$where->like('name', '%'.$arrFilter['name'].'%'); // Alternatively, a shortcut.
-			$where->orLike('category', '%'.$arrFilter['name'].'%');
-
-			/*$where->addPredicate(
-			    new \Zend\Db\Sql\Predicate\Like('my_field', '%test%')
-			); */
-
-			$sql->select()->where(array(
-					new \Zend\Db\Sql\Predicate\PredicateSet(array(
-						new \Zend\Db\Sql\Predicate\Like('name', '%'.$arrFilter['name'].'%'),
-						new \Zend\Db\Sql\Predicate\Like('category', '%'.$arrFilter['category'].'%'),
-				),
+			$select = $sql->select()->where(array(
+					new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
 				\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
 				)
 			));
-
-
-			$select = $sql->select()->where($where);
 			if (!empty($limit)) {
 				$select->limit(1);
 			}
 			// output query
-			return $sql->getSqlStringForSqlObject($select);exit;
+			//return $sql->getSqlStringForSqlObject($select);exit;
 			$resultSet = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();

@@ -27,6 +27,11 @@ class ProductController extends AbstractRestfulController
         $this->productTable = $productTable;
     }
 
+    public function indexAction()
+    {
+        return new JsonModel(array("ação não encontrada"));
+    }
+
     public function getAction()
     {
         $request = $this->getRequest();
@@ -54,14 +59,57 @@ class ProductController extends AbstractRestfulController
         return new JsonModel($this->responseService->getArrayCopy());
     }
 
-    public function indexAction()
-    {
-       	return new JsonModel(array("ação não encontrada"));
-    }
-
     public function addAction()
     {
-    	return new JsonModel(array("addProduto"));
+    	$request = $this->getRequest();
+        if ($request->isPost()) {
+            $arrParams = $request->getPost()->toArray();
+            $arrParams = array_change_key_case($arrParams, CASE_LOWER);
+            try {
+                $boolUpdate = false;
+                $this->form->addInputFilter($boolUpdate);
+                $this->form->setData($arrParams);
+                if ($this->form->isValid()) {
+                    $arrParams = $this->filterService->setData($arrParams)->getData();
+                    $arrFiler = array(
+                        'name' => $arrParams['name'],
+                        'category' => $arrParams['category'],
+                        'category_parent' => $arrParams['category_parent'],
+                        'mark' => $arrParams['mark'],
+                        'unit_measure' => $arrParams['unit_measure']
+                    );
+                    $product = $this->productTable->fetchRow($arrFiler);
+                    if (empty($product)) {
+                        $returnInsert = $this->productTable->insert($arrParams);
+                        if ($returnInsert !== 1) {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                            $this->logger->save(Logger::LOG_APPLICATION,Logger::ALERT,$returnInsert);
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_SUCCESS);
+                        }
+                    } else {
+                        if (is_array($product)) {
+                            $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                        } else {
+                            $this->responseService->setCode(ResponseService::CODE_ERROR);
+                            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                            $this->logger->save(Logger::LOG_APPLICATION,Logger::WARNING,$product);
+                        }
+                    }
+                } else {
+                    $this->responseService->setData($this->form->getInputFilter()->getMessages());
+                    $this->responseService->setCode(ResponseService::CODE_NOT_PARAMS_VALIDATED);
+                }
+            } catch (Exception $e) {
+                $this->responseService->setCode(ResponseService::CODE_ERROR);
+                $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+                $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
+            }
+        } else {
+            $this->responseService->setCode(ResponseService::CODE_METHOD_INCORRECT);
+        }
+        return new JsonModel($this->responseService->getArrayCopy());
     }
 
     public function updateAction()
