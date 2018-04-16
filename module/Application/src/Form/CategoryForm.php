@@ -9,7 +9,7 @@ class CategoryForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('consultor');
+		parent::__construct('category');
 		$this->setAttribute('method', 'post');
 		$this->addInputFilter();
 	}

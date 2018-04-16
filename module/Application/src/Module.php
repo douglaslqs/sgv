@@ -12,6 +12,8 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
+use Application\Model\Entity\ProductEntity;
+use Application\Model\ProductTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
 use Zend\Db\TableGateway\TableGateway;
@@ -58,7 +60,7 @@ class Module
         $messageError = $response->getReasonPhrase();
         $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
         if (empty($responseService->getCode())) {
-            if ($cod === 404) {                
+            if ($cod === 404) {
                 $responseService->setCode(ResponseService::CODE_ERROR);
                 $responseService->setMessage("Page not Found. Check the url!");
                 $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
@@ -119,8 +121,7 @@ class Module
     		'factories' => array(
 				'Application\Model\CategoryTable' =>  function($sm) {
 	    				$tableGateway = $sm->get('CategoryTableGateway');
-	    				$table = new CategoryTable($tableGateway);
-	    				return $table;
+	    				return new CategoryTable($tableGateway);
 	    			},
     			'CategoryTableGateway' => function ($sm) {
     				$dbAdapter = $sm->get('store-adapter');
@@ -128,12 +129,16 @@ class Module
     				$resultSetPrototype->setArrayObjectPrototype(new CategoryEntity());
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
     			},
-                /*'Application\Service\ResponseService' => function($sm) {
-                    return new Factory\ResponseFactory();
+                'Application\Model\ProductTable' =>  function($sm) {
+                        $tableGateway = $sm->get('ProductTableGateway');
+                        return new ProductTable($tableGateway);
+                    },
+                'ProductTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductEntity());
+                    return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Application\Service\LoggerService' => function($sm) {
-                    return new Application\Service\LoggerService();
-                } */
     		)
     	);
     }
