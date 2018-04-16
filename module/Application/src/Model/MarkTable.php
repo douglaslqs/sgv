@@ -3,7 +3,7 @@ namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class CategoryTable
+class MarkTable
 {
 	protected $tableGateway;
 
@@ -22,7 +22,7 @@ class CategoryTable
 		try {
 		    $sql = $this->tableGateway->getSql();
 			if (!empty($arrFilter)) {
-			    $arrLikes = array();
+				$arrLikes = array();
 				foreach ($arrFilter as $key => $value) {
 					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
 			    }
@@ -30,7 +30,7 @@ class CategoryTable
 						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
 					\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
 					)
-				));
+				));				
 			} else {
 				$select = $sql->select()->where($arrFilter);
 			}
@@ -51,7 +51,6 @@ class CategoryTable
 		try {
 			$arrFilter = array(
                 'name' => isset($arrParams['name']) ? $arrParams['name'] : null,
-                'name_parent'=>isset($arrParams['name_parent']) ? $arrParams['name_parent'] : null,
             );
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);

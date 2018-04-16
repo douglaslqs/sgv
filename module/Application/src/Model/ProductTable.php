@@ -20,16 +20,20 @@ class ProductTable
 	public function fetch($arrFilter = array(), $limit = null)
 	{
 		try {
-			$arrLikes = array();
-			foreach ($arrFilter as $key => $value) {
-				array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
-		    }
 		    $sql = $this->tableGateway->getSql();
-			$select = $sql->select()->where(array(
-					new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
-				\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
-				)
-			));
+			if (!empty($arrFilter)) {
+				$arrLikes = array();
+				foreach ($arrFilter as $key => $value) {
+					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
+			    }
+				$select = $sql->select()->where(array(
+						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
+					\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
+					)
+				));
+			} else {
+				$select = $sql->select()->where($arrFilter);
+			}
 			if (!empty($limit)) {
 				$select->limit(1);
 			}

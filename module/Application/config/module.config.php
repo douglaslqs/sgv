@@ -40,25 +40,27 @@ return [
     'service_manager' => [        
         'factories' => [
             Service\ResponseService::class => Service\Factory\ResponseFactory::class,
-            Service\LoggerService::class => Service\Factory\LoggerFactory::class,
-            Service\FilterService::class => Service\Factory\FilterFactory::class,
+            Service\LoggerService::class   => Service\Factory\LoggerFactory::class,
+            Service\FilterService::class   => Service\Factory\FilterFactory::class,
         ],
     ],
     'controllers' => [
         'factories' => [
             /* controllers que não precisam de factory */
-            Controller\IndexController::class => InvokableFactory::class,
-            Controller\ProductController::class => Controller\Factory\ProductFactory::class,
+            Controller\IndexController::class    => InvokableFactory::class,
+            Controller\ProductController::class  => Controller\Factory\ProductFactory::class,
             Controller\CategoryController::class => Controller\Factory\CategoryFactory::class,
+            Controller\MarkController::class     => Controller\Factory\MarkFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
             //Controller\IndexController::class => Factory\IndexControllerFactory::class,
         ],
         'aliases' => [
-            'index'     => 'Application\Controller\IndexController',
-            'product'   => 'Application\Controller\ProductController',
+            'index'    => 'Application\Controller\IndexController',
+            'product'  => 'Application\Controller\ProductController',
             'category' => 'Application\Controller\CategoryController',
+            'mark'     => 'Application\Controller\MarkController',
         ],
     ],
     'view_manager' => [

@@ -14,6 +14,8 @@ use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
 use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
+use Application\Model\Entity\MarkEntity;
+use Application\Model\MarkTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
 use Zend\Db\TableGateway\TableGateway;
@@ -138,6 +140,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductEntity());
                     return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\MarkTable' =>  function($sm) {
+                        $tableGateway = $sm->get('MarkTableGateway');
+                        return new MarkTable($tableGateway);
+                    },
+                'MarkTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new MarkEntity());
+                    return new TableGateway('mark', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
