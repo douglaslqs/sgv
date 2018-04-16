@@ -42,9 +42,16 @@ class ProductTable
 		return $resultSet;
 	}
 
-	public function fetchRow($arrFilter)
+	public function fetchRow($arrParams)
 	{
 		try {
+			$arrFilter = array(
+                'name' => isset($arrParams['name']) ? $arrParams['name'] : null,
+                'category' => isset($arrParams['category']) ? $arrParams['category'] : null,
+                'category_parent'=>isset($arrParams['category_parent']) ? $arrParams['category_parent'] : null,
+                'mark' => isset($arrParams['mark']) ? $arrParams['mark'] : null,
+                'unit_measure' => isset($arrParams['unit_measure']) ? $arrParams['unit_measure'] : null,
+            );
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
 			if (!empty($limit)) {

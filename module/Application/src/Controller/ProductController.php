@@ -71,14 +71,7 @@ class ProductController extends AbstractRestfulController
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
-                    $arrFiler = array(
-                        'name' => $arrParams['name'],
-                        'category' => $arrParams['category'],
-                        'category_parent' => $arrParams['category_parent'],
-                        'mark' => $arrParams['mark'],
-                        'unit_measure' => $arrParams['unit_measure']
-                    );
-                    $product = $this->productTable->fetchRow($arrFiler);
+                    $product = $this->productTable->fetchRow($arrParams);
                     if (empty($product)) {
                         $returnInsert = $this->productTable->insert($arrParams);
                         if ($returnInsert !== 1) {
@@ -124,14 +117,7 @@ class ProductController extends AbstractRestfulController
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
-                    $arrFiler = array(
-                        'name' => $arrParams['name'],
-                        'category' => $arrParams['category'],
-                        'category_parent' => $arrParams['category_parent'],
-                        'mark' => $arrParams['mark'],
-                        'unit_measure' => $arrParams['unit_measure']
-                    );
-                    $product = $this->productTable->fetchRow($arrFiler);
+                    $product = $this->productTable->fetchRow($arrParams);
                     if (is_array($product) && !empty($product)) {
                         $arrSet = $this->filterService->getArraySet();
                         $arrWhere = $this->filterService->getArrayWhere();

@@ -20,8 +20,16 @@ class CategoryTable
 	public function fetch($arrFilter = array(), $limit = null)
 	{
 		try {
+		    $arrLikes = array();
+			foreach ($arrFilter as $key => $value) {
+				array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
+		    }
 		    $sql = $this->tableGateway->getSql();
-			$select = $sql->select()->where($arrFilter);
+			$select = $sql->select()->where(array(
+					new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
+				\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
+				)
+			));
 			if (!empty($limit)) {
 				$select->limit(1);
 			}
@@ -34,9 +42,13 @@ class CategoryTable
 		return $resultSet;
 	}
 
-	public function fetchRow($arrFilter)
+	public function fetchRow($arrParams)
 	{
 		try {
+			$arrFilter = array(               
+                'name' => isset($arrParams['name']) ? $arrParams['name'] : null,
+                'name_parent'=>isset($arrParams['name_parent']) ? $arrParams['name_parent'] : null,
+            );
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
 			if (!empty($limit)) {
@@ -74,7 +86,7 @@ class CategoryTable
 			//echo $this->tableGateway->getSql()->getSqlStringForSqlObject($update);exit;
 		    // Execute the query
 		    return $this->tableGateway->updateWith($update);
-			
+
 		} catch (Exception $e) {
 			return $e->getMessage();
 		}
