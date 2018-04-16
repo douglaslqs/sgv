@@ -113,7 +113,7 @@ class CategoryController extends AbstractRestfulController
             $arrParams = array_change_key_case($arrParams, CASE_LOWER);
             try {
                 $this->form->setData($arrParams);
-                //Neste caso, podemos utilizar o validador form. Ver a necessidade de um "formUpdate"
+                //Neste caso, podemos utilizar o mesmo validador form
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
                     $category = $this->categoryTable->fetch(array('name' => $arrParams['name'], 'name_parent' => $arrParams['name_parent']));
