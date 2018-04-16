@@ -9,7 +9,7 @@ class CategoryForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('consultor');
+		parent::__construct('category');
 		$this->setAttribute('method', 'post');
 		$this->addInputFilter();
 	}
@@ -40,8 +40,8 @@ class CategoryForm extends Form
 	                     'min' => 3,
 	                     'max' => 40,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 40 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
 	                     ),
 	                ),
 	                 /* PESQUISAR MAIS SOBRE ISSO!!
@@ -79,8 +79,8 @@ class CategoryForm extends Form
 	                     'min' => 3,
 	                     'max' => 40,
 	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 40 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
 	                     ),
 	                ),
 	                 /* PESQUISAR MAIS SOBRE ISSO!!
