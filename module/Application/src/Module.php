@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
+use Application\Model\Entity\UnitMeasureEntity;
+use Application\Model\UnitMeasureTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
 use Zend\Db\TableGateway\TableGateway;
@@ -150,6 +152,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new MarkEntity());
                     return new TableGateway('mark', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\UnitMeasureTable' =>  function($sm) {
+                        $tableGateway = $sm->get('UnitMeasureTableGateway');
+                        return new UnitMeasureTable($tableGateway);
+                    },
+                'UnitMeasureTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UnitMeasureEntity());
+                    return new TableGateway('unit_measure', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
