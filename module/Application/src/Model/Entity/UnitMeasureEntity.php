@@ -1,7 +1,7 @@
 <?php
 namespace Application\Model\Entity;
 
-class MarkEntity
+class UnitMeasureEntity
 {
 	public $name;
 	public $active;

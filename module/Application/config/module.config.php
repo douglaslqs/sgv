@@ -51,6 +51,7 @@ return [
             Controller\ProductController::class  => Controller\Factory\ProductFactory::class,
             Controller\CategoryController::class => Controller\Factory\CategoryFactory::class,
             Controller\MarkController::class     => Controller\Factory\MarkFactory::class,
+            Controller\UnitMeasureController::class     => Controller\Factory\UnitMeasureFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
@@ -61,6 +62,7 @@ return [
             'product'  => 'Application\Controller\ProductController',
             'category' => 'Application\Controller\CategoryController',
             'mark'     => 'Application\Controller\MarkController',
+            'unit-measure'=> 'Application\Controller\UnitMeasureController',
         ],
     ],
     'view_manager' => [
