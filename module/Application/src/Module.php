@@ -18,6 +18,8 @@ use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
 use Application\Model\Entity\UnitMeasureEntity;
 use Application\Model\UnitMeasureTable;
+use Application\Model\Entity\MeasureEntity;
+use Application\Model\MeasureTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
 use Zend\Db\TableGateway\TableGateway;
@@ -124,9 +126,9 @@ class Module
     	return array(
     		'factories' => array(
 				'Application\Model\CategoryTable' =>  function($sm) {
-	    				$tableGateway = $sm->get('CategoryTableGateway');
-	    				return new CategoryTable($tableGateway);
-	    			},
+    				$tableGateway = $sm->get('CategoryTableGateway');
+    				return new CategoryTable($tableGateway);
+    			},
     			'CategoryTableGateway' => function ($sm) {
     				$dbAdapter = $sm->get('store-adapter');
     				$resultSetPrototype = new ResultSet();
@@ -134,9 +136,9 @@ class Module
     				return new TableGateway('category', $dbAdapter, null, $resultSetPrototype);
     			},
                 'Application\Model\ProductTable' =>  function($sm) {
-                        $tableGateway = $sm->get('ProductTableGateway');
-                        return new ProductTable($tableGateway);
-                    },
+                    $tableGateway = $sm->get('ProductTableGateway');
+                    return new ProductTable($tableGateway);
+                },
                 'ProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
                     $resultSetPrototype = new ResultSet();
@@ -144,9 +146,9 @@ class Module
                     return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
                 },
                 'Application\Model\MarkTable' =>  function($sm) {
-                        $tableGateway = $sm->get('MarkTableGateway');
-                        return new MarkTable($tableGateway);
-                    },
+                    $tableGateway = $sm->get('MarkTableGateway');
+                    return new MarkTable($tableGateway);
+                },
                 'MarkTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
                     $resultSetPrototype = new ResultSet();
@@ -154,14 +156,24 @@ class Module
                     return new TableGateway('mark', $dbAdapter, null, $resultSetPrototype);
                 },
                 'Application\Model\UnitMeasureTable' =>  function($sm) {
-                        $tableGateway = $sm->get('UnitMeasureTableGateway');
-                        return new UnitMeasureTable($tableGateway);
-                    },
+                    $tableGateway = $sm->get('UnitMeasureTableGateway');
+                    return new UnitMeasureTable($tableGateway);
+                },
                 'UnitMeasureTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new UnitMeasureEntity());
                     return new TableGateway('unit_measure', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\MeasureTable' =>  function($sm) {
+                    $tableGateway = $sm->get('MeasureTableGateway');
+                    return new MeasureTable($tableGateway);
+                },
+                'MeasureTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new MeasureEntity());
+                    return new TableGateway('measure', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
