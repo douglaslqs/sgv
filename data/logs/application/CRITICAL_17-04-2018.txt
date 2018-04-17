@@ -1,0 +1,2 @@
+18:47:01 : Application\Module::onDispatchError line:96 - Token Access: 123456 - Msg Error: Unable to resolve service "Application\Model\MeasureTable" to a factory; are you certain you provided it during configuration?
+19:05:39 : Application\Module::onDispatchError line:98 - Token Access: 123456 - Msg Error: Statement could not be executed (HY000 - 1366 - Incorrect integer value: '' for column 'active' at row 1)
