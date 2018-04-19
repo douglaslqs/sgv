@@ -3,7 +3,7 @@ namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class UnitMeasureTable
+class ColorTable
 {
 	protected $tableGateway;
 

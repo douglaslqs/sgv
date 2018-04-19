@@ -22,13 +22,18 @@ class CategoryTable
 		try {
 		    $sql = $this->tableGateway->getSql();
 			if (!empty($arrFilter)) {
+				$combined = \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR;
+				if(isset($arrFilter['combined'])) {
+					$combined =  \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_AND;
+					unset($arrFilter['combined']);
+				}
 			    $arrLikes = array();
 				foreach ($arrFilter as $key => $value) {
 					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
 			    }
 				$select = $sql->select()->where(array(
 						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
-					\Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR
+						$combined
 					)
 				));
 			} else {
