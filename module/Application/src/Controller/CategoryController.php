@@ -116,7 +116,7 @@ class CategoryController extends AbstractRestfulController
                 //Neste caso, podemos utilizar o mesmo validador form
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
-                    $category = $this->categoryTable->fetch($arrParams);
+                    $category = $this->categoryTable->fetchRow($arrParams);
                     if (is_array($category) && !empty($category)) {
                         $arrSet = $this->filterService->getArraySet();
                         $arrWhere = $this->filterService->getArrayWhere();
