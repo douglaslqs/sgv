@@ -37,7 +37,7 @@ return [
             ],
         ],
     ],
-    'service_manager' => [        
+    'service_manager' => [
         'factories' => [
             Service\ResponseService::class => Service\Factory\ResponseFactory::class,
             Service\LoggerService::class   => Service\Factory\LoggerFactory::class,
@@ -53,6 +53,7 @@ return [
             Controller\MarkController::class        => Controller\Factory\MarkFactory::class,
             Controller\UnitMeasureController::class => Controller\Factory\UnitMeasureFactory::class,
             Controller\MeasureController::class     => Controller\Factory\MeasureFactory::class,
+            Controller\ColorController::class       => Controller\Factory\ColorFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
@@ -65,6 +66,7 @@ return [
             'mark'         => 'Application\Controller\MarkController',
             'unit-measure' => 'Application\Controller\UnitMeasureController',
             'measure'      => 'Application\Controller\MeasureController',
+            'color'        => 'Application\Controller\ColorController',
         ],
     ],
     'view_manager' => [

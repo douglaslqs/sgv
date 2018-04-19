@@ -5,11 +5,11 @@ use Zend\Form\Form;
 use Zend\InputFilter;
 //use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class MarkForm extends Form
+class ColorForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('mark');
+		parent::__construct('color');
 		$this->setAttribute('method', 'post');
 		$this->addInputFilter();
 	}
@@ -21,12 +21,6 @@ class MarkForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'name',
 	        'required' => true,
-	        'filters' => array(
-	            array(
-	            	'name' => 'Zend\Filter\StringTrim',
-	            	'name' => 'Zend\Filter\StripTags'
-	        	),
-	        ),
 	        'validators' => array(
 	            array(
 	                'name' => 'notEmpty',

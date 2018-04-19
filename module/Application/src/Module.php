@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
+use Application\Model\Entity\ColorEntity;
+use Application\Model\ColorTable;
 use Application\Model\Entity\UnitMeasureEntity;
 use Application\Model\UnitMeasureTable;
 use Application\Model\Entity\MeasureEntity;
@@ -174,6 +176,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new MeasureEntity());
                     return new TableGateway('measure', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                'Application\Model\ColorTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ColorTableGateway');
+                    return new ColorTable($tableGateway);
+                },
+                'ColorTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ColorEntity());
+                    return new TableGateway('color', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
