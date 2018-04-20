@@ -14,6 +14,8 @@ use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
 use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
+use Application\Model\Entity\ClientEntity;
+use Application\Model\ClientTable;
 use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
 use Application\Model\Entity\ColorEntity;
@@ -177,7 +179,6 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new MeasureEntity());
                     return new TableGateway('measure', $dbAdapter, null, $resultSetPrototype);
                 },
-
                 'Application\Model\ColorTable' =>  function($sm) {
                     $tableGateway = $sm->get('ColorTableGateway');
                     return new ColorTable($tableGateway);
@@ -187,6 +188,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ColorEntity());
                     return new TableGateway('color', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\ClientTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ClientTableGateway');
+                    return new ClientTable($tableGateway);
+                },
+                'ClientTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ClientEntity());
+                    return new TableGateway('client', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
