@@ -20,3 +20,5 @@ e e where com parâmetro $select->where( $db->quoteInto('last_name=?', $lname) )
 
 -- BIBLIOTECA QUE PODE SER UTILIZADA PARA CALCULAR FRETE
 http://boxpacker.readthedocs.io/en/stable/principles.html
+
+-- Validador de CPF e CNPJ : https://github.com/Diego-Brocanelli/validators_zf

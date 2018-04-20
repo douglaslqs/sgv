@@ -1,0 +1,7 @@
+18:53:41 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\EmailAddress" could not be created. Reason: No message template exists for key 'emailAddress'
+18:54:17 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\EmailAddress" could not be created. Reason: No message template exists for key 'stringLengthTooShort'
+19:01:05 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\EmailAddress" could not be created. Reason: No message template exists for key 'stringLengthTooShort'
+19:01:35 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\EmailAddress" could not be created. Reason: No message template exists for key 'stringLengthTooShort'
+19:08:12 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'phone_secundary' in 'field list')
+19:09:47 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Statement could not be executed (23000 - 1062 - Duplicate entry '33033656870' for key 'document_UNIQUE')
+19:19:44 : Application\Module::onDispatchError line:102 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'cpf' in 'where clause')
