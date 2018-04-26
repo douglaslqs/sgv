@@ -18,6 +18,8 @@ use Application\Model\Entity\ClientEntity;
 use Application\Model\ClientTable;
 use Application\Model\Entity\OrderEntity;
 use Application\Model\OrderTable;
+use Application\Model\Entity\StockEntity;
+use Application\Model\StockTable;
 use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
 use Application\Model\Entity\ColorEntity;
@@ -204,7 +206,6 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new ClientEntity());
                     return new TableGateway('client', $dbAdapter, null, $resultSetPrototype);
                 },
-
                 'Application\Model\OrderTable' =>  function($sm) {
                     $tableGateway = $sm->get('OrderTableGateway');
                     return new OrderTable($tableGateway);
@@ -214,6 +215,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new OrderEntity());
                     return new TableGateway('order', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\StockTable' =>  function($sm) {
+                    $tableGateway = $sm->get('StockTableGateway');
+                    return new StockTable($tableGateway);
+                },
+                'StockTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new StockEntity());
+                    return new TableGateway('stock', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);

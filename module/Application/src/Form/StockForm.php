@@ -3,15 +3,13 @@ namespace Application\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter;
-//use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class ProductForm extends Form
+class StockForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('product');
+		parent::__construct('stock');
 		$this->setAttribute('method', 'post');
-		//$this->addInputFilter();
 	}
 
 	public function addInputFilter($boolUpdate = false)
@@ -19,7 +17,7 @@ class ProductForm extends Form
 	    $inputFilter = new InputFilter\InputFilter();
 
 	    $inputFilter->add(array(
-	        'name' => 'name',
+	        'name' => 'product',
 	        'required' => true,
 	        'validators' => array(
 	            array(
@@ -123,6 +121,30 @@ class ProductForm extends Form
 	    ));
 
 	    $inputFilter->add(array(
+	        'name' => 'measure',
+	        'required' => true,
+	        'validators' => array(
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 1,
+	                     'max' => 40,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Minimun 1 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
+	                     ),
+	                ),
+	            ),
+	        ),
+	    ));
+
+	    $inputFilter->add(array(
 	        'name' => 'unit_measure',
 	        'required' => true,
 	        'validators' => array(
@@ -145,10 +167,42 @@ class ProductForm extends Form
 	            ),
 	        ),
 	    ));
-	    //Adiciona somente se for validar o cadastro
+
+	    $inputFilter->add(array(
+	        'name' => 'color',
+	        'required' => true,
+	        'validators' => array(
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 2,
+	                     'max' => 40,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
+	                     ),
+	                ),
+	                 /* PESQUISAR MAIS SOBRE ISSO!!
+	                'name' => 'Alnum',
+	                 'options' => array(
+	                    'allowWhiteSpace' => true,
+	                    'messages' => array(
+	                        'allowWhiteSpace' => 'Spaces white duple not permission',
+	                    ),
+	                ), */
+	            ),
+	        ),
+	    ));
+	    //Adiciona somente se for validar o CADASTRO
 	    if (!$boolUpdate) {
 		    $inputFilter->add(array(
-		        'name' => 'price',
+		        'name' => 'qty',
 		        'required' => true,
 		        'validators' => array(
 		            array(
@@ -161,52 +215,7 @@ class ProductForm extends Form
 		            ),
 		        ),
 		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'height',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'width',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		     $inputFilter->add(array(
-		        'name' => 'lenght',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ));
-	    }
+		}
 
 	    $this->setInputFilter($inputFilter);
 	}
