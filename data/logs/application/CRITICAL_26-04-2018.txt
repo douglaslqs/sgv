@@ -5,3 +5,5 @@
 17:25:32 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'email' in 'where clause')
 18:10:46 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (HY000 - 1364 - Field 'delivery' doesn't have a default value)
 18:14:27 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'status' in 'field list')
+18:56:13 : Application\Module::onDispatchError line:106 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'name' in 'where clause')
+19:06:12 : Application\Module::onDispatchError line:106 - Token Access: 123456 - Msg Error: Statement could not be executed (23000 - 1452 - Cannot add or update a child row: a foreign key constraint fails (`store`.`stock`, CONSTRAINT `fk_stock_measure1` FOREIGN KEY (`measure`, `unit_measure`) REFERENCES `measure` (`name`, `unit_measure`) ON DELETE NO ACTION ON UPDATE NO ACTION))
