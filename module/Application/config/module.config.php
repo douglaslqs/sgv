@@ -55,6 +55,7 @@ return [
             Controller\MeasureController::class     => Controller\Factory\MeasureFactory::class,
             Controller\ColorController::class       => Controller\Factory\ColorFactory::class,
             Controller\ClientController::class      => Controller\Factory\ClientFactory::class,
+            Controller\OrderController::class       => Controller\Factory\OrderFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
@@ -69,6 +70,7 @@ return [
             'measure'      => 'Application\Controller\MeasureController',
             'color'        => 'Application\Controller\ColorController',
             'client'       => 'Application\Controller\ClientController',
+            'order'        => 'Application\Controller\OrderController',
         ],
     ],
     'view_manager' => [

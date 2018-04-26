@@ -1,0 +1,7 @@
+17:18:09 : Application\Module::onDispatchError line:108 - Token Access: 123456 - Msg Error: error-controller-not-found
+17:19:34 : Application\Module::onDispatchError line:108 - Token Access: 123456 - Msg Error: error-controller-not-found
+17:23:00 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'email' in 'where clause')
+17:23:24 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'email' in 'where clause')
+17:25:32 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'email' in 'where clause')
+18:10:46 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (HY000 - 1364 - Field 'delivery' doesn't have a default value)
+18:14:27 : Application\Module::onDispatchError line:104 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'status' in 'field list')
