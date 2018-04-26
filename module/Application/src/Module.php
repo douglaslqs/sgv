@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\ClientEntity;
 use Application\Model\ClientTable;
+use Application\Model\Entity\OrderEntity;
+use Application\Model\OrderTable;
 use Application\Model\Entity\MarkEntity;
 use Application\Model\MarkTable;
 use Application\Model\Entity\ColorEntity;
@@ -95,14 +97,17 @@ class Module
             if (empty($responseService->getCode())) {
                 $responseService->setCode(ResponseService::CODE_ERROR);
                 $responseService->setMessage("Verify all params and url router then try again!");
+                $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
                 $exception = $e->getParam('exception');
                 if (!empty($exception)) {
                     $messageError = $e->getParam('exception')->getMessage();
-                    $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
                     $loggerService->setMethodAndLine(__METHOD__, __LINE__);
                     $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"Msg Error: ".$messageError);
-
                     $responseService->setMessage($responseService->getMessage()." - DETAILS ERROR: ".$messageError);
+                } else if ($e->getError()) {
+                    $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+                    $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::ALERT ,"Msg Error: ".$e->getError());
+                    $responseService->setMessage($responseService->getMessage()." - DETAILS ERROR: ".$e->getError());
                 }
                 $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
                 $e->setViewModel($view);
@@ -198,6 +203,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ClientEntity());
                     return new TableGateway('client', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                'Application\Model\OrderTable' =>  function($sm) {
+                    $tableGateway = $sm->get('OrderTableGateway');
+                    return new OrderTable($tableGateway);
+                },
+                'OrderTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new OrderEntity());
+                    return new TableGateway('order', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
