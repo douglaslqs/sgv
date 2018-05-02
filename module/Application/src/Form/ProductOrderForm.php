@@ -5,7 +5,7 @@ use Zend\Form\Form;
 use Zend\InputFilter;
 //use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class ProductForm extends Form
+class ProductOrderForm extends Form
 {
 	public function __construct()
 	{
@@ -19,7 +19,7 @@ class ProductForm extends Form
 	    $inputFilter = new InputFilter\InputFilter();
 
 	    $inputFilter->add(array(
-	        'name' => 'name',
+	        'name' => 'client',
 	        'required' => true,
 	        'validators' => array(
 	            array(
@@ -38,6 +38,13 @@ class ProductForm extends Form
 	                         'stringLengthTooLong' => 'Maximun 160 chacacteres ultrapassed',
 	                     ),
 	                ),
+	                'name' => 'EmailAddress',
+	                'options' => array(
+	                     'messages' => array(
+	                         //'emailAddressInvalidFormat' => 'The input is not a valid email address. Use the basic format local-part@hostname',
+	                         //'emailAddressInvalidHostname' => 'The host name not is valid'
+	                     ),
+	                ),
 	                 /* PERMITE APENAS ALPHA NUMERICO!!
 	                'name' => 'Alnum',
 	                 'options' => array(
@@ -46,6 +53,30 @@ class ProductForm extends Form
 	                        'allowWhiteSpace' => 'Spaces white duple not permission',
 	                    ),
 	                ), */
+	            ),
+	        ),
+	    ));
+
+	    $inputFilter->add(array(
+	        'name' => 'product',
+	        'required' => true,
+	        'validators' => array(
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 3,
+	                     'max' => 160,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 160 chacacteres ultrapassed',
+	                     ),
+	                ),
 	            ),
 	        ),
 	    ));
@@ -123,32 +154,31 @@ class ProductForm extends Form
 	    ));
 
 	    $inputFilter->add(array(
-	        'name' => 'unit_measure',
-	        'required' => true,
-	        'validators' => array(
-	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
-	                'name' => 'StringLength',
-	                 'options' => array(
-	                     'min' => 1,
-	                     'max' => 64,
-	                     'messages' => array(
-	                         'stringLengthTooShort' => 'Maximun 1 chacacteres ultrapassed',
-	                         'stringLengthTooLong' => 'Minimun 64 chacacteres not reached',
-	                     ),
-	                ),
-	            ),
-	        ),
-	    ));
-	    //Adiciona somente se for validar o cadastro
+			'name' => 'date_register',
+			'required' => 'true',
+			'validators' => array(
+				array(
+					'name' => 'notEmpty',
+					'options' => array(
+						'messages' => array(
+							'isEmpty' => 'The field not is empty'
+						),
+					),
+					/*'name' => 'DateTime',
+					'options' => array(
+						'format' => 'Y-m-d H:i:s',
+						'messages' => array(
+							'datetimeInvalid' => 'Date not validate, use format YYYY-MM-DD h:i:s'
+						),
+					), */
+				),
+			),
+		));
+
+	    //Adiciona somente se for validar add
 	    if (!$boolUpdate) {
-		    $inputFilter->add(array(
-		        'name' => 'price',
+			$inputFilter->add(array(
+		        'name' => 'value_unitary',
 		        'required' => true,
 		        'validators' => array(
 		            array(
@@ -163,37 +193,7 @@ class ProductForm extends Form
 		    ));
 
 		    $inputFilter->add(array(
-		        'name' => 'height',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'width',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		     $inputFilter->add(array(
-		        'name' => 'lenght',
+		        'name' => 'qty',
 		        'required' => true,
 		        'validators' => array(
 		            array(
@@ -207,7 +207,6 @@ class ProductForm extends Form
 		        ),
 		    ));
 	    }
-
 	    $this->setInputFilter($inputFilter);
 	}
 

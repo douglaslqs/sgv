@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
+use Application\Model\Entity\ProductOrderEntity;
+use Application\Model\ProductOrderTable;
 use Application\Model\Entity\ClientEntity;
 use Application\Model\ClientTable;
 use Application\Model\Entity\OrderEntity;
@@ -237,6 +239,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ColorProductEntity());
                     return new TableGateway('color_product', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\ProductOrderTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ProductOrderTableGateway');
+                    return new ProductOrderTable($tableGateway);
+                },
+                'ProductOrderTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductOrderEntity());
+                    return new TableGateway('product_order', $dbAdapter, null, $resultSetPrototype);
                 },
     		)
     	);
