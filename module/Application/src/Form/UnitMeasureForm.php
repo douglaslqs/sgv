@@ -32,10 +32,10 @@ class UnitMeasureForm extends Form
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
-	                     'max' => 40,
+	                     'max' => 64,
 	                     'messages' => array(
 	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
+	                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
 	                     ),
 	                ),
 	                 /* PESQUISAR MAIS SOBRE ISSO!!

@@ -1,0 +1,1 @@
+21:15:45 : Application\Controller\ProductOrderController::updateAction line:137 - Token Access: 123456 - SELECT `product_order`.* FROM `product_order` WHERE `client` = 'douglasrock15@hotmail.com' AND `date_register` = '2018-04-26 15:12:09' AND `product` = 'Placa Mãe produto novo' AND `category` = 'Placa Mãe' AND `category_parent` = 'Computadores' AND `mark` = 'Primeira Marca'
