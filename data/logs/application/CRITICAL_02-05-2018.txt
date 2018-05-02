@@ -1,0 +1,2 @@
+19:15:26 : Application\Module::onDispatchError line:108 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'name' in 'where clause')
+19:27:32 : Application\Module::onDispatchError line:108 - Token Access: 123456 - Msg Error: Statement could not be executed (23000 - 1452 - Cannot add or update a child row: a foreign key constraint fails (`store`.`color_product`, CONSTRAINT `fk_color_product_color1` FOREIGN KEY (`color`) REFERENCES `color` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION))
