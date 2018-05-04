@@ -3,13 +3,15 @@ namespace Application\Form;
 
 use Zend\Form\Form;
 use Zend\InputFilter;
+//use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class ClientForm extends Form
+class DeliveryAddressForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('client');
+		parent::__construct('deliveryaddress');
 		$this->setAttribute('method', 'post');
+		//$this->addInputFilter();
 	}
 
 	public function addInputFilter($boolUpdate = false)
@@ -17,7 +19,7 @@ class ClientForm extends Form
 	    $inputFilter = new InputFilter\InputFilter();
 
 	    $inputFilter->add(array(
-	        'name' => 'email',
+	        'name' => 'client',
 	        'required' => true,
 	        'validators' => array(
 	            array(
@@ -54,10 +56,9 @@ class ClientForm extends Form
 	            ),
 	        ),
 	    ));
-	    //Adiciona somente se for validar o cadastro
-	    if (!$boolUpdate) {
-		    $inputFilter->add(array(
-		        'name' => 'type',
+
+	    $inputFilter->add(array(
+		        'name' => 'street',
 		        'required' => true,
 		        'validators' => array(
 		            array(
@@ -70,10 +71,10 @@ class ClientForm extends Form
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
-		                     'max' => 2,
+		                     'max' => 124,
 		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooShort' => 'Maximun 1 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 124 chacacteres not reached',
 		                     ),
 		                ),
 		            ),
@@ -81,175 +82,7 @@ class ClientForm extends Form
 		    ));
 
 		    $inputFilter->add(array(
-		        'name' => 'document',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 8,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 8 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'password',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 6,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 6 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'name',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 128,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 128 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'phone_primary',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 10,
-		                     'max' => 15,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 10 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 15 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'phone_segundary',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 10,
-		                     'max' => 15,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 10 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 15 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-		    /* SOMENTE PARA PJ
-		    $inputFilter->add(array(
-		        'name' => 'tribute_info',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 45,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'state_register',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-			*/
-		    $inputFilter->add(array(
-		        'name' => 'receive_marketing',
+		        'name' => 'number',
 		        'required' => true,
 		        'validators' => array(
 		            array(
@@ -262,17 +95,164 @@ class ClientForm extends Form
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
-		                     'max' => 1,
+		                     'max' => 8,
 		                     'messages' => array(
 		                         'stringLengthTooShort' => 'Maximun 1 chacacteres ultrapassed',
-		                         'stringLengthTooLong' => 'Minimun 1 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Minimun 8 chacacteres not reached',
 		                     ),
 		                ),
 		            ),
 		        ),
 		    ));
-		}
 
+		    $inputFilter->add(array(
+		        'name' => 'district',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 124,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 124 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+	    //Adiciona somente se for validar add
+	    if (!$boolUpdate) {
+		    $inputFilter->add(array(
+		        'name' => 'city',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 124,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 124 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'state',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 64 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'country',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 64 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    /* nao é obrigatório
+		    $inputFilter->add(array(
+		        'name' => 'reference',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 256,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 3 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 256 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'complement',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 256,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 3 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 256 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+			*/
+	    }
 	    $this->setInputFilter($inputFilter);
 	}
 
