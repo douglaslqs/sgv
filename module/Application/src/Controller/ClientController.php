@@ -20,6 +20,7 @@ class ClientController extends AbstractRestfulController
     private $responseService;
     private $filterService;
     private $logger;
+    private $setBcrypt;
 
     public function __construct(ResponseService $responseService, ClientTable $clientTable)
     {
@@ -51,7 +52,7 @@ class ClientController extends AbstractRestfulController
             } catch (Exception $e) {
                 $this->responseService->setCode(ResponseService::CODE_ERROR);
                 $this->logger->setMethodAndLine(__METHOD__, __LINE__);
-                $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
+                $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL,$e->getMessage());
             }
         } else {
             $this->responseService->setCode(ResponseService::CODE_METHOD_INCORRECT);
@@ -75,6 +76,7 @@ class ClientController extends AbstractRestfulController
                     $client = $this->clientTable->fetchRow($arrParams);
                     $cpfExist = $this->clientTable->fetch(array('document' => $arrParams['document']),1);
                     if (empty($client) && empty($cpfExist)) {
+                        $arrParams['password'] = $this->bcrypt->create($arrParams['password']);
                         $returnInsert = $this->clientTable->insert($arrParams);
                         if ($returnInsert !== 1) {
                             $this->responseService->setCode(ResponseService::CODE_ERROR);
@@ -123,6 +125,13 @@ class ClientController extends AbstractRestfulController
                     if (is_array($client) && !empty($client)) {
                         $arrSet = $this->filterService->getArraySet();
                         $arrWhere = $this->filterService->getArrayWhere();
+                        if (isset($arrSet['password'])) {
+                            //
+                            //VERIFICAR SENHA ANTES DE ATUALIZAR
+                            //
+                            //
+                            $arrSet['password'] = $this->bcrypt->create($arrSet['password']);
+                        }
                         $returnUpdate = $this->clientTable->update($arrSet,$arrWhere);
                         if (is_numeric($returnUpdate)) {
                             $this->responseService->setCode(ResponseService::CODE_SUCCESS);
@@ -156,6 +165,11 @@ class ClientController extends AbstractRestfulController
     public function setForm($form)
     {
         $this->form = $form;
+    }
+
+    public function setBcrypt($bcrypt)
+    {
+        $this->bcrypt = $bcrypt;
     }
 
     public function setFilterService($filterService)

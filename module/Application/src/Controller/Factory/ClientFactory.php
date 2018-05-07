@@ -24,6 +24,8 @@ class ClientFactory implements FactoryInterface
 	    $controller->setLogger($container->get(LoggerService::class));
 	    $controller->setFilterService($container->get(FilterService::class));
 	    $controller->setForm(new ClientForm());
+	    $bcrypt = new \Zend\Crypt\Password\Bcrypt();
+	    $controller->setBcrypt($bcrypt);
 	    return $controller;
 	}
 }
