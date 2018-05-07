@@ -216,6 +216,72 @@ class ProductForm extends Form
 		            ),
 		        ),
 		    ));
+
+		     $inputFilter->add(array(
+		        'name' => 'abstract',
+		        'required' => false,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 256,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 256 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'about',
+		        'required' => false,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 65534,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 65534 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		     $inputFilter->add(array(
+		        'name' => 'active',
+		        'required' => false,
+		        'validators' => array(
+		            array(
+		                'name' => 'Int',
+		            ),	
+		            array(
+		                'name' => 'Between',
+						'options' => array(
+						  'min' => 0,
+						  'max' => 1,
+						  'inclusive' => true,
+						),
+		            ),
+		        ),
+		    ));
 	    }
 
 	    $this->setInputFilter($inputFilter);

@@ -50,6 +50,24 @@ class ColorForm extends Form
 	        ),
 	    ));
 
+	    $inputFilter->add(array(
+	        'name' => 'active',
+	        'required' => false,
+	        'validators' => array(
+	            array(
+	                'name' => 'Int',
+	            ),	
+	            array(
+	                'name' => 'Between',
+					'options' => array(
+					  'min' => 0,
+					  'max' => 1,
+					  'inclusive' => true,
+					),
+	            ),
+	        ),
+	    ));
+
 	    $this->setInputFilter($inputFilter);
 	}
 

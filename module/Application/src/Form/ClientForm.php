@@ -115,6 +115,53 @@ class ClientForm extends Form
 	                    ),
 			        ),
 			    ));
+			    $inputFilter->add(array(
+			        'name' => 'tribute_info',
+			        'required' => false,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                     'min' => 2,
+			                     'max' => 45,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			        ),
+			    ));
+
+			    $inputFilter->add(array(
+			        'name' => 'state_register',
+			        'required' => false,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                     'min' => 3,
+			                     'max' => 20,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			        ),
+			    ));
 		    } else {
 		    	$inputFilter->add(array(
 			        'name' => 'document',
@@ -219,7 +266,7 @@ class ClientForm extends Form
 
 		    $inputFilter->add(array(
 		        'name' => 'phone_segundary',
-		        'required' => true,
+		        'required' => false,
 		        'validators' => array(
 		            array(
 		                'name' => 'notEmpty',
@@ -240,59 +287,13 @@ class ClientForm extends Form
 		            ),
 		        ),
 		    ));
-		    /* SOMENTE PARA PJ
-		    $inputFilter->add(array(
-		        'name' => 'tribute_info',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 45,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'state_register',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-			*/
 		    $inputFilter->add(array(
 		        'name' => 'receive_marketing',
 		        'required' => true,
 		        'validators' => array(
+		            array(
+		                'name' => 'Int',
+		            ),	
 		            array(
 		                'name' => 'Between',
 						'options' => array(
