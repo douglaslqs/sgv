@@ -58,6 +58,25 @@ class ProductOrderForm extends Form
 	    ));
 
 	    $inputFilter->add(array(
+	        'name' => 'date_register',
+	        'required' => true,
+	        'validators' => array(
+	        	//TRANSFORMAR DATA EM INT TIMESTAMP
+	        	/*array(
+                	'name' => 'Int',
+            	), */
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	            ),
+	        ),
+	    ));
+
+	    $inputFilter->add(array(
 	        'name' => 'product',
 	        'required' => true,
 	        'validators' => array(
@@ -152,28 +171,6 @@ class ProductOrderForm extends Form
 	            ),
 	        ),
 	    ));
-
-	    $inputFilter->add(array(
-			'name' => 'date_register',
-			'required' => 'true',
-			'validators' => array(
-				array(
-					'name' => 'notEmpty',
-					'options' => array(
-						'messages' => array(
-							'isEmpty' => 'The field not is empty'
-						),
-					),
-					/*'name' => 'DateTime',
-					'options' => array(
-						'format' => 'Y-m-d H:i:s',
-						'messages' => array(
-							'datetimeInvalid' => 'Date not validate, use format YYYY-MM-DD h:i:s'
-						),
-					), */
-				),
-			),
-		));
 
 	    //Adiciona somente se for validar add
 	    if (!$boolUpdate) {

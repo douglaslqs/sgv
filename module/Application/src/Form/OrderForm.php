@@ -52,6 +52,10 @@ class OrderForm extends Form
 		        'name' => 'date_register',
 		        'required' => true,
 		        'validators' => array(
+		        	//TRANSFORMAR DATA EM INT TIMESTAMP
+		        	/*array(
+	                	'name' => 'Int',
+	            	), */
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -63,18 +67,17 @@ class OrderForm extends Form
 		        ),
 		    ));
 	    //Adiciona somente se for validar o CADASTRO
-		} else {	    
+		} else {
 		    $inputFilter->add(array(
 		        'name' => 'subtotal',
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		                /*'name' => 'StringLength',
 		                 'options' => array(
 					        'pattern' => '/[0-9a-zA-Z\s\'.;-]+/',
@@ -91,12 +94,10 @@ class OrderForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -106,12 +107,11 @@ class OrderForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -129,10 +129,77 @@ class OrderForm extends Form
 		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
-		                     'min' => 2,
+		                     'min' => 1,
 		                     'max' => 45,
 		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 10 chacacteres not reached',
+		                         'stringLengthTooShort' => 'Minimun 1 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'status',
+		        'required' => true,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 1,
+		                     'max' => 45,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 1 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'date_payment',
+		        'required' => false,
+		        'validators' => array(
+		        	//TRANSFORMAR DATA EM INT TIMESTAMP
+		        	/*array(
+	                	'name' => 'Int',
+	            	), */
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'delivery',
+		        'required' => false,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 1,
+		                     'max' => 45,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 1 chacacteres not reached',
 		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
 		                     ),
 		                ),

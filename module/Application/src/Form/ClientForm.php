@@ -12,7 +12,7 @@ class ClientForm extends Form
 		$this->setAttribute('method', 'post');
 	}
 
-	public function addInputFilter($boolUpdate = false)
+	public function addInputFilter($boolUpdate = false, $typeDocument = 'PF')
 	{
 	    $inputFilter = new InputFilter\InputFilter();
 
@@ -76,33 +76,121 @@ class ClientForm extends Form
 		                         'stringLengthTooLong' => 'Maximun 2 chacacteres ultrapassed',
 		                     ),
 		                ),
+		                'name' => 'InArray',
+                         'options' => array(
+                            'haystack' => array('PJ','PF'),
+                            'messages' => array(
+                                'notInArray' => "Types acepts 'PF' or 'PJ'"
+                            ),
+                        ),
 		            ),
 		        ),
 		    ));
 
-		    $inputFilter->add(array(
-		        'name' => 'document',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 8,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 8 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
+		    if ($typeDocument == 'PJ') {
+		    	$inputFilter->add(array(
+			        'name' => 'document',
+			        'required' => true,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                 	'encoding' => 'UTF-8',
+			                     'min' => 8,
+			                     'max' => 20,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 8 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			            array(
+	                        'name' => 'DiegoBrocanelli\Validators\CNPJ' // Inserir a namespace.
+	                    ),
+			        ),
+			    ));
+			    $inputFilter->add(array(
+			        'name' => 'tribute_info',
+			        'required' => false,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                     'min' => 2,
+			                     'max' => 45,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			        ),
+			    ));
+
+			    $inputFilter->add(array(
+			        'name' => 'state_register',
+			        'required' => false,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                     'min' => 3,
+			                     'max' => 20,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			        ),
+			    ));
+		    } else {
+		    	$inputFilter->add(array(
+			        'name' => 'document',
+			        'required' => true,
+			        'validators' => array(
+			            array(
+			                'name' => 'notEmpty',
+			                'options' => array(
+			                    'messages' => array(
+			                        'isEmpty' => 'The field not is empty'
+			                    ),
+			                ),
+			                'name' => 'StringLength',
+			                 'options' => array(
+			                 	'encoding' => 'UTF-8',
+			                     'min' => 8,
+			                     'max' => 20,
+			                     'messages' => array(
+			                         'stringLengthTooShort' => 'Minimun 8 chacacteres not reached',
+			                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
+			                     ),
+			                ),
+			            ),
+			            array(
+	                        'name' => 'DiegoBrocanelli\Validators\CPF' // Inserir a namespace.
+	                    ),
+			        ),
+			    ));
+		    }
 
 		    $inputFilter->add(array(
 		        'name' => 'password',
@@ -178,7 +266,7 @@ class ClientForm extends Form
 
 		    $inputFilter->add(array(
 		        'name' => 'phone_segundary',
-		        'required' => true,
+		        'required' => false,
 		        'validators' => array(
 		            array(
 		                'name' => 'notEmpty',
@@ -199,75 +287,20 @@ class ClientForm extends Form
 		            ),
 		        ),
 		    ));
-		    /* SOMENTE PARA PJ
-		    $inputFilter->add(array(
-		        'name' => 'tribute_info',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 45,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => 'state_register',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 20,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 20 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-			*/
 		    $inputFilter->add(array(
 		        'name' => 'receive_marketing',
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 1,
-		                     'max' => 1,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Maximun 1 chacacteres ultrapassed',
-		                         'stringLengthTooLong' => 'Minimun 1 chacacteres not reached',
-		                     ),
-		                ),
+		                'name' => 'Int',
+		            ),	
+		            array(
+		                'name' => 'Between',
+						'options' => array(
+						  'min' => 0,
+						  'max' => 1,
+						  'inclusive' => true,
+						),
 		            ),
 		        ),
 		    ));
