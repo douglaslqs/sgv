@@ -1,0 +1,6 @@
+15:01:55 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: A plugin by the name "Numeric" was not found in the plugin manager Zend\Validator\ValidatorPluginManager
+15:02:13 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: A plugin by the name "Digit" was not found in the plugin manager Zend\Validator\ValidatorPluginManager
+15:02:23 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\Digits" could not be created. Reason: No message template exists for key 'stringLengthTooShort'
+15:03:33 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Service with name "Zend\Validator\Digits" could not be created. Reason: No message template exists for key 'isEmpty'
+15:04:34 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: A plugin by the name "FLOAT" was not found in the plugin manager Zend\Validator\ValidatorPluginManager
+15:05:03 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: A plugin by the name "Integer" was not found in the plugin manager Zend\Validator\ValidatorPluginManager

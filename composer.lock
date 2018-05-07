@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "84b0cc4b48fadd60027c53275555a2e0",
+    "content-hash": "375366eb4990623dd964ab62a9a3f791",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -36,6 +36,85 @@
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
             "time": "2017-02-14T19:40:03+00:00"
+        },
+        {
+            "name": "diego-brocanelli/random-data",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Diego-Brocanelli/randomData.git",
+                "reference": "0d352ab9798e777be9644249da08617fd56e3311"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Diego-Brocanelli/randomData/zipball/0d352ab9798e777be9644249da08617fd56e3311",
+                "reference": "0d352ab9798e777be9644249da08617fd56e3311",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Random\\": "src/Random/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Diego Brocanelli",
+                    "email": "contato@diegobrocanelli.com.br"
+                }
+            ],
+            "description": "Random Data",
+            "homepage": "https://github.com/Diego-Brocanelli/randomData",
+            "time": "2016-06-01T01:02:53+00:00"
+        },
+        {
+            "name": "diego-brocanelli/validators-zf",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Diego-Brocanelli/validators_zf.git",
+                "reference": "9c606943358b4472d348e52683504bbdcca6aaa4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Diego-Brocanelli/validators_zf/zipball/9c606943358b4472d348e52683504bbdcca6aaa4",
+                "reference": "9c606943358b4472d348e52683504bbdcca6aaa4",
+                "shasum": ""
+            },
+            "require": {
+                "diego-brocanelli/random-data": "1.0",
+                "php": ">=5.5",
+                "zendframework/zend-filter": "^2.7",
+                "zendframework/zend-validator": "^2.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DiegoBrocanelli\\": "src\\"
+                },
+                "psr-0": {
+                    "DiegoBrocanelli\\": "src\\"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3"
+            ],
+            "authors": [
+                {
+                    "name": "Diego Brocanelli",
+                    "email": "contato@diegobrocanelli.com.br"
+                }
+            ],
+            "description": "Validators CPF, CNPJ and Date for Zend Framework",
+            "time": "2016-12-15T01:13:27+00:00"
         },
         {
             "name": "psr/container",
@@ -1456,7 +1535,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zendframework/zend-component-installer": 20
+        "zendframework/zend-component-installer": 20,
+        "diego-brocanelli/validators-zf": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

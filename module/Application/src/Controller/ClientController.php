@@ -67,7 +67,8 @@ class ClientController extends AbstractRestfulController
             $arrParams = array_change_key_case($arrParams, CASE_LOWER);
             try {
                 $boolUpdate = false;
-                $this->form->addInputFilter($boolUpdate);
+                $typeDocument = isset($arrParams['type']) ? $arrParams['type'] : null;
+                $this->form->addInputFilter($boolUpdate, $typeDocument);
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();

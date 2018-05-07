@@ -69,12 +69,11 @@ class OrderForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		                /*'name' => 'StringLength',
 		                 'options' => array(
 					        'pattern' => '/[0-9a-zA-Z\s\'.;-]+/',
@@ -91,12 +90,11 @@ class OrderForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -106,12 +104,11 @@ class OrderForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));

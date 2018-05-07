@@ -152,12 +152,25 @@ class ProductForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => 'price_puchase',
+		        'required' => false,
+		        'validators' => array(
+		            array(
+		                'name' => 'Float',
+		                'options' => array(
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -167,12 +180,11 @@ class ProductForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -182,12 +194,11 @@ class ProductForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
@@ -197,12 +208,11 @@ class ProductForm extends Form
 		        'required' => true,
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
+		                'name' => 'Float',
 		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		            ),
 		        ),
 		    ));
