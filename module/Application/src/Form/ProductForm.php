@@ -145,144 +145,150 @@ class ProductForm extends Form
 	            ),
 	        ),
 	    ));
-	    //Adiciona somente se for validar o cadastro
-	    if (!$boolUpdate) {
-		    $inputFilter->add(array(
-		        'name' => 'price',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'Float',
-		                'options' => array(
-			                'min' => 0,
-			                'locale' => 'en_US'
-			            ),
+	    //Adiciona Prefix e retira require se for update
+		if ($boolUpdate) {
+			$required = false;
+			$prefixNew = 'new_';
+		} else {
+			$required = true;
+			$prefixNew = '';
+		}
+	    $inputFilter->add(array(
+	        'name' => $prefixNew.'price',
+	        'required' => $required,
+	        'validators' => array(
+	            array(
+	                'name' => 'Float',
+	                'options' => array(
+		                'min' => 0,
+		                'locale' => 'en_US'
 		            ),
-		        ),
-		    ));
+	            ),
+	        ),
+	    ));
 
-		    $inputFilter->add(array(
-		        'name' => 'price_puchase',
-		        'required' => false,
-		        'validators' => array(
-		            array(
-		                'name' => 'Float',
-		                'options' => array(
-			                'min' => 0,
-			                'locale' => 'en_US'
-			            ),
+	    $inputFilter->add(array(
+	        'name' => $prefixNew.'price_puchase',
+	        'required' => false,
+	        'validators' => array(
+	            array(
+	                'name' => 'Float',
+	                'options' => array(
+		                'min' => 0,
+		                'locale' => 'en_US'
 		            ),
-		        ),
-		    ));
+	            ),
+	        ),
+	    ));
 
-		    $inputFilter->add(array(
-		        'name' => 'height',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'Float',
-		                'options' => array(
-			                'min' => 0,
-			                'locale' => 'en_US'
-			            ),
+	    $inputFilter->add(array(
+	        'name' => $prefixNew.'height',
+	        'required' => $required,
+	        'validators' => array(
+	            array(
+	                'name' => 'Float',
+	                'options' => array(
+		                'min' => 0,
+		                'locale' => 'en_US'
 		            ),
-		        ),
-		    ));
+	            ),
+	        ),
+	    ));
 
-		    $inputFilter->add(array(
-		        'name' => 'width',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'Float',
-		                'options' => array(
-			                'min' => 0,
-			                'locale' => 'en_US'
-			            ),
+	    $inputFilter->add(array(
+	        'name' => $prefixNew.'width',
+	        'required' => $required,
+	        'validators' => array(
+	            array(
+	                'name' => 'Float',
+	                'options' => array(
+		                'min' => 0,
+		                'locale' => 'en_US'
 		            ),
-		        ),
-		    ));
+	            ),
+	        ),
+	    ));
 
-		     $inputFilter->add(array(
-		        'name' => 'lenght',
-		        'required' => true,
-		        'validators' => array(
-		            array(
-		                'name' => 'Float',
-		                'options' => array(
-			                'min' => 0,
-			                'locale' => 'en_US'
-			            ),
+	     $inputFilter->add(array(
+	        'name' => $prefixNew.'lenght',
+	        'required' => $required,
+	        'validators' => array(
+	            array(
+	                'name' => 'Float',
+	                'options' => array(
+		                'min' => 0,
+		                'locale' => 'en_US'
 		            ),
-		        ),
-		    ));
+	            ),
+	        ),
+	    ));
 
-		     $inputFilter->add(array(
-		        'name' => 'abstract',
-		        'required' => false,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 256,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
-		                         'stringLengthTooLong' => 'Minimun 256 chacacteres not reached',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
+	     $inputFilter->add(array(
+	        'name' => $prefixNew.'abstract',
+	        'required' => false,
+	        'validators' => array(
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 2,
+	                     'max' => 256,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+	                         'stringLengthTooLong' => 'Minimun 256 chacacteres not reached',
+	                     ),
+	                ),
+	            ),
+	        ),
+	    ));
 
-		    $inputFilter->add(array(
-		        'name' => 'about',
-		        'required' => false,
-		        'validators' => array(
-		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 65534,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
-		                         'stringLengthTooLong' => 'Minimun 65534 chacacteres not reached',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
+	    $inputFilter->add(array(
+	        'name' => $prefixNew.'about',
+	        'required' => false,
+	        'validators' => array(
+	            array(
+	                'name' => 'notEmpty',
+	                'options' => array(
+	                    'messages' => array(
+	                        'isEmpty' => 'The field not is empty'
+	                    ),
+	                ),
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 2,
+	                     'max' => 65534,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Maximun 2 chacacteres ultrapassed',
+	                         'stringLengthTooLong' => 'Minimun 65534 chacacteres not reached',
+	                     ),
+	                ),
+	            ),
+	        ),
+	    ));
 
-		     $inputFilter->add(array(
-		        'name' => 'active',
-		        'required' => false,
-		        'validators' => array(
-		            array(
-		                'name' => 'Int',
-		            ),	
-		            array(
-		                'name' => 'Between',
-						'options' => array(
-						  'min' => 0,
-						  'max' => 1,
-						  'inclusive' => true,
-						),
-		            ),
-		        ),
-		    ));
-	    }
+	     $inputFilter->add(array(
+	        'name' => $prefixNew.'active',
+	        'required' => false,
+	        'validators' => array(
+	            array(
+	                'name' => 'Int',
+	            ),
+	            array(
+	                'name' => 'Between',
+					'options' => array(
+					  'min' => 0,
+					  'max' => 1,
+					  'inclusive' => true,
+					),
+	            ),
+	        ),
+	    ));
+
 
 	    $this->setInputFilter($inputFilter);
 	}
