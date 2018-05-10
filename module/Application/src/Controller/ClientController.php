@@ -86,8 +86,16 @@ class ClientController extends AbstractRestfulController
                             $this->responseService->setCode(ResponseService::CODE_SUCCESS);
                         }
                     } else {
-                        if (is_array($client)) {
+                        if (is_array($client) || is_array($cpfExist)) {
                             $this->responseService->setCode(ResponseService::CODE_ALREADY_EXISTS);
+                            $message = $this->responseService->getMessage();
+                            if (!empty($cpfExist)) {
+                                $message .= " - Document already";
+                            }
+                            if (!empty($client)) {
+                                $message .= " - Email already";
+                            }
+                            $this->responseService->setMessage($message);
                         } else {
                             $this->responseService->setCode(ResponseService::CODE_ERROR);
                             $this->logger->setMethodAndLine(__METHOD__, __LINE__);

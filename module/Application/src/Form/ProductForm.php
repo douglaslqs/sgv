@@ -16,8 +16,7 @@ class ProductForm extends Form
 
 	public function addInputFilter($boolUpdate = false)
 	{
-	    $inputFilter = new InputFilter\InputFilter();
-
+		$inputFilter = new InputFilter\InputFilter();
 	    $inputFilter->add(array(
 	        'name' => 'name',
 	        'required' => true,
@@ -145,14 +144,137 @@ class ProductForm extends Form
 	            ),
 	        ),
 	    ));
-	    //Adiciona Prefix e retira require se for update
+
+		//Adiciona Prefix e retira require se for update
+		//Adiciona os campos chaves com o prefixo
 		if ($boolUpdate) {
 			$required = false;
 			$prefixNew = 'new_';
+
+			$inputFilter->add(array(
+		        'name' => $prefixNew.'name',
+		        'required' => $required,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 160,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 160 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'category',
+		        'required' => $required,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 80,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'category_parent',
+		        'required' => $required,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 80,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'mark',
+		        'required' => $required,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'unit_measure',
+		        'required' => $required,
+		        'validators' => array(
+		            array(
+		                'name' => 'notEmpty',
+		                'options' => array(
+		                    'messages' => array(
+		                        'isEmpty' => 'The field not is empty'
+		                    ),
+		                ),
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 1,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Maximun 1 chacacteres ultrapassed',
+		                         'stringLengthTooLong' => 'Minimun 64 chacacteres not reached',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
 		} else {
 			$required = true;
 			$prefixNew = '';
 		}
+
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'price',
 	        'required' => $required,
@@ -288,8 +410,6 @@ class ProductForm extends Form
 	            ),
 	        ),
 	    ));
-
-
 	    $this->setInputFilter($inputFilter);
 	}
 
