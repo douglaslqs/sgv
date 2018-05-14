@@ -21,14 +21,9 @@ class DeliveryAddressForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'client',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -60,14 +55,9 @@ class DeliveryAddressForm extends Form
 	    $inputFilter->add(array(
 		        'name' => 'street',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -84,14 +74,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'number',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
@@ -108,14 +93,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'district',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -134,14 +114,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'city',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -158,14 +133,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'state',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -182,14 +152,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'country',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -206,14 +171,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'reference',
 		        'required' => false,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -230,14 +190,9 @@ class DeliveryAddressForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'complement',
 		        'required' => false,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -257,7 +212,7 @@ class DeliveryAddressForm extends Form
 		        'validators' => array(
 		            array(
 		                'name' => 'Int',
-		            ),	
+		            ),
 		            array(
 		                'name' => 'Between',
 						'options' => array(
@@ -268,7 +223,7 @@ class DeliveryAddressForm extends Form
 		            ),
 		        ),
 		    ));
-			
+
 	    }
 	    $this->setInputFilter($inputFilter);
 	}

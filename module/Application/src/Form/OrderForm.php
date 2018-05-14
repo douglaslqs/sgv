@@ -19,14 +19,9 @@ class OrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'client',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -51,11 +46,12 @@ class OrderForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'date_register',
 		        'required' => true,
-		        'validators' => array(
+		        'continue_if_empty' => true,//not empty
+		        /*'validators' => array(
 		        	//TRANSFORMAR DATA EM INT TIMESTAMP
-		        	/*array(
+		        	array(
 	                	'name' => 'Int',
-	            	), */
+	            	),
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -64,7 +60,7 @@ class OrderForm extends Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ), */
 		    ));
 	    //Adiciona somente se for validar o CADASTRO
 		} else {
@@ -119,14 +115,9 @@ class OrderForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'payment_method',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
@@ -143,14 +134,9 @@ class OrderForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'status',
 		        'required' => true,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
@@ -167,11 +153,12 @@ class OrderForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'date_payment',
 		        'required' => false,
-		        'validators' => array(
+		        'continue_if_empty' => true,//not empty
+		        /*'validators' => array(
 		        	//TRANSFORMAR DATA EM INT TIMESTAMP
-		        	/*array(
+		        	array(
 	                	'name' => 'Int',
-	            	), */
+	            	),
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -180,20 +167,15 @@ class OrderForm extends Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ), */
 		    ));
 
 		    $inputFilter->add(array(
 		        'name' => 'delivery',
 		        'required' => false,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,

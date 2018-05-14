@@ -64,14 +64,9 @@ class ClientForm extends Form
 			$inputFilter->add(array(
 		        'name' => $prefixNew.'email',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -107,14 +102,9 @@ class ClientForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'type',
 	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 2,
@@ -139,14 +129,9 @@ class ClientForm extends Form
 	    	$inputFilter->add(array(
 		        'name' => $prefixNew.'document',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                 	'encoding' => 'UTF-8',
@@ -166,14 +151,9 @@ class ClientForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'tribute_info',
 		        'required' => false,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 2,
@@ -190,14 +170,9 @@ class ClientForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'state_register',
 		        'required' => false,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -214,14 +189,9 @@ class ClientForm extends Form
 	    	$inputFilter->add(array(
 		        'name' => $prefixNew.'document',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                 	'encoding' => 'UTF-8',
@@ -243,14 +213,9 @@ class ClientForm extends Form
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'password',
 	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 6,
@@ -267,14 +232,9 @@ class ClientForm extends Form
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'name',
 	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -291,14 +251,9 @@ class ClientForm extends Form
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'phone_primary',
 	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 10,
@@ -315,14 +270,9 @@ class ClientForm extends Form
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'phone_segundary',
 	        'required' => false,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 10,

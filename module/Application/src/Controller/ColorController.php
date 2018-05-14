@@ -110,6 +110,8 @@ class ColorController extends AbstractRestfulController
                 $boolUpdate = true;
                 $this->form->addInputFilter($boolUpdate);
                 $this->form->setData($arrParams);
+                var_dump($this->form->isValid());
+                var_dump($this->form->getData());exit;
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
                     $color = $this->colorTable->fetchRow($arrParams);

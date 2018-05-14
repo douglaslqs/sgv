@@ -19,14 +19,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'product',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -51,14 +46,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -75,14 +65,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category_parent',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -99,14 +84,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'mark',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -123,14 +103,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'measure',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 1,
@@ -147,14 +122,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'unit_measure',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 1,
@@ -171,14 +141,9 @@ class StockForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'color',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 2,
@@ -204,7 +169,8 @@ class StockForm extends Form
 		    $inputFilter->add(array(
 		        'name' => 'qty',
 		        'required' => true,
-		        'validators' => array(
+		        'continue_if_empty' => true,//not empty
+		        /*'validators' => array(
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -213,7 +179,7 @@ class StockForm extends Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ),*/
 		    ));
 		}
 

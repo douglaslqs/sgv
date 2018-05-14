@@ -20,14 +20,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'name',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -52,14 +47,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -76,14 +66,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category_parent',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -100,14 +85,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'mark',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -124,14 +104,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'unit_measure',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 1,
@@ -154,14 +129,9 @@ class ProductForm extends Form
 			$inputFilter->add(array(
 		        'name' => $prefixNew.'name',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -178,14 +148,9 @@ class ProductForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'category',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -202,14 +167,9 @@ class ProductForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'category_parent',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -226,14 +186,9 @@ class ProductForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'mark',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
@@ -250,14 +205,9 @@ class ProductForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'unit_measure',
 		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
@@ -348,14 +298,9 @@ class ProductForm extends Form
 	     $inputFilter->add(array(
 	        'name' => $prefixNew.'abstract',
 	        'required' => false,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 2,
@@ -372,14 +317,9 @@ class ProductForm extends Form
 	    $inputFilter->add(array(
 	        'name' => $prefixNew.'about',
 	        'required' => false,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 2,

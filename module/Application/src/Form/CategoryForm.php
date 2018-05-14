@@ -20,20 +20,9 @@ class CategoryForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'name',
 	        'required' => true,
-	        'filters' => array(
-	            array(
-	            	'name' => 'Zend\Filter\StringTrim',
-	            	'name' => 'Zend\Filter\StripTags'
-	        	),
-	        ),
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 1,
@@ -58,21 +47,9 @@ class CategoryForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'name_parent',
 	        'required' => true,
-	        'filters' => array(
-	            array(
-	            	'name' => 'StringTrim',
-	            	'name' => 'StripTags',
-	            	//'name' => 'StripNewlines',
-	        	),
-	        ),
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 1,
@@ -95,20 +72,9 @@ class CategoryForm extends Form
 			$inputFilter->add(array(
 		        'name' => $prefixNew.'name',
 		        'required' => $required,
-		        'filters' => array(
-		            array(
-		            	'name' => 'Zend\Filter\StringTrim',
-		            	'name' => 'Zend\Filter\StripTags'
-		        	),
-		        ),
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,
@@ -118,14 +84,6 @@ class CategoryForm extends Form
 		                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
 		                     ),
 		                ),
-		                 /* PESQUISAR MAIS SOBRE ISSO!!
-		                'name' => 'Alnum',
-		                 'options' => array(
-		                    'allowWhiteSpace' => true,
-		                    'messages' => array(
-		                        'allowWhiteSpace' => 'Spaces white duple not permission',
-		                    ),
-		                ), */
 		            ),
 		        ),
 		    ));
@@ -133,21 +91,9 @@ class CategoryForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'name_parent',
 		        'required' => $required,
-		        'filters' => array(
-		            array(
-		            	'name' => 'StringTrim',
-		            	'name' => 'StripTags',
-		            	//'name' => 'StripNewlines',
-		        	),
-		        ),
+		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
-		                'name' => 'notEmpty',
-		                'options' => array(
-		                    'messages' => array(
-		                        'isEmpty' => 'The field not is empty'
-		                    ),
-		                ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 1,

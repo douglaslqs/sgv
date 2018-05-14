@@ -11,24 +11,19 @@ class ColorForm extends Form
 	{
 		parent::__construct('color');
 		$this->setAttribute('method', 'post');
-		$this->addInputFilter();
+		//$this->addInputFilter();
 	}
 
-	public function addInputFilter()
+	public function addInputFilter($boolUpdate = false)
 	{
 	    $inputFilter = new InputFilter\InputFilter();
 
 	    $inputFilter->add(array(
 	        'name' => 'name',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
-	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
+	            array(	                
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 2,
@@ -38,25 +33,47 @@ class ColorForm extends Form
 	                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
 	                     ),
 	                ),
-	                 /* PESQUISAR MAIS SOBRE ISSO!!
-	                'name' => 'Alnum',
-	                 'options' => array(
-	                    'allowWhiteSpace' => true,
-	                    'messages' => array(
-	                        'allowWhiteSpace' => 'Spaces white duple not permission',
-	                    ),
-	                ), */
 	            ),
 	        ),
 	    ));
+	
+	    //Adiciona Prefix e retira require se for update
+	    //Adiciona os campos chaves com o prefixo
+		if ($boolUpdate) {
+			$required = false;
+			$prefixNew = 'new_';
+
+			$inputFilter->add(array(
+		        'name' => $prefixNew.'name',
+		        'required' => false,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(		            
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 40,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		} else {
+			$required = true;
+			$prefixNew = '';
+		}
 
 	    $inputFilter->add(array(
-	        'name' => 'active',
+	        'name' => $prefixNew.'active',
 	        'required' => false,
 	        'validators' => array(
 	            array(
 	                'name' => 'Int',
-	            ),	
+	            ),
 	            array(
 	                'name' => 'Between',
 					'options' => array(

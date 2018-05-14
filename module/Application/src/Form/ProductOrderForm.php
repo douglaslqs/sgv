@@ -21,14 +21,9 @@ class ProductOrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'client',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -60,11 +55,12 @@ class ProductOrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'date_register',
 	        'required' => true,
-	        'validators' => array(
+	        'continue_if_empty' => true,//not empty
+	        /*'validators' => array(
 	        	//TRANSFORMAR DATA EM INT TIMESTAMP
-	        	/*array(
+	        	array(
                 	'name' => 'Int',
-            	), */
+            	),
 	            array(
 	                'name' => 'notEmpty',
 	                'options' => array(
@@ -73,20 +69,15 @@ class ProductOrderForm extends Form
 	                    ),
 	                ),
 	            ),
-	        ),
+	        ), */
 	    ));
 
 	    $inputFilter->add(array(
 	        'name' => 'product',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -103,14 +94,9 @@ class ProductOrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -127,14 +113,9 @@ class ProductOrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'category_parent',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -151,14 +132,9 @@ class ProductOrderForm extends Form
 	    $inputFilter->add(array(
 	        'name' => 'mark',
 	        'required' => true,
+	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
 	            array(
-	                'name' => 'notEmpty',
-	                'options' => array(
-	                    'messages' => array(
-	                        'isEmpty' => 'The field not is empty'
-	                    ),
-	                ),
 	                'name' => 'StringLength',
 	                 'options' => array(
 	                     'min' => 3,
@@ -177,7 +153,8 @@ class ProductOrderForm extends Form
 			$inputFilter->add(array(
 		        'name' => 'value_unitary',
 		        'required' => true,
-		        'validators' => array(
+		        'continue_if_empty' => true,//not empty
+		        /*'validators' => array(
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -186,13 +163,14 @@ class ProductOrderForm extends Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ),*/
 		    ));
 
 		    $inputFilter->add(array(
 		        'name' => 'qty',
 		        'required' => true,
-		        'validators' => array(
+		        'continue_if_empty' => true,//not empty
+		        /*'validators' => array(
 		            array(
 		                'name' => 'notEmpty',
 		                'options' => array(
@@ -201,7 +179,7 @@ class ProductOrderForm extends Form
 		                    ),
 		                ),
 		            ),
-		        ),
+		        ), */
 		    ));
 	    }
 	    $this->setInputFilter($inputFilter);
