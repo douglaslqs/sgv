@@ -170,9 +170,14 @@ class ClientForm extends Form
 		    $inputFilter->add(array(
 		        'name' => $prefixNew.'state_register',
 		        'required' => false,
-		        'continue_if_empty' => true,//not empty
+		        'continue_if_empty' => false,//not empty
 		        'validators' => array(
 		            array(
+		                'name' => 'Float',
+		                'options' => array(
+			                'min' => 0,
+			                'locale' => 'en_US'
+			            ),
 		                'name' => 'StringLength',
 		                 'options' => array(
 		                     'min' => 3,
