@@ -11,10 +11,10 @@ class MarkForm extends Form
 	{
 		parent::__construct('mark');
 		$this->setAttribute('method', 'post');
-		$this->addInputFilter();
+		//$this->addInputFilter();
 	}
 
-	public function addInputFilter()
+	public function addInputFilter($boolUpdate)
 	{
 	    $inputFilter = new InputFilter\InputFilter();
 
@@ -45,8 +45,37 @@ class MarkForm extends Form
 	        ),
 	    ));
 
+	    //Adiciona Prefix e retira require se for update
+	    //Adiciona os campos chaves com o prefixo
+		if ($boolUpdate) {
+			$required = false;
+			$prefixNew = 'new_';
+
+			$inputFilter->add(array(
+		        'name' => $prefixNew.'name',
+		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 2,
+		                     'max' => 40,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 40 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+		} else {
+			$required = true;
+			$prefixNew = '';
+		}
+
 	    $inputFilter->add(array(
-	        'name' => 'active',
+	        'name' => $prefixNew.'active',
 	        'required' => false,
 	        'validators' => array(
 	            array(

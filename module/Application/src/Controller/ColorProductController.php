@@ -70,7 +70,7 @@ class ColorProductController extends AbstractRestfulController
                 $this->form->addInputFilter($boolUpdate);
                 $this->form->setData($arrParams);
                 if ($this->form->isValid()) {
-                    $arrParams = $this->filterService->setData($arrParams)->getData();                    
+                    $arrParams = $this->filterService->setData($arrParams)->getData();
                     $colorProduct = $this->colorProductTable->fetchRow($arrParams);
                     if (empty($colorProduct)) {
                         $returnInsert = $this->colorProductTable->insert($arrParams);

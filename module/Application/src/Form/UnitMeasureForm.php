@@ -45,13 +45,50 @@ class UnitMeasureForm extends Form
 	        ),
 	    ));
 
+	    //Adiciona Prefix e retira require se for update
+		//Adiciona os campos chaves com o prefixo
+		if ($boolUpdate) {
+			$required = false;
+			$prefixNew = 'new_';
+
+			$inputFilter->add(array(
+		        'name' => $prefixNew.'name',
+		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
+		                     ),
+		                ),
+		                 /* PESQUISAR MAIS SOBRE ISSO!!
+		                'name' => 'Alnum',
+		                 'options' => array(
+		                    'allowWhiteSpace' => true,
+		                    'messages' => array(
+		                        'allowWhiteSpace' => 'Spaces white duple not permission',
+		                    ),
+		                ), */
+		            ),
+		        ),
+		    ));
+	    } else {
+			$required = true;
+			$prefixNew = '';
+		}
+
 	    $inputFilter->add(array(
-	        'name' => 'active',
+	        'name' => $prefixNew.'active',
 	        'required' => false,
 	        'validators' => array(
 	            array(
 	                'name' => 'Int',
-	            ),	
+	            ),
 	            array(
 	                'name' => 'Between',
 					'options' => array(

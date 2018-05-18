@@ -117,7 +117,6 @@ class CategoryController extends AbstractRestfulController
                 $boolUpdate = true;
                 $this->form->addInputFilter($boolUpdate);
                 $this->form->setData($arrParams);
-                //Neste caso, podemos utilizar o mesmo validador form
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
                     $category = $this->categoryTable->fetchRow($arrParams);

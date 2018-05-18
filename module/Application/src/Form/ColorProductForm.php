@@ -102,11 +102,15 @@ class ColorProductForm extends Form
 	        ),
 	    ));
 
-	    //Adiciona somente se for validar o cadastro
-	    if (!$boolUpdate) {
-	    	$inputFilter->add(array(
-		        'name' => 'color',
-		        'required' => true,
+	    //Adiciona Prefix e retira require se for update
+	    //Adiciona os campos chaves com o prefixo
+		if ($boolUpdate) {
+			$required = false;
+			$prefixNew = 'new_';
+
+			$inputFilter->add(array(
+		        'name' => $prefixNew.'product',
+		        'required' => $required,
 		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
 		            array(
@@ -130,7 +134,93 @@ class ColorProductForm extends Form
 		            ),
 		        ),
 		    ));
-	    }
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'category',
+		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 80,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'category_parent',
+		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 80,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+
+		    $inputFilter->add(array(
+		        'name' => $prefixNew.'mark',
+		        'required' => $required,
+		        'continue_if_empty' => true,//not empty
+		        'validators' => array(
+		            array(
+		                'name' => 'StringLength',
+		                 'options' => array(
+		                     'min' => 3,
+		                     'max' => 64,
+		                     'messages' => array(
+		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+		                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
+		                     ),
+		                ),
+		            ),
+		        ),
+		    ));
+		} else {
+			$required = true;
+			$prefixNew = '';
+		}
+    	$inputFilter->add(array(
+	        'name' => $prefixNew.'color',
+	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
+	        'validators' => array(
+	            array(
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 3,
+	                     'max' => 45,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 45 chacacteres ultrapassed',
+	                     ),
+	                ),
+	                 /* PERMITE APENAS ALPHA NUMERICO!!
+	                'name' => 'Alnum',
+	                 'options' => array(
+	                    'allowWhiteSpace' => true,
+	                    'messages' => array(
+	                        'allowWhiteSpace' => 'Spaces white duple not permission',
+	                    ),
+	                ), */
+	            ),
+	        ),
+	    ));
 
 	    $this->setInputFilter($inputFilter);
 	}
