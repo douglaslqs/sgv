@@ -20,7 +20,7 @@ class ResponseService
 	const MESSAGE_SUCCESS = "Successful request";
 	const MESSAGE_ERROR = "A error uncurred";
 	const MESSAGE_QUERY_EMPTY = "The query returned empty";
-	const MESSAGE_NOT_PARAMS_VALIDATED = "Required parameter not found";
+	const MESSAGE_NOT_PARAMS_VALIDATED = "Required parameter not found or invalid value";
 	const MESSAGE_METHOD_INCORRECT = "Sending method incorrect";
 	const MESSAGE_ALREADY_EXISTS = "Item already exists or search reference not exists";
 

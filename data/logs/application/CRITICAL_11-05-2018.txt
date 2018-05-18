@@ -1,0 +1,6 @@
+18:36:03 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Statement could not be executed (42000 - 1064 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1)
+18:55:34 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Invalid validator specification provided; does not include "name" key
+18:58:11 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Class 'Application\Form\Zend\Validator\NotEmpty' not found
+19:12:38 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Call to undefined method Zend\InputFilter\Input::gatValidatorChain()
+19:16:32 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Class 'Application\Form\Null' not found
+19:19:01 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: A plugin by the name "0" was not found in the plugin manager Zend\Filter\FilterPluginManager

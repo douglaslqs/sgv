@@ -1,0 +1,1 @@
+18:13:38 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Statement could not be executed (23000 - 1452 - Cannot add or update a child row: a foreign key constraint fails (`store`.`category`, CONSTRAINT `fk_category_category1` FOREIGN KEY (`name_parent`) REFERENCES `category` (`name`) ON DELETE NO ACTION ON UPDATE NO ACTION))
