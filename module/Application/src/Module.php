@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
+use Application\Model\Entity\ImageProductEntity;
+use Application\Model\ImageProductTable;
 use Application\Model\Entity\ProductOrderEntity;
 use Application\Model\ProductOrderTable;
 use Application\Model\Entity\DeliveryAddressEntity;
@@ -261,6 +263,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new DeliveryAddressEntity());
                     return new TableGateway('delivery_address', $dbAdapter, null, $resultSetPrototype);
+                },
+
+                'Application\Model\ImageProductTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ImageProductTableGateway');
+                    return new ImageProductTable($tableGateway);
+                },
+                'ImageProductTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ImageProductEntity());
+                    return new TableGateway('image_product',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);

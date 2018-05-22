@@ -58,6 +58,7 @@ return [
             Controller\OrderController::class           => Controller\Factory\OrderFactory::class,
             Controller\StockController::class           => Controller\Factory\StockFactory::class,
             Controller\ColorProductController::class    => Controller\Factory\ColorProductFactory::class,
+            Controller\ImageProductController::class    => Controller\Factory\ImageProductFactory::class,
             Controller\ProductOrderController::class    => Controller\Factory\ProductOrderFactory::class,
             Controller\DeliveryAddressController::class => Controller\Factory\DeliveryAddressFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
@@ -79,6 +80,7 @@ return [
             'color-product'    => 'Application\Controller\ColorProductController',
             'product-order'    => 'Application\Controller\ProductOrderController',
             'delivery-address' => 'Application\Controller\DeliveryAddressController',
+            'image-product'    => 'Application\Controller\ImageProductController',
         ],
     ],
     'view_manager' => [
