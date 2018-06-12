@@ -1,0 +1,75 @@
+<?php
+namespace Application\Service;
+
+use Application\Model\AbstractTable;
+use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Resource\GenericResource;
+use Zend\Permissions\Acl\Role\GenericRole;
+
+class AclService
+{
+    private $table;
+    private $roleResourceAllowTable;
+    private $objAcl;
+    private $strRole;
+
+    public function __construct(AbstractTable $table, $strRole)
+    {
+        $this->table = $table;
+        $this->strRole = $strRole;
+        $this->objAcl = new Acl();
+        $this->getObjAcl()->addRole(new GenericRole($this->getRole()));
+        $this->setResourcesAndAllows();
+    }
+
+    /** Define resources and permissions in the object Acl.
+     * @author Douglas Santos <douglasrock15@hotmail.com>
+     * @return void
+     */
+    private function setResourcesAndAllows()
+    {
+        $resultSet = $this->table->fetch(array('role' => $this->getRole()));
+        foreach ($resultSet as $key => $value) {
+            if(!$this->getObjAcl()->hasResource($value['module_controller'])) {
+                $this->getObjAcl()->addResource(new GenericResource($value['module_controller']));
+                $resultSetAllow = $this->table->fetch(array('module_controller'=>$value['module_controller']));
+                $arrAllow = array();
+                foreach ($resultSetAllow as $k => $v) {
+                    $arrAllow[$v['action']] = $v['action'];
+                }
+                $this->getObjAcl()->allow($this->getRole(), $value['module_controller'], $arrAllow);
+            }
+        }
+    }
+
+    /** Return role defined in this object
+     * @author Douglas Santos <douglasrock15@hotmail.com>
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->strRole;
+    }
+
+    /** Return the instance of object Acl
+     * @author Douglas Santos <douglasrock15@hotmail.com>
+     * @return \Zend\Permissions\Acl\Acl
+     */
+    public function getObjAcl()
+    {
+        return $this->objAcl;
+    }
+
+    /** Return instance of RoleResourceAllowTable
+     * @author Douglas Santos <douglasrock15@hotmail.com>
+     * @return RoleResourceAllowTable
+     */
+    /*
+    private function getRoleResourceAllowTable()
+    {
+        if(empty($this->roleResourceAllowTable))
+            $this->roleResourceAllowTable = $this->table->get("Intranet\Model\RoleResourceAllowTable");
+        return $this->roleResourceAllowTable;
+    }
+    */
+}

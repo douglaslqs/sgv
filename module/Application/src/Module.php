@@ -16,6 +16,8 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
+use Application\Model\Entity\RoleResourceAllowEntity;
+use Application\Model\RoleResourceAllowTable;
 use Application\Model\Entity\ImageProductEntity;
 use Application\Model\ImageProductTable;
 use Application\Model\Entity\ProductOrderEntity;
@@ -50,6 +52,7 @@ class Module
         $application = $e->getApplication();
         $em = $application->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
 
         /**
@@ -125,16 +128,46 @@ class Module
         }
     }
 
-    /*public function onRoute(MvcEvent $e)
+    public function onRoute(\Zend\Mvc\MvcEvent $e)
     {
+        //FORCE HTTPS
+        // Get request URI
+        /*$uri = $event->getRequest()->getUri();
+        $scheme = $uri->getScheme();
+        if ($scheme != 'https'){
+            $uri->setScheme('https');
+            $response=$event->getResponse();
+            $response->getHeaders()->addHeaderLine('Location', $uri);
+            $response->setStatusCode(301);
+            $response->sendHeaders();
+            return $response;
+        } */
 
+        $objServiceManager = $e->getApplication()->getServiceManager();
+        $objAclService = $objServiceManager->get(Service\AclService::class);
+        $arrRouteParams = $e->getRouteMatch()->getParams();
+
+        $strControllerName = $arrRouteParams['controller'];
+        $strActionName = $arrRouteParams['action'];
+
+        $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+
+        if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
+            if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
+                $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
+                echo json_encode($responseService->getArrayCopy());exit;
+                //$view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                //return $e->setViewModel($view);exit;
+            }
+        }
     }
-
+    /*
     public function onDispatch(MvcEvent $e)
     {
 
-    } */
-
+    }
+    */
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
@@ -264,7 +297,6 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new DeliveryAddressEntity());
                     return new TableGateway('delivery_address', $dbAdapter, null, $resultSetPrototype);
                 },
-
                 'Application\Model\ImageProductTable' =>  function($sm) {
                     $tableGateway = $sm->get('ImageProductTableGateway');
                     return new ImageProductTable($tableGateway);
@@ -274,6 +306,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ImageProductEntity());
                     return new TableGateway('image_product',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\RoleResourceAllowTable' =>  function($sm) {
+                    $tableGateway = $sm->get('RoleResourceAllowTableGateway');
+                    return new RoleResourceAllowTable($tableGateway);
+                },
+                'RoleResourceAllowTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RoleResourceAllowEntity());
+                    return new TableGateway('role_resource_allow',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);
