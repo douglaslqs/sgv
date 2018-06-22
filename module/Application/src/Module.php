@@ -47,6 +47,8 @@ class Module
 {
     const VERSION = '3.0.2';
 
+    private $usernameDb;
+
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
         $application = $e->getApplication();
@@ -61,15 +63,15 @@ class Module
          */
         $serviceManager = $application->getServiceManager();
         $config = $serviceManager->get('Config');
-        $usernameDb = $config['db']['adapters']['store-adapter']['username'];
-        if(!isset($usernameDb)){
+        $this->usernameDb = $config['db']['adapters']['store-adapter']['username'];
+        if(!isset($this->usernameDb)){
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Invalid Access Token!");
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             $e->setViewModel($view);
         }
-        if ($usernameDb === false) {
+        if ($this->usernameDb === false) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Access Token Not Found!");
@@ -130,35 +132,38 @@ class Module
 
     public function onRoute(\Zend\Mvc\MvcEvent $e)
     {
-        //FORCE HTTPS
-        // Get request URI
-        /*$uri = $event->getRequest()->getUri();
-        $scheme = $uri->getScheme();
-        if ($scheme != 'https'){
-            $uri->setScheme('https');
-            $response=$event->getResponse();
-            $response->getHeaders()->addHeaderLine('Location', $uri);
-            $response->setStatusCode(301);
-            $response->sendHeaders();
-            return $response;
-        } */
 
-        $objServiceManager = $e->getApplication()->getServiceManager();
-        $objAclService = $objServiceManager->get(Service\AclService::class);
-        $arrRouteParams = $e->getRouteMatch()->getParams();
+        if(isset($this->usernameDb) && $this->usernameDb !== false){
+            //FORCE HTTPS
+            // Get request URI
+            /*$uri = $event->getRequest()->getUri();
+            $scheme = $uri->getScheme();
+            if ($scheme != 'https'){
+                $uri->setScheme('https');
+                $response=$event->getResponse();
+                $response->getHeaders()->addHeaderLine('Location', $uri);
+                $response->setStatusCode(301);
+                $response->sendHeaders();
+                return $response;
+            } */
 
-        $strControllerName = $arrRouteParams['controller'];
-        $strActionName = $arrRouteParams['action'];
+            $objServiceManager = $e->getApplication()->getServiceManager();
+            $objAclService = $objServiceManager->get(Service\AclService::class);
+            $arrRouteParams = $e->getRouteMatch()->getParams();
 
-        $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+            $strControllerName = $arrRouteParams['controller'];
+            $strActionName = $arrRouteParams['action'];
 
-        if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
-            if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
-                $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-                $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
-                echo json_encode($responseService->getArrayCopy());exit;
-                //$view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-                //return $e->setViewModel($view);exit;
+            $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+
+            if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
+                if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
+                    $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                    $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
+                    echo json_encode($responseService->getArrayCopy());exit;
+                    //$view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                    //return $e->setViewModel($view);exit;
+                }
             }
         }
     }

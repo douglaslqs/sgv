@@ -30,14 +30,15 @@ class AclService
     {
         $resultSet = $this->table->fetch(array('role' => $this->getRole()));
         foreach ($resultSet as $key => $value) {
-            if(!$this->getObjAcl()->hasResource($value['module_controller'])) {
-                $this->getObjAcl()->addResource(new GenericResource($value['module_controller']));
-                $resultSetAllow = $this->table->fetch(array('module_controller'=>$value['module_controller']));
+            $resource = $value['module'].'/'.$value['controller'];
+            if(!$this->getObjAcl()->hasResource($resource)) {
+                $this->getObjAcl()->addResource(new GenericResource($resource));
+                $resultSetAllow = $this->table->fetch(array('module'=>$value['module'],'controller'=>$value['controller']));
                 $arrAllow = array();
                 foreach ($resultSetAllow as $k => $v) {
                     $arrAllow[$v['action']] = $v['action'];
                 }
-                $this->getObjAcl()->allow($this->getRole(), $value['module_controller'], $arrAllow);
+                $this->getObjAcl()->allow($this->getRole(), $resource, $arrAllow);
             }
         }
     }

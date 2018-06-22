@@ -4,14 +4,16 @@ namespace Application\Model\Entity;
 class RoleResourceAllowEntity
 {
 	public $role;
-	public $module_controller;
+	public $module;
+	public $controller;
 	public $action;
 	public $date_register;
 
 	public function exchangeArray($data)
 	{
 		$this->role = isset($data['role']) ? $data['role'] : null;
-		$this->module_controller = isset($data['module_controller']) ? $data['module_controller'] : null;
+		$this->module = isset($data['module']) ? $data['module'] : null;
+		$this->controller = isset($data['controller']) ? $data['controller'] : null;
 		$this->action = isset($data['action']) ? $data['action'] : null;
 		$this->date_register = isset($data['date_register']) ? $data['date_register'] : null;
 	}

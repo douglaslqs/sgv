@@ -15,7 +15,8 @@ class RoleResourceAllowTable extends AbstractTable
 	{
 		return array(
                 'role' => isset($arrParams['role']) ? $arrParams['role'] : null,
-                'module_controller' => isset($arrParams['module_controller']) ? $arrParams['module_controller'] : null,
+                'module' => isset($arrParams['module']) ? $arrParams['module'] : null,
+                'controller' => isset($arrParams['controller']) ? $arrParams['controller'] : null,
                 'action' => isset($arrParams['action']) ? $arrParams['action'] : null,
             );
 	}
