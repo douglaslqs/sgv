@@ -18,6 +18,8 @@ use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
 use Application\Model\Entity\RoleResourceAllowEntity;
 use Application\Model\RoleResourceAllowTable;
+use Application\Model\Entity\RoleEntity;
+use Application\Model\RoleTable;
 use Application\Model\Entity\ImageProductEntity;
 use Application\Model\ImageProductTable;
 use Application\Model\Entity\ProductOrderEntity;
@@ -321,6 +323,17 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RoleResourceAllowEntity());
                     return new TableGateway('role_resource_allow',$dbAdapter,null,$resultSetPrototype);
+                },
+
+                'Application\Model\RoleTable' =>  function($sm) {
+                    $tableGateway = $sm->get('RoleTableGateway');
+                    return new RoleTable($tableGateway);
+                },
+                'RoleTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RoleEntity());
+                    return new TableGateway('role',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);
