@@ -25,9 +25,9 @@ abstract class AbstractTable
 		    $sql = $this->tableGateway->getSql();
 			if (!empty($arrFilter)) {
 				$combined = \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR;
-				if(isset($arrFilter['combined'])) {
+				if(isset($arrFilter['p_combined'])) {
 					$combined =  \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_AND;
-					unset($arrFilter['combined']);
+					unset($arrFilter['p_combined']);
 				}
 				$arrLikes = array();
 				foreach ($arrFilter as $key => $value) {

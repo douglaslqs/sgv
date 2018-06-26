@@ -1,1 +1,2 @@
 17:16:08 : Application\Module::onDispatchError line:125 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'name' in 'field list')
+17:26:47 : Application\Module::onDispatchError line:125 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'combined' in 'where clause')
