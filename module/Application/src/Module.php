@@ -20,6 +20,8 @@ use Application\Model\Entity\RoleResourceAllowEntity;
 use Application\Model\RoleResourceAllowTable;
 use Application\Model\Entity\RoleEntity;
 use Application\Model\RoleTable;
+use Application\Model\Entity\AllowEntity;
+use Application\Model\AllowTable;
 use Application\Model\Entity\ResourceEntity;
 use Application\Model\ResourceTable;
 use Application\Model\Entity\ImageProductEntity;
@@ -345,6 +347,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ResourceEntity());
                     return new TableGateway('resource',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\AllowTable' =>  function($sm) {
+                    $tableGateway = $sm->get('AllowTableGateway');
+                    return new AllowTable($tableGateway);
+                },
+                'AllowTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new AllowEntity());
+                    return new TableGateway('allow',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);

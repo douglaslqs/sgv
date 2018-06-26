@@ -64,6 +64,7 @@ return [
             Controller\DeliveryAddressController::class => Controller\Factory\DeliveryAddressFactory::class,
             Controller\RoleController::class            => Controller\Factory\RoleFactory::class,
             Controller\ResourceController::class        => Controller\Factory\ResourceFactory::class,
+            Controller\AllowController::class           => Controller\Factory\AllowFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */
@@ -86,6 +87,7 @@ return [
             'image-product'    => 'Application\Controller\ImageProductController',
             'role'             => 'Application\Controller\RoleController',
             'resource'         => 'Application\Controller\ResourceController',
+            'allow'            => 'Application\Controller\AllowController',
         ],
     ],
     'view_manager' => [

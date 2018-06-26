@@ -5,11 +5,11 @@ use Zend\Form\Form;
 use Zend\InputFilter;
 //use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
-class RoleForm extends Form
+class AllowForm extends Form
 {
 	public function __construct()
 	{
-		parent::__construct('role');
+		parent::__construct('allow');
 		$this->setAttribute('method', 'post');
 		//$this->addInputFilter();
 	}
@@ -19,7 +19,7 @@ class RoleForm extends Form
 	    $inputFilter = new InputFilter\InputFilter();
 
 	    $inputFilter->add(array(
-	        'name' => 'name',
+	        'name' => 'action',
 	        'required' => true,
 	        'continue_if_empty' => true,//not empty
 	        'validators' => array(
@@ -44,7 +44,7 @@ class RoleForm extends Form
 			$prefixNew = 'new_';
 
 			$inputFilter->add(array(
-		        'name' => $prefixNew.'name',
+		        'name' => $prefixNew.'action',
 		        'required' => false,
 		        'continue_if_empty' => true,//not empty
 		        'validators' => array(
@@ -85,7 +85,7 @@ class RoleForm extends Form
 	        ),
 	    ));
 
-	    $inputFilter->add(array(
+	    /*$inputFilter->add(array(
 	        'name' => $prefixNew.'active',
 	        'required' => false,
 	        'validators' => array(
@@ -101,7 +101,7 @@ class RoleForm extends Form
 					),
 	            ),
 	        ),
-	    ));
+	    )); */
 
 	    $this->setInputFilter($inputFilter);
 	}
