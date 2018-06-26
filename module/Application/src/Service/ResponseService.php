@@ -9,6 +9,7 @@ namespace Application\Service;
 class ResponseService
 {
 
+	const CODE_ACCESS_DENIED = -2;
 	const CODE_TOKEN_INVALID = -1;
 	const CODE_SUCCESS = 0;
 	const CODE_ERROR = 1;
@@ -23,6 +24,7 @@ class ResponseService
 	const MESSAGE_NOT_PARAMS_VALIDATED = "Required parameter not found or invalid value";
 	const MESSAGE_METHOD_INCORRECT = "Sending method incorrect";
 	const MESSAGE_ALREADY_EXISTS = "Item already exists or search reference not exists";
+	const MESSAGE_ACCESS_DENIED = "Access Denied";
 
 	const TYPE_ERROR = "ERROR";
 	const TYPE_SUCCESS = "SUCCESS";
@@ -69,6 +71,10 @@ class ResponseService
 			case self::CODE_ALREADY_EXISTS :
 				$this->response['message'] = self::MESSAGE_ALREADY_EXISTS;
 				$this->response['type']    = self::TYPE_INFO;
+				break;
+			case self::CODE_ACCESS_DENIED :
+				$this->response['message'] = self::MESSAGE_ACCESS_DENIED;
+				$this->response['type']    = self::TYPE_ERROR;
 				break;
 			default:
 				$this->response['message'] = self::MESSAGE_ERROR;

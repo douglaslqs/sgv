@@ -16,6 +16,16 @@ use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
 use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
+use Application\Model\Entity\RoleResourceAllowEntity;
+use Application\Model\RoleResourceAllowTable;
+use Application\Model\Entity\RoleEntity;
+use Application\Model\RoleTable;
+use Application\Model\Entity\AllowEntity;
+use Application\Model\AllowTable;
+use Application\Model\Entity\UserEntity;
+use Application\Model\UserTable;
+use Application\Model\Entity\ResourceEntity;
+use Application\Model\ResourceTable;
 use Application\Model\Entity\ImageProductEntity;
 use Application\Model\ImageProductTable;
 use Application\Model\Entity\ProductOrderEntity;
@@ -45,11 +55,14 @@ class Module
 {
     const VERSION = '3.0.2';
 
+    private $usernameDb;
+
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
         $application = $e->getApplication();
         $em = $application->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
 
         /**
@@ -58,15 +71,15 @@ class Module
          */
         $serviceManager = $application->getServiceManager();
         $config = $serviceManager->get('Config');
-        $usernameDb = $config['db']['adapters']['store-adapter']['username'];
-        if(!isset($usernameDb)){
+        $this->usernameDb = $config['db']['adapters']['store-adapter']['username'];
+        if(!isset($this->usernameDb)){
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Invalid Access Token!");
             $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
             $e->setViewModel($view);
         }
-        if ($usernameDb === false) {
+        if ($this->usernameDb === false) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
             $responseService->setMessage("Access Token Not Found!");
@@ -125,16 +138,51 @@ class Module
         }
     }
 
-    /*public function onRoute(MvcEvent $e)
+    public function onRoute(\Zend\Mvc\MvcEvent $e)
     {
 
-    }
+        if(isset($this->usernameDb) && $this->usernameDb !== false){
+            //FORCE HTTPS
+            // Get request URI
+            /*$uri = $event->getRequest()->getUri();
+            $scheme = $uri->getScheme();
+            if ($scheme != 'https'){
+                $uri->setScheme('https');
+                $response=$event->getResponse();
+                $response->getHeaders()->addHeaderLine('Location', $uri);
+                $response->setStatusCode(301);
+                $response->sendHeaders();
+                return $response;
+            } */
 
+            $objServiceManager = $e->getApplication()->getServiceManager();
+            $objAclService = $objServiceManager->get(Service\AclService::class);
+            $arrRouteParams = $e->getRouteMatch()->getParams();
+
+            $strControllerName = $arrRouteParams['controller'];
+            $strActionName = $arrRouteParams['action'];
+
+            $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+            /*var_dump($strModuleController);
+            var_dump($strControllerName);
+            var_dump($strActionName);exit; */
+            if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
+                if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
+                    $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                    $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
+                    echo json_encode($responseService->getArrayCopy());exit;
+                    //$view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                    //return $e->setViewModel($view);exit;
+                }
+            }
+        }
+    }
+    /*
     public function onDispatch(MvcEvent $e)
     {
 
-    } */
-
+    }
+    */
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
@@ -264,7 +312,6 @@ class Module
                     $resultSetPrototype->setArrayObjectPrototype(new DeliveryAddressEntity());
                     return new TableGateway('delivery_address', $dbAdapter, null, $resultSetPrototype);
                 },
-
                 'Application\Model\ImageProductTable' =>  function($sm) {
                     $tableGateway = $sm->get('ImageProductTableGateway');
                     return new ImageProductTable($tableGateway);
@@ -274,6 +321,56 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ImageProductEntity());
                     return new TableGateway('image_product',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\RoleResourceAllowTable' =>  function($sm) {
+                    $tableGateway = $sm->get('RoleResourceAllowTableGateway');
+                    return new RoleResourceAllowTable($tableGateway);
+                },
+                'RoleResourceAllowTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RoleResourceAllowEntity());
+                    return new TableGateway('role_resource_allow',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\RoleTable' =>  function($sm) {
+                    $tableGateway = $sm->get('RoleTableGateway');
+                    return new RoleTable($tableGateway);
+                },
+                'RoleTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RoleEntity());
+                    return new TableGateway('role',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\ResourceTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ResourceTableGateway');
+                    return new ResourceTable($tableGateway);
+                },
+                'ResourceTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ResourceEntity());
+                    return new TableGateway('resource',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\AllowTable' =>  function($sm) {
+                    $tableGateway = $sm->get('AllowTableGateway');
+                    return new AllowTable($tableGateway);
+                },
+                'AllowTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new AllowEntity());
+                    return new TableGateway('allow',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\UserTable' =>  function($sm) {
+                    $tableGateway = $sm->get('UserTableGateway');
+                    return new UserTable($tableGateway);
+                },
+                'UserTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserEntity());
+                    return new TableGateway('user',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);

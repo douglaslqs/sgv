@@ -19,15 +19,15 @@ $password = null;
 //busca as credenciais do banco store e seta no adapter
 $headersObj = apache_request_headers();
 $headers    = (array)$headersObj;
-$headers['X-Auth-Token'] = 123456;//fixado para teste
-if (isset($headers['X-Auth-Token'])) {
+//$headers['X-Auth-Token'] = 123456;//fixado para teste
+if (isset($headers['Authorization'])) {
     $mysqli = new mysqli('localhost', 'root', '', 'client');
     if (mysqli_connect_errno()) trigger_error(mysqli_connect_error());
     $select = "SELECT * FROM access_store
-    WHERE active = 1 AND token = '".$headers['X-Auth-Token']."'";
+    WHERE active = 1 AND token = '".$headers['Authorization']."'";
     $returnQuery = $mysqli->query($select);
-    if (count($returnQuery) === 1) {
-        while ($dados = $returnQuery->fetch_array(MYSQLI_ASSOC)) {            
+    if (is_object($returnQuery) && $returnQuery->num_rows === 1) {
+        while ($dados = $returnQuery->fetch_array(MYSQLI_ASSOC)) {
             $host     = $dados['host'];
             $dbname   = $dados['db_name'];
             $user     = $dados['db_user'];

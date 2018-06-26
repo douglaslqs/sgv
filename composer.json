@@ -23,7 +23,8 @@
         "zendframework/zend-config": "^3.1",
         "zendframework/zend-mvc-form": "^1.0",
         "diego-brocanelli/validators-zf": "dev-master",
-        "zendframework/zend-crypt": "^3.3"
+        "zendframework/zend-crypt": "^3.3",
+        "zendframework/zend-permissions-acl": "^2.7"
     },
     "autoload": {
         "psr-4": {
