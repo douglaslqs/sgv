@@ -163,7 +163,9 @@ class Module
             $strActionName = $arrRouteParams['action'];
 
             $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
-
+            /*var_dump($strModuleController);
+            var_dump($strControllerName);
+            var_dump($strActionName);exit; */
             if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
                 if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
                     $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);

@@ -28,12 +28,15 @@ class AclService
      */
     private function setResourcesAndAllows()
     {
-        $resultSet = $this->table->fetch(array('role' => $this->getRole()));
+        $sql = $this->table->getTableGateway()->getSql();
+        $select = $sql->select()->where(array('role' => $this->getRole()));
+        $resultSet = $this->table->getTableGateway()->selectWith($select)->toArray();
         foreach ($resultSet as $key => $value) {
             $resource = $value['module'].'/'.$value['controller'];
             if(!$this->getObjAcl()->hasResource($resource)) {
                 $this->getObjAcl()->addResource(new GenericResource($resource));
-                $resultSetAllow = $this->table->fetch(array('module'=>$value['module'],'controller'=>$value['controller']));
+                $select = $sql->select()->where(array('role'=> $this->getRole(), 'module'=>$value['module'],'controller'=>$value['controller']));
+                $resultSetAllow = $this->table->getTableGateway()->selectWith($select)->toArray();
                 $arrAllow = array();
                 foreach ($resultSetAllow as $k => $v) {
                     $arrAllow[$v['action']] = $v['action'];
