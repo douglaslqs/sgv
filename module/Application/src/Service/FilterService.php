@@ -47,7 +47,7 @@ class FilterService
 	public function getData()
 	{
 		$arrNewData = $this->arrData;
-		foreach ($arrNewData as $key => $value) {			
+		foreach ($arrNewData as $key => $value) {
 			if ($this->trim) {
 				$value = trim($value);
 				$arrNewData[$key] = $value;
@@ -55,7 +55,7 @@ class FilterService
 			if ($this->tag) {
 				$value = strip_tags($value);
 				$arrNewData[$key] = $value;
-			}			
+			}
 			if ($this->doubleSpace) {
 				$value = preg_replace('/( )+/', ' ', $value);
 				$arrNewData[$key] = $value;
@@ -92,6 +92,9 @@ class FilterService
             if (strpos($key, 'new_') !== false) {
                 $newKey = str_replace('new_', '', $key);
                 $arrSet[$newKey] = $this->arrWhere[$key];
+                unset($this->arrWhere[$key]);
+            }
+            if (strpos($key, 'p_') !== false) {
                 unset($this->arrWhere[$key]);
             }
         }

@@ -70,6 +70,7 @@ return [
             Controller\ResourceController::class          => Controller\Factory\ResourceFactory::class,
             Controller\AllowController::class             => Controller\Factory\AllowFactory::class,
             Controller\RoleResourceAllowController::class => Controller\Factory\RoleResourceAllowFactory::class,
+            Controller\UserController::class              => Controller\Factory\UserFactory::class,
         ],
         'aliases' => [
             //'index'            => 'Application\Controller\IndexController',
@@ -90,6 +91,7 @@ return [
             'resource'            => 'Application\Controller\ResourceController',
             'allow'               => 'Application\Controller\AllowController',
             'role-resource-allow' => 'Application\Controller\RoleResourceAllowController',
+            'user'                => 'Application\Controller\UserController',
         ],
     ],
     'view_manager' => [

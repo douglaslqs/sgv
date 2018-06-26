@@ -22,6 +22,8 @@ use Application\Model\Entity\RoleEntity;
 use Application\Model\RoleTable;
 use Application\Model\Entity\AllowEntity;
 use Application\Model\AllowTable;
+use Application\Model\Entity\UserEntity;
+use Application\Model\UserTable;
 use Application\Model\Entity\ResourceEntity;
 use Application\Model\ResourceTable;
 use Application\Model\Entity\ImageProductEntity;
@@ -357,6 +359,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new AllowEntity());
                     return new TableGateway('allow',$dbAdapter,null,$resultSetPrototype);
+                },
+                'Application\Model\UserTable' =>  function($sm) {
+                    $tableGateway = $sm->get('UserTableGateway');
+                    return new UserTable($tableGateway);
+                },
+                'UserTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new UserEntity());
+                    return new TableGateway('user',$dbAdapter,null,$resultSetPrototype);
                 },
     		)
     	);
