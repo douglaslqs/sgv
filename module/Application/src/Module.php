@@ -55,7 +55,10 @@ class Module
 {
     const VERSION = '3.0.2';
 
+    const NAME_MODEL = 'store';
+
     private $usernameDb;
+
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
@@ -64,58 +67,38 @@ class Module
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
-
-        /**
-         * Tratamento para verificar se o usuário tem acesso ao banco de dados
-         * Verificamos o $username para saber se o token é valido ou se nao existe token
-         */
-        $serviceManager = $application->getServiceManager();
-        $config = $serviceManager->get('Config');
-        $this->usernameDb = $config['db']['adapters']['store-adapter']['username'];
-        if(!isset($this->usernameDb)){
-            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
-            $responseService->setMessage("Invalid Access Token!");
-            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            $e->setViewModel($view);
-        }
-        if ($this->usernameDb === false) {
-            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-            $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
-            $responseService->setMessage("Access Token Not Found!");
-            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-            $e->setViewModel($view);
-        }
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
     {
-        $response = $e->getResponse();
-        $cod = $response->getStatusCode();
-        $messageError = $response->getReasonPhrase();
-        $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-        if (empty($responseService->getCode())) {
-            if ($cod === 404) {
-                $responseService->setCode(ResponseService::CODE_ERROR);
-                $responseService->setMessage("Page not Found. Check the url!");
-                $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-                $e->setViewModel($view);
-            } else if ($cod !== 200) {
-                $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
-                $loggerService->setMethodAndLine(__METHOD__, __LINE__);
-                $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"COD STATUS: ".$cod." - MSG ERROR: ".$messageError);
+        if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
+            $response = $e->getResponse();
+            $cod = $response->getStatusCode();
+            $messageError = $response->getReasonPhrase();
+            $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+            if (empty($responseService->getCode())) {
+                if ($cod === 404) {
+                    $responseService->setCode(ResponseService::CODE_ERROR);
+                    $responseService->setMessage("Page not Found. Check the url!");
+                    $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                    $e->setViewModel($view);
+                } else if ($cod !== 200) {
+                    $loggerService = $e->getApplication()->getServiceManager()->get(LoggerService::class);
+                    $loggerService->setMethodAndLine(__METHOD__, __LINE__);
+                    $loggerService->save(LoggerService::LOG_APPLICATION, LoggerService::CRITICAL ,"COD STATUS: ".$cod." - MSG ERROR: ".$messageError);
 
-                $responseService->setCode(ResponseService::CODE_ERROR);
-                $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod." - MSG ERROR: ".$messageError);
+                    $responseService->setCode(ResponseService::CODE_ERROR);
+                    $responseService->setMessage("An error unknow occurred! Cod. error: ".$cod." - MSG ERROR: ".$messageError);
+                }
             }
+            $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+            $e->setViewModel($view);
         }
-        $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-        $e->setViewModel($view);
     }
 
     public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
-        if ($e->isError()) {
+        if ($e->isError() && $e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             if (empty($responseService->getCode())) {
                 $responseService->setCode(ResponseService::CODE_ERROR);
@@ -141,38 +124,55 @@ class Module
     public function onRoute(\Zend\Mvc\MvcEvent $e)
     {
 
-        if(isset($this->usernameDb) && $this->usernameDb !== false){
-            //FORCE HTTPS
-            // Get request URI
-            /*$uri = $event->getRequest()->getUri();
-            $scheme = $uri->getScheme();
-            if ($scheme != 'https'){
-                $uri->setScheme('https');
-                $response=$event->getResponse();
-                $response->getHeaders()->addHeaderLine('Location', $uri);
-                $response->setStatusCode(301);
-                $response->sendHeaders();
-                return $response;
-            } */
+        /**
+         * Tratamento para verificar se o usuário tem acesso ao banco de dados
+         * Verificamos o $username para saber se o token é valido ou se nao existe token
+         */
+        if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
+            $application = $e->getApplication();
+            $serviceManager = $application->getServiceManager();
+            $config = $serviceManager->get('Config');
+            $this->usernameDb = $config['db']['adapters']['store-adapter']['username'];
+            if(!isset($this->usernameDb)){
+                $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
+                $responseService->setMessage("Invalid Access Token!");
+                $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                $e->setViewModel($view);
+            }
+            if ($this->usernameDb === false) {
+                $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                $responseService->setCode(ResponseService::CODE_TOKEN_INVALID);
+                $responseService->setMessage("Access Token Not Found!");
+                $view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
+                $e->setViewModel($view);
+            }
 
-            $objServiceManager = $e->getApplication()->getServiceManager();
-            $objAclService = $objServiceManager->get(Service\AclService::class);
-            $arrRouteParams = $e->getRouteMatch()->getParams();
-
-            $strControllerName = $arrRouteParams['controller'];
-            $strActionName = $arrRouteParams['action'];
-
-            $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
-            /*var_dump($strModuleController);
-            var_dump($strControllerName);
-            var_dump($strActionName);exit; */
-            if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
-                if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(), $strModuleController, $strActionName)) {
-                    $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
-                    $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
-                    echo json_encode($responseService->getArrayCopy());exit;
-                    //$view = new \Zend\View\Model\JsonModel($responseService->getArrayCopy());
-                    //return $e->setViewModel($view);exit;
+            if(isset($this->usernameDb) && $this->usernameDb !== false){
+                //FORCE HTTPS
+                // Get request URI
+                /*$uri = $e->getRequest()->getUri();
+                $scheme = $uri->getScheme();
+                if ($scheme != 'https'){
+                    $uri->setScheme('https');
+                    $response=$e->getResponse();
+                    $response->getHeaders()->addHeaderLine('Location', $uri);
+                    $response->setStatusCode(301);
+                    $response->sendHeaders();
+                    return $response;
+                } */
+                $objServiceManager = $e->getApplication()->getServiceManager();
+                $objAclService = $objServiceManager->get(Service\AclService::class);
+                $arrRouteParams = $e->getRouteMatch()->getParams();
+                $strControllerName = $arrRouteParams['controller'];
+                $strActionName = $arrRouteParams['action'];
+                $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+                if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
+                    if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(),$strModuleController,$strActionName)) {
+                        $responseService= $e->getApplication()->getServiceManager()->get(ResponseService::class);
+                        $responseService->setCode(ResponseService::CODE_ACCESS_DENIED);
+                        echo json_encode($responseService->getArrayCopy());exit;
+                    }
                 }
             }
         }

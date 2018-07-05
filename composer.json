@@ -24,11 +24,13 @@
         "zendframework/zend-mvc-form": "^1.0",
         "diego-brocanelli/validators-zf": "dev-master",
         "zendframework/zend-crypt": "^3.3",
-        "zendframework/zend-permissions-acl": "^2.7"
+        "zendframework/zend-permissions-acl": "^2.7",
+        "ovimughal/zf3-module-creator": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "module/Application/src/"
+            "Application\\": "module/Application/src/",
+            "Administrator\\": "module/Administrator/src"
         }
     },
     "autoload-dev": {
