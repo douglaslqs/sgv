@@ -9,9 +9,11 @@ return [
     'controllers' => [
         'factories' => [
             Controller\AdministratorController::class => InvokableFactory::class,
+            Controller\LoginController::class => InvokableFactory::class,
         ],
         'aliases' => [
             'index' => Controller\AdministratorController::class,
+            'login' => Controller\LoginController::class,
         ],
     ],
     'router' => [
@@ -21,7 +23,7 @@ return [
                 'options' => [
                     'route'    => '/administrator',
                     'defaults' => [
-                        'controller' => Controller\AdministratorController::class,
+                        'controller' => Controller\LoginController::class,
                         'action'     => 'index',
                     ],
                 ],
