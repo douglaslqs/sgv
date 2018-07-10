@@ -85,12 +85,15 @@
 </div>
 <!-- /.login-box -->
 
+<!-- Scripts -->
 <!-- jQuery 3 -->
-<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
+<?= $this->headScript()
+    ->prependFile($this->basePath('plugins/iCheck/icheck.min.js'))
+    ->prependFile($this->basePath('bower_components/bootstrap/dist/js/bootstrap.min.js'))
+    ->prependFile($this->basePath('bower_components/jquery/dist/jquery.min.js'))
+?>
 <script>
   $(function () {
     $('input').iCheck({
