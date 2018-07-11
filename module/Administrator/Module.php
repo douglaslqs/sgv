@@ -7,6 +7,11 @@
 
 namespace Administrator;
 
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+use Administrator\Model\Entity\ClientEntity;
+use Administrator\Model\ClientTable;
+
 class Module
 {
     public function getConfig()
@@ -27,5 +32,23 @@ class Module
 	        },
 	        -100
 	    );
+    }
+
+     public function getServiceConfig()
+    {
+    	return array(
+    		'factories' => array(
+				'Administrator\Model\ClientTable' =>  function($sm) {
+    				$tableGateway = $sm->get('ClientTableGateway');
+    				return new ClientTable($tableGateway);
+    			},
+    			'ClientTableGateway' => function ($sm) {
+    				$dbAdapter = $sm->get('client-adapter');
+    				$resultSetPrototype = new ResultSet();
+    				$resultSetPrototype->setArrayObjectPrototype(new ClientEntity());
+    				return new TableGateway('client', $dbAdapter, null, $resultSetPrototype);
+    			},
+    		)
+    	);
     }
 }

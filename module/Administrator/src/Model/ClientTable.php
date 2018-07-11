@@ -1,10 +1,10 @@
 <?php
-namespace Application\Model;
+namespace Administrator\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Model\AbstractTable;
 
-class UserTable extends AbstractTable
+class ClientTable extends AbstractTable
 {
 	public function __construct(TableGateway $tableGateway)
 	{
@@ -14,7 +14,7 @@ class UserTable extends AbstractTable
 	public function filterArrayWhere($arrParams = array())
 	{
 		return array(
-                'email' => isset($arrParams['email']) ? $arrParams['email'] : null,
+                'document' => isset($arrParams['document']) ? $arrParams['document'] : null,
             );
 	}
 }

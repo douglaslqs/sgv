@@ -9,11 +9,11 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\LoginController::class => Controller\Factory\LoginFactory::class,
+            Controller\AuthController::class => Controller\Factory\AuthFactory::class,
         ],
         'aliases' => [
             'index' => Controller\IndexController::class,
-            'login' => Controller\LoginController::class,
+            'auth' => Controller\AuthController::class,
         ],
     ],
     'router' => [
@@ -23,8 +23,8 @@ return [
                 'options' => [
                     'route'    => '/administrator',
                     'defaults' => [
-                        'controller' => Controller\LoginController::class,
-                        'action'     => 'index',
+                        'controller' => Controller\AuthController::class,
+                        'action'     => 'login',
                     ],
                 ],
                 'may_terminate' => true,
@@ -54,6 +54,13 @@ return [
                     ],
                 ],
             ], */
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
+            \Zend\Authentication\AuthenticationService::class=>Service\Factory\AuthenticationFactory::class,
+            Service\AuthManagerService::class=>Service\Factory\AuthManagerFactory::class,
+            Service\AuthAdapterService::class=>Service\Factory\AuthAdapterFactory::class,
         ],
     ],
     'view_manager' => [

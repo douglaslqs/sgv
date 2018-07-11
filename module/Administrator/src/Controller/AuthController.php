@@ -12,18 +12,66 @@ use Zend\View\Model\ViewModel;
 use Zend\Authentication\Result;
 use Zend\Uri\Uri;
 
-class LoginController extends AbstractActionController
+class AuthController extends AbstractActionController
 {
+    /**
+     * Entity manager.
+     * @var Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
+
+    /**
+     * Auth manager.
+     * @var User\Service\AuthManager
+     */
+    private $authManager;
+
+    /**
+     * Auth service.
+     * @var \Zend\Authentication\AuthenticationService
+     */
+    private $authService;
+
+    /**
+     * User manager.
+     * @var User\Service\UserManager
+     */
     private $form;
     private $logger;
+    private $clientTable;
 
-    public function indexAction()
+    /**
+     * Constructor.
+     */
+    public function __construct($entityManager, $clientTable, $authManager, $authService)
+    {
+        $this->entityManager = $entityManager;
+        $this->clientTable = $clientTable;
+        $this->authManager = $authManager;
+        $this->authService = $authService;
+    }
+
+    public function loginAction()
     {
         $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
         if (strlen($redirectUrl)>2048) {
             throw new \Exception("Too long redirectUrl argument passed");
         }
         $this->form->get('redirect_url')->setValue($redirectUrl);
+
+        //VARIFICAR SE CLIENTE EXISTE EM BANCO DE DADOS CLIENT E SETAR O BANCO DELE NA SESSAO
+        $paramsRoute = $this->params()->fromRoute();
+        if (isset($paramsRoute['id']) && !empty($paramsRoute['id'])) {
+            $arrClient = $this->clientTable->fetchRow(array("document" => $paramsRoute['id']));
+            if(!isset($_SESSION))
+            {
+                session_start();
+            }
+            $_SESSION['client'] = $paramsRoute['id'];
+        } else {
+            unset($_SESSION['client']);
+            session_destroy();
+        }
 
         // Store login status.
         $isLoginError = false;
@@ -38,7 +86,7 @@ class LoginController extends AbstractActionController
                 $data = $this->form->getData();
                 // Perform login attempt.
                 $result = $this->authManager->login($data['email'],
-                        $data['password'], $data['remember_me']);
+                        $data['password'], $data['remember']);
                 // Check result.
                 if ($result->getCode()==Result::SUCCESS) {
                     // Get redirect URL.
@@ -55,9 +103,10 @@ class LoginController extends AbstractActionController
                     if(empty($redirectUrl)) {
                         return $this->redirect()->toRoute('home');
                     } else {
-                        $this->redirect()->toUrl($redirectUrl);
+                        return $this->redirect()->toUrl($redirectUrl);
                     }
                 } else {
+                    var_dump("CREDENCIAL INVALIDA");exit;
                     $isLoginError = true;
                 }
             }
@@ -65,6 +114,7 @@ class LoginController extends AbstractActionController
 
         $arrView = array(
             'form' => $this->form,
+            'paramsRoute' => isset($paramsRoute['id']) ? $paramsRoute['id'] : null,
             'isLoginError' => $isLoginError,
             'redirectUrl' => $redirectUrl
         );
