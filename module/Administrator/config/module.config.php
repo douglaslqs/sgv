@@ -8,11 +8,11 @@ use Zend\Router\Http\Segment;
 return [
     'controllers' => [
         'factories' => [
-            Controller\AdministratorController::class => InvokableFactory::class,
-            Controller\LoginController::class => InvokableFactory::class,
+            Controller\IndexController::class => InvokableFactory::class,
+            Controller\LoginController::class => Controller\Factory\LoginFactory::class,
         ],
         'aliases' => [
-            'index' => Controller\AdministratorController::class,
+            'index' => Controller\IndexController::class,
             'login' => Controller\LoginController::class,
         ],
     ],

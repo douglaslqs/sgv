@@ -16,6 +16,16 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-
+    	$app = $e->getApplication();
+	    $app->getEventManager()->attach(
+	        'dispatch',
+	        function($e) {
+	            $routeMatch = $e->getRouteMatch();
+	            $viewModel = $e->getViewModel();
+	            $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
+	            $viewModel->setVariable('action', $routeMatch->getParam('action'));
+	        },
+	        -100
+	    );
     }
 }

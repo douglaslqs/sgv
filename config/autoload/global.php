@@ -21,6 +21,7 @@ $headersObj = apache_request_headers();
 $headers    = (array)$headersObj;
 //$headers['X-Auth-Token'] = 123456;//fixado para teste
 if (isset($headers['Authorization'])) {
+    $headers['Authorization'] = str_replace(array('-',';'), array('',''), $headers['Authorization']);
     $mysqli = new mysqli('localhost', 'root', '', 'client');
     if (mysqli_connect_errno()) trigger_error(mysqli_connect_error());
     $select = "SELECT * FROM access_store
