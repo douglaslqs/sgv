@@ -11,6 +11,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Authentication\Result;
 use Zend\Uri\Uri;
+use Zend\Session\Container;
 
 class AuthController extends AbstractActionController
 {
@@ -39,13 +40,14 @@ class AuthController extends AbstractActionController
     private $form;
     private $logger;
     private $clientTable;
+    private $userTable;
 
     /**
      * Constructor.
      */
-    public function __construct($entityManager, $clientTable, $authManager, $authService)
+    public function __construct($userTable, $clientTable, $authManager, $authService)
     {
-        $this->entityManager = $entityManager;
+        $this->userTable = $userTable;
         $this->clientTable = $clientTable;
         $this->authManager = $authManager;
         $this->authService = $authService;
@@ -53,26 +55,26 @@ class AuthController extends AbstractActionController
 
     public function loginAction()
     {
-        $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
-        if (strlen($redirectUrl)>2048) {
-            throw new \Exception("Too long redirectUrl argument passed");
-        }
-        $this->form->get('redirect_url')->setValue($redirectUrl);
-
         // Store login status.
         $status = false;
         $message = null;
+        $redirectUrl = (string)$this->params()->fromQuery('redirectUrl', '');
+        if (strlen($redirectUrl)>2048) {
+            $message = "Too long redirectUrl argument passed";
+        }
+        $this->form->get('redirect_url')->setValue($redirectUrl);
+
         //VARIFICAR SE CLIENTE EXISTE EM BANCO DE DADOS CLIENT E SETAR O BANCO DELE NA SESSAO
+        $sessionUser = new Container('user');
         $paramsRoute = $this->params()->fromRoute();
         if (isset($paramsRoute['id']) && !empty($paramsRoute['id'])) {
-            $arrClient = $this->clientTable->fetchRow(array("document" => $paramsRoute['id']));
-            if(!isset($_SESSION)) {
-                session_start();
+            if(!$sessionUser->offsetExists('client')) {
+                //$arrClient = $this->clientTable->fetchRow(array("document" => $paramsRoute['id']));
+                //$sessionUser->offsetSet('email', $arrClient['name']);
+                $sessionUser->offsetSet('client', $paramsRoute['id']);
             }
-            $_SESSION['client'] = $paramsRoute['id'];
         } else {
-            unset($_SESSION['client']);
-            session_destroy();
+            $sessionUser->getManager()->getStorage()->clear('user');
             $message = "Você precisa informar o id cliente na URL";
         }
 
@@ -94,6 +96,10 @@ class AuthController extends AbstractActionController
                 } else {
                     // Check result.
                     if ($result->getCode()==Result::SUCCESS) {
+                        //CREATA SESSIONS VALUE
+                        $arrUser = $this->userTable->fetchRow(array("email" => $data['email']));
+                        $sessionUser->offsetSet('email', $arrUser[0]['email']);
+                        $sessionUser->offsetSet('name', $arrUser[0]['name']);
                         // Get redirect URL.
                         $redirectUrl = $this->params()->fromPost('redirect_url', '');
                         // otherwise redirect to Home page.
@@ -133,12 +139,16 @@ class AuthController extends AbstractActionController
     public function logoutAction()
     {
         $this->authService->clearIdentity();
-    	return $this->redirect()->toUrl("login/".$_SESSION['client']);
+        $sessionUser = new Container('user');
+        $idClient = $sessionUser->offsetGet('client');
+        $sessionUser->getManager()->getStorage()->clear();
+    	return $this->redirect()->toUrl("login/".$idClient);
     }
 
     public function sessionExpiredAction()
     {
-        return array();
+        $sessionUser = new Container('user');
+        return array('idClient' => $sessionUser->offsetGet('client'));
     }
 
     public function setForm($form)

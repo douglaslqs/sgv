@@ -8,7 +8,7 @@ namespace Administrator\Controller\Factory;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Administrator\Form\LoginForm;
-use Application\Model\Entity\UserEntity;
+use Application\Model\UserTable;
 use Administrator\Controller\Controller;
 use Application\Service\LoggerService;
 use Administrator\Service\AuthManagerService;
@@ -23,7 +23,8 @@ class AuthFactory implements FactoryInterface
 	    $authenticateService = $container->get(AuthenticationService::class);
 	    $authManager = $container->get(AuthManagerService::class);
 	    $clientTable = $container->get(ClientTable::class);
-	    $controller = new $requestedName(new UserEntity(),$clientTable,$authManager,$authenticateService);
+	    $userTable = $container->get(UserTable::class);
+	    $controller = new $requestedName($userTable,$clientTable,$authManager,$authenticateService);
 	    $controller->setLogger($container->get(LoggerService::class));
 	    $controller->setForm(new LoginForm());
 	    return $controller;
