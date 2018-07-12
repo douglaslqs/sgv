@@ -31,7 +31,7 @@ class LoginForm extends Form
 
 	    $this->add(array(
 	        'name' => 'password',
-    		'type'  => 'text',
+    		'type'  => 'password',
 	        'required' => true,
 	        'attributes' => array(
 	        		'class' => 'form-control',

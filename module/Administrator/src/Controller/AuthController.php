@@ -59,22 +59,23 @@ class AuthController extends AbstractActionController
         }
         $this->form->get('redirect_url')->setValue($redirectUrl);
 
+        // Store login status.
+        $status = false;
+        $message = null;
         //VARIFICAR SE CLIENTE EXISTE EM BANCO DE DADOS CLIENT E SETAR O BANCO DELE NA SESSAO
         $paramsRoute = $this->params()->fromRoute();
         if (isset($paramsRoute['id']) && !empty($paramsRoute['id'])) {
             $arrClient = $this->clientTable->fetchRow(array("document" => $paramsRoute['id']));
-            if(!isset($_SESSION))
-            {
+            if(!isset($_SESSION)) {
                 session_start();
             }
             $_SESSION['client'] = $paramsRoute['id'];
         } else {
             unset($_SESSION['client']);
             session_destroy();
+            $message = "Você precisa informar o id cliente na URL";
         }
 
-        // Store login status.
-        $isLoginError = false;
         // Check if user has submitted the form
         if ($this->getRequest()->isPost()) {
             // Fill in the form with POST data
@@ -87,27 +88,32 @@ class AuthController extends AbstractActionController
                 // Perform login attempt.
                 $result = $this->authManager->login($data['email'],
                         $data['password'], $data['remember']);
-                // Check result.
-                if ($result->getCode()==Result::SUCCESS) {
-                    // Get redirect URL.
-                    $redirectUrl = $this->params()->fromPost('redirect_url', '');
-                    if (!empty($redirectUrl)) {
-                        // The below check is to prevent possible redirect attack
-                        // (if someone tries to redirect user to another domain).
-                        $uri = new Uri($redirectUrl);
-                        if (!$uri->isValid() || $uri->getHost()!=null)
-                            throw new \Exception('Incorrect redirect URL: ' . $redirectUrl);
-                    }
-                    // If redirect URL is provided, redirect the user to that URL;
-                    // otherwise redirect to Home page.
-                    if(empty($redirectUrl)) {
-                        return $this->redirect()->toRoute('home');
-                    } else {
-                        return $this->redirect()->toUrl($redirectUrl);
-                    }
+                if (is_string($result)) {
+                    //Derrubar sessão e criar outra.
+                    $message = "Este usuário já possui uma sessão ativa.";
                 } else {
-                    var_dump("CREDENCIAL INVALIDA");exit;
-                    $isLoginError = true;
+                    // Check result.
+                    if ($result->getCode()==Result::SUCCESS) {
+                        // Get redirect URL.
+                        $redirectUrl = $this->params()->fromPost('redirect_url', '');
+                        // otherwise redirect to Home page.
+                        if(empty($redirectUrl)) {
+                            //return $this->redirect()->toRoute('index');
+                            return $this->redirect()->toUrl("/administrator/index");
+                        } elseif (!empty($redirectUrl)) {
+                            // The below check is to prevent possible redirect attack
+                            // (if someone tries to redirect user to another domain).
+                            $uri = new Uri($redirectUrl);
+                            if (!$uri->isValid() || $uri->getHost()!=null)
+                                $message = 'Incorrect redirect URL: ' . $redirectUrl;
+                        } else {
+                            // If redirect URL is provided, redirect the user to that URL;
+                            return $this->redirect()->toUrl($redirectUrl);
+                        }
+                    } else {
+                        $message = "E-mail e/ou senha inválida";
+                        $status = true;
+                    }
                 }
             }
         }
@@ -115,7 +121,8 @@ class AuthController extends AbstractActionController
         $arrView = array(
             'form' => $this->form,
             'paramsRoute' => isset($paramsRoute['id']) ? $paramsRoute['id'] : null,
-            'isLoginError' => $isLoginError,
+            'status' => $status,
+            'message' => $message,
             'redirectUrl' => $redirectUrl
         );
     	$view = new ViewModel($arrView);
@@ -123,14 +130,15 @@ class AuthController extends AbstractActionController
 	    return $view;
     }
 
-    public function authAction()
-    {
-    	return $this->redirect()->toUrl("/administrator/index");
-    }
-
     public function logoutAction()
     {
-    	return $this->redirect()->toUrl("index");
+        $this->authService->clearIdentity();
+    	return $this->redirect()->toUrl("login/".$_SESSION['client']);
+    }
+
+    public function sessionExpiredAction()
+    {
+        return array();
     }
 
     public function setForm($form)

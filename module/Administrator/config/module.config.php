@@ -23,8 +23,8 @@ return [
                 'options' => [
                     'route'    => '/administrator',
                     'defaults' => [
-                        'controller' => Controller\AuthController::class,
-                        'action'     => 'login',
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'index',
                     ],
                 ],
                 'may_terminate' => true,
@@ -32,13 +32,15 @@ return [
                     'default'   =>[
                         'type'  =>  Segment::class,
                         'options'   =>  [
-                            'route' =>  '/[:controller[/][[/]:action][/:id]]',
+                            'route' =>  '/[:controller[/][[/]:action[/]][[/]:id]]',
                             'constraints'   =>  [
                                 'controller'    =>  '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'        =>  '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id1'           =>  '[0-9_-]*'
                             ],
-                            'defaults'  =>  [],
+                            'defaults'  =>  [
+                                'action'     => 'index',
+                            ],
                         ],
                     ],
                 ],

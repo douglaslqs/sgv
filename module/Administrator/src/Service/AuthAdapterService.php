@@ -85,7 +85,7 @@ class AuthAdapterService implements AdapterInterface
         if ($bcrypt->verify($this->password, $passwordHash)) {
             // Great! The password hash matches. Return user identity (email) to be
             // saved in session for later use.
-            var_dump("autenticou!");exit;
+            //var_dump("autenticou!");exit;
             return new Result(
                     Result::SUCCESS,
                     $this->email,

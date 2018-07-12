@@ -21,12 +21,23 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
+        //VERIFICA SE USUÁRIO ESTÁ LOGADO
     	$app = $e->getApplication();
-	    $app->getEventManager()->attach(
-	        'dispatch',
-	        function($e) {
+        $app->getEventManager()->attach(
+            'dispatch',
+            function($e) {
+                $app = $e->getApplication();
 	            $routeMatch = $e->getRouteMatch();
-	            $viewModel = $e->getViewModel();
+                $authService = $app->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
+                if (empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
+                    $url = $e->getRouter ()->assemble(array("controller" => "auth"),array('name' => 'administrator'));
+                    $response = $e->getResponse ();
+                            $response->setHeaders($response->getHeaders()->addHeaderLine('Location','/administrator/auth/session-expired'));
+                            $response->setStatusCode(302);
+                            $response->sendHeaders();
+                            exit ();
+                }
+                $viewModel = $e->getViewModel();
 	            $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
 	            $viewModel->setVariable('action', $routeMatch->getParam('action'));
 	        },
