@@ -64,11 +64,14 @@ abstract class AbstractTable
 			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
-			$resultSet = $this->tableGateway->selectWith($select)->toArray();
+			$arrResult = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
-			$resultSet = $e->getMessage();
+			return $e->getMessage();
 		}
-		return $resultSet;
+		if (!empty($arrResult)) {
+			return $arrResult[0];
+		}
+		return $arrResult;
 	}
 
 	public function insert($arrData)

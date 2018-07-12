@@ -14,6 +14,7 @@ use Application\Service\LoggerService;
 use Administrator\Service\AuthManagerService;
 use Zend\Authentication\AuthenticationService;
 use Administrator\Model\ClientTable;
+use Zend\Session\Container;
 
 class AuthFactory implements FactoryInterface
 {
@@ -27,6 +28,7 @@ class AuthFactory implements FactoryInterface
 	    $controller = new $requestedName($userTable,$clientTable,$authManager,$authenticateService);
 	    $controller->setLogger($container->get(LoggerService::class));
 	    $controller->setForm(new LoginForm());
+	    $controller->setSessionUser(new Container('user'));
 	    return $controller;
 	}
 }

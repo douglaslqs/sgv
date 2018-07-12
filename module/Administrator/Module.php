@@ -40,6 +40,8 @@ class Module
                 $viewModel = $e->getViewModel();
 	            $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
 	            $viewModel->setVariable('action', $routeMatch->getParam('action'));
+                $sessionUser = new \Zend\Session\Container('user');
+                $viewModel->setVariable('username', $sessionUser->offsetGet('name'));
 	        },
 	        -100
 	    );

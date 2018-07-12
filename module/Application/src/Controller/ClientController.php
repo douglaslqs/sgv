@@ -135,7 +135,7 @@ class ClientController extends AbstractRestfulController
                         $arrWhere = $this->filterService->getArrayWhere();
                         if (isset($arrSet['password']) && isset($arrParams['p_password'])) {
                             //VERIFICAR SENHA ANTES DE ATUALIZAR
-                            if (password_verify($arrParams['p_password'], $client[0]['password'])) {
+                            if (password_verify($arrParams['p_password'], $client['password'])) {
                                 $arrSet['password'] = $this->bcrypt->create($arrSet['password']);
                             } else {
                                 $this->responseService->setCode(ResponseService::CODE_NOT_PARAMS_VALIDATED);
