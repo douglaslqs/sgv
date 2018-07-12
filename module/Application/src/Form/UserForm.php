@@ -121,28 +121,29 @@ class UserForm extends Form
 		        ),
 		    ));
 
-			$inputFilter->add(array(
-		        'name' => $prefixNew.'role',
-		        'required' => $required,
-		        'continue_if_empty' => true,//not empty
-		        'validators' => array(
-		            array(
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 2,
-		                     'max' => 64,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
 		} else {
 			$required = true;
 			$prefixNew = '';
 		}
+		
+		$inputFilter->add(array(
+	        'name' => $prefixNew.'role',
+	        'required' => $required,
+	        'continue_if_empty' => true,//not empty
+	        'validators' => array(
+	            array(
+	                'name' => 'StringLength',
+	                 'options' => array(
+	                     'min' => 2,
+	                     'max' => 64,
+	                     'messages' => array(
+	                         'stringLengthTooShort' => 'Minimun 2 chacacteres not reached',
+	                         'stringLengthTooLong' => 'Maximun 64 chacacteres ultrapassed',
+	                     ),
+	                ),
+	            ),
+	        ),
+	    ));
 
 		$inputFilter->add(array(
 		        'name' => $prefixNew.'password',

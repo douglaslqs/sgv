@@ -15,7 +15,6 @@ class UserTable extends AbstractTable
 	{
 		return array(
                 'email' => isset($arrParams['email']) ? $arrParams['email'] : null,
-                'role' => isset($arrParams['role']) ? $arrParams['role'] : null,
             );
 	}
 }

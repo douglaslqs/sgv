@@ -8,6 +8,7 @@ class UserEntity
 	public $password;
 	public $name;
 	public $phone;
+	public $active;
 	public $date_register;
 
 	public function exchangeArray($data)
@@ -17,6 +18,7 @@ class UserEntity
 		$this->password          = isset($data['password']) ? $data['password'] : null;
 		$this->name              = isset($data['name']) ? $data['name'] : null;
 		$this->phone		     = isset($data['phone']) ? $data['phone'] : null;
+		$this->active		     = isset($data['active']) ? $data['active'] : null;
 		$this->date_register     = isset($data['date_register']) ? $data['date_register'] : null;
 	}
 
