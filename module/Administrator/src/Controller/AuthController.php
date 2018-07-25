@@ -125,7 +125,6 @@ class AuthController extends AbstractActionController
         $view->setTerminal(true);
         $view->setTemplate('administrator/auth/login.phtml');
         return $view;
-        return array('idClient' => $this->sessionUser->offsetGet('client'));
     }
 
     public function setForm(\Administrator\Form\LoginForm $form)

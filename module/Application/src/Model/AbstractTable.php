@@ -31,7 +31,7 @@ abstract class AbstractTable
 				}
 				$arrLikes = array();
 				foreach ($arrFilter as $key => $value) {
-					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
+					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,$value.'%'));
 			    }
 				$select = $sql->select()->where(array(
 						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
