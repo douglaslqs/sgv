@@ -48,7 +48,7 @@ return [
     'controllers' => [
         'factories' => [
             /* controllers que não precisam de factory */
-            //Controller\IndexController::class             => InvokableFactory::class,
+            Controller\IndexController::class             => InvokableFactory::class,
             /* factory padrao. Só precisa escrever o construtor do controller com a dependencia */
             //Controller\IndexController::class => LazyControllerAbstractFactory::class,
             /* factory criada na mão. */

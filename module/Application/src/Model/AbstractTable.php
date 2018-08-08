@@ -31,7 +31,7 @@ abstract class AbstractTable
 				}
 				$arrLikes = array();
 				foreach ($arrFilter as $key => $value) {
-					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,'%'.$value.'%'));
+					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,$value.'%'));
 			    }
 				$select = $sql->select()->where(array(
 						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
@@ -64,11 +64,14 @@ abstract class AbstractTable
 			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
-			$resultSet = $this->tableGateway->selectWith($select)->toArray();
+			$arrResult = $this->tableGateway->selectWith($select)->toArray();
 		} catch (Exception $e) {
-			$resultSet = $e->getMessage();
+			return $e->getMessage();
 		}
-		return $resultSet;
+		if (!empty($arrResult)) {
+			return $arrResult[0];
+		}
+		return $arrResult;
 	}
 
 	public function insert($arrData)

@@ -67,7 +67,7 @@ class AuthAdapterService implements AdapterInterface
                 null,
                 ['Invalid credentials.']);
         }
-        $user = (object)$user[0];
+        $user = (object)$user;
         // If the user with such email exists, we need to check if it is active or retired.
         // Do not allow retired users to log in.
         if ($user->active == 0) {
