@@ -10,10 +10,12 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthFactory::class,
+            Controller\MarcaController::class => Controller\Factory\MarcaFactory::class,
         ],
         'aliases' => [
             'index' => Controller\IndexController::class,
             'auth' => Controller\AuthController::class,
+            'marca' => Controller\MarcaController::class,
         ],
     ],
     'router' => [
