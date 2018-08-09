@@ -72,7 +72,6 @@ class Module
     public function onRenderError(\Zend\Mvc\MvcEvent $e)
     {
         if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
-            var_export($e->getRouteMatch());exit;
             $response = $e->getResponse();
             $cod = $response->getStatusCode();
             $messageError = $response->getReasonPhrase();

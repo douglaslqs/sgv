@@ -15,7 +15,7 @@ return [
         'aliases' => [
             'index' => Controller\IndexController::class,
             'auth' => Controller\AuthController::class,
-            'mark' => Controller\MarkController::class,
+            'adm-mark' => Controller\MarkController::class,
         ],
     ],
     'router' => [

@@ -39,7 +39,6 @@ class ApiRequestService
      */
     public function request()
     {
-        var_dump(self::BASE_URL.$this->getUri());exit;
         $this->objRequest->setUri(self::BASE_URL.$this->getUri());
         $this->objRequest->setMethod($this->getMethod());
         if ($this->getMethod() === self::METHOD_POST) {
@@ -49,7 +48,6 @@ class ApiRequestService
         }
         //var_dump($this->objRequest->getQuery());exit;
         $response = $this->objClient->dispatch($this->objRequest);
-        var_export($response->getContent());exit;
         return json_decode($response->getBody(), true);
     }
 
