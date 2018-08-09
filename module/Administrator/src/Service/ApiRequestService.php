@@ -17,6 +17,9 @@ class ApiRequestService
     const METHOD_POST = 'POST';
     const METHOD_GET = 'GET';
 
+    const BASE_URL = 'http://sgv.local/store/';
+    
+
     /**
      * Constructor.
      */
@@ -25,7 +28,8 @@ class ApiRequestService
         $this->objRequest = new Request();
         $this->objClient = new Client();
         $this->objRequest->getHeaders()->addHeaders(array(
-            'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8'
+            'Content-Type' => 'application/json; charset=UTF-8',
+            'Authorization' => '123456',
         ));
     }
 
@@ -35,14 +39,16 @@ class ApiRequestService
      */
     public function request()
     {
-        $this->objRequest->setUri($this->getUri());
+        $this->objRequest->setUri(self::BASE_URL.$this->getUri());
         $this->objRequest->setMethod($this->getMethod());
-        if ($this->getMethod === self::METHOD_POST) {
+        if ($this->getMethod() === self::METHOD_POST) {
             $this->objRequest->setPost(new Parameters($this->getParameters()));
         } else {
-            $this->objRequest->setGet(new Parameters($this->getParameters()));
+            //$this->objRequest->setQuery(new Parameters($this->getParameters()));
         }
+        //var_dump($this->objRequest->getQuery());exit;
         $response = $this->objClient->dispatch($this->objRequest);
+        echo $response->getContent();exit;
         return json_decode($response->getBody(), true);
     }
 
@@ -53,7 +59,7 @@ class ApiRequestService
 
     public function getUri()
     {
-        return $strUri;
+        return $this->strUri;
     }
 
     public function setMethod($strMethod)
@@ -63,7 +69,7 @@ class ApiRequestService
 
     public function getMethod()
     {
-        return $strMethod;
+        return $this->strMethod;
     }
 
     public function setParameters(array $arrParameters)
