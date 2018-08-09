@@ -14,6 +14,8 @@ use Administrator\Model\ClientTable;
 
 class Module
 {
+    const NAME_MODEL = 'administrator';
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -29,7 +31,7 @@ class Module
                 $app = $e->getApplication();
 	            $routeMatch = $e->getRouteMatch();
                 $authService = $app->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
-                if (empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
+                if ($routeMatch->getMatchedRouteName()===self::NAME_MODEL && empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
                     $url = $e->getRouter ()->assemble(array("controller" => "auth"),array('name' => 'administrator'));
                     $response = $e->getResponse ();
                             $response->setHeaders($response->getHeaders()->addHeaderLine('Location','/administrator/auth/session-expired'));

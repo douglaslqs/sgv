@@ -16,8 +16,8 @@ class MarkController extends AbstractActionController
     private $logger;
     private $objApiRequest;
 
-    const URL_GET = 'mark/get';
-    const URL_ADD = 'mark/add';
+    const URL_GET    = 'mark/get';
+    const URL_ADD    = 'mark/add';
     const URL_UPDATE = 'mark/update';
 
     public function __construct(ApiRequestService $objApiRequest)
