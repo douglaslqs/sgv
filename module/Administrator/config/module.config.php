@@ -65,6 +65,7 @@ return [
             \Zend\Authentication\AuthenticationService::class=>Service\Factory\AuthenticationFactory::class,
             Service\AuthManagerService::class=>Service\Factory\AuthManagerFactory::class,
             Service\AuthAdapterService::class=>Service\Factory\AuthAdapterFactory::class,
+            Service\ApiRequestService::class=>Service\Factory\ApiRequestFactory::class,
         ],
     ],
     'view_manager' => [

@@ -9,15 +9,23 @@ namespace Administrator\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Administrator\Service\ApiRequestService;
 
 class MarkController extends AbstractActionController
 {
     private $logger;
+    private $objApiRequest;
 
-   public function indexAction()
-   {
+    public function __construct(ApiRequestService $objApiRequest)
+    {
+    	$this->objApiRequest = $objApiRequest;
+    }
+
+   	public function indexAction()
+   	{
+   		var_dump($this->objApiRequest);exit;
 		return array();
-   }
+   	}
 
     public function setLogger(\Application\Service\LoggerService $logger)
     {
