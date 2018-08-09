@@ -10,7 +10,7 @@ namespace Administrator\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class MarcaController extends AbstractActionController
+class MarkController extends AbstractActionController
 {
     private $logger;
 
