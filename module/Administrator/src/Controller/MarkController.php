@@ -27,10 +27,16 @@ class MarkController extends AbstractActionController
 
    	public function indexAction()
    	{
-   		$this->objApiRequest->setUri(self::URL_GET);
-   		$arrResponse = $this->objApiRequest->request();
-   		var_dump($arrResponse);exit;
-		return array();
+      $this->objApiRequest->setUri(self::URL_GET);
+      $arrResponse = array();
+      try {
+        $arrResponse = $this->objApiRequest->request();
+      } catch (Exception $e) {
+        $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+        $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
+      }
+      $view = new ViewModel(array('data' => $arrResponse));
+      return $view;
    	}
 
     public function setLogger(\Application\Service\LoggerService $logger)

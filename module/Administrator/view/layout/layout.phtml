@@ -8,7 +8,7 @@
             ->appendName('viewport', 'width=device-width, initial-scale=1.0, user-scalable=no')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
-
+        <!-- DataTables -->
         <!-- Le styles -->
         <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
             ->prependStylesheet($this->basePath('dist/css/skins/_all-skins.min.css'))
@@ -17,6 +17,7 @@
             ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
             ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
         ?>
+        <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -188,6 +189,8 @@
   <?php echo $this->partial('partial/menu.phtml');?>
 
   <!-- =============================================== -->
+  
+  <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -244,6 +247,23 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
+
+<!-- === -->
+<!-- jQuery 3 -->
+<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="../../bower_components/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
 
 </body>
 </html>
