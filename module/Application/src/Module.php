@@ -66,10 +66,10 @@ class Module
         $em = $application->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
-        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
     }
 
-    public function onRenderError(\Zend\Mvc\MvcEvent $e)
+    public function onRender(\Zend\Mvc\MvcEvent $e)
     {
         if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
             $response = $e->getResponse();

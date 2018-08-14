@@ -23,8 +23,12 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        //VERIFICA SE USUÁRIO ESTÁ LOGADO
+        //ATTACHS
     	$app = $e->getApplication();
+        $em = $app->getEventManager();        
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
+
+        //VERIFICA SE USUÁRIO ESTÁ LOGADO
         $app->getEventManager()->attach(
             'dispatch',
             function($e) {
@@ -49,7 +53,13 @@ class Module
 	    );
     }
 
-     public function getServiceConfig()
+    public function onRender(\Zend\Mvc\MvcEvent $e)
+    {
+        //$viewModel = $e->getViewModel();
+        //var_dump($e->get);exit;
+    }
+
+    public function getServiceConfig()
     {
     	return array(
     		'factories' => array(
