@@ -44,7 +44,7 @@ class ApiRequestService
         if ($this->getMethod() === self::METHOD_POST) {
             $this->objRequest->setPost(new Parameters($this->getParameters()));
         } else {
-            //$this->objRequest->setQuery(new Parameters($this->getParameters()));
+            $this->objRequest->setQuery(new Parameters($this->getParameters()));
         }
         //var_dump($this->objRequest->getQuery());exit;
         $response = $this->objClient->dispatch($this->objRequest);

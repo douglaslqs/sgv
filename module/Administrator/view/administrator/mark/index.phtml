@@ -12,6 +12,7 @@
 		  <div class="box">
 			<div class="box-header">
 			  <h3 class="box-title">Lista de Marcas</h3>
+			  <button class="btn btn-primary" id="btn-register" style="float: right;">Cadastrar</button>
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body">
@@ -58,13 +59,35 @@
                 <h4 class="modal-title" id="title-modal">Editar Marca</h4>
               </div>
               <div class="modal-body">
-              	<div class="text-center" id="div-loading-modal">
+              	<div class="text-center" id="modal-div-loading">
                 	<img src="/img/loading-medium.gif">
               	</div>
+
+              	<div id="modal-div-form">
+	              	<!-- form start -->
+		            <form role="form">
+		              <div class="box-body">
+		                <div class="form-group col-lg-7">
+		                  <label for="inp-name">Nome</label>
+		                  <input type="text" class="form-control" id="inp-name" placeholder="Enter name">
+		                </div>
+		                <br>
+		                <div class="checkbox col-lg-5">
+		                  <label>
+		                    <input type="checkbox" id="chk-active"> Ativo
+		                  </label>
+		                </div>
+		              </div>
+		              <!-- /.box-body -->
+		            </form>
+
+              	</div>
+
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-primary">Salvar alterações</button>
+                <button type="button" class="btn btn-primary" id="btn-save">Salvar alterações</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -79,35 +102,9 @@
 
 <!-- page script -->
 <!-- DataTables -->
-<script src="../../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="../../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script>
-	$(document).ready(function() {
-		//$('#table-data').DataTable()
-		$('#table-data').DataTable({
-			//'paging'      : true,
-			//'lengthChange': false,
-			//'searching'   : true,
-			//'ordering'    : true,
-			//'info'        : true,
-			//'autoWidth'   : false
-		})
-	});
-
-	$('#table-data').on('click', 'tr', function () {
-		var mark = $(this).find('td').eq(0).text();
-		$.ajax({
-		  url: "marks/get",
-		  type: "POST",
-		  data: {name : mark},
-		  //dataType: "json"
-		}).done(function(dataReturn) {
-		  console.log(dataReturn);
-		}).fail(function(jqXHR, textStatus) {
-			console.log(jqXHR);
-			console.log(textStatus);
-		  alert( "Request failed: " + textStatus );
-		});
-  });
-		$("#modal-default").modal('show');
-</script>
+<?php
+  	echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/page-mark.js')
+            ->prependFile($this->basePath() . '/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
+            ->prependFile($this->basePath() . '/bower_components/datatables.net/js/jquery.dataTables.min.js')
+?>
