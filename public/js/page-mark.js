@@ -8,7 +8,7 @@ $('#table-data').DataTable({
 });
 $("#table-data tr").css('cursor', 'pointer');
 
-var current_mark; 
+var current_mark;
 $('#table-data tbody').on('click', 'tr', function () {
 	$("#modal-load").modal('show');
 	$("#modal-title").html("Editar");
@@ -75,11 +75,16 @@ $('#btn-save').click(function (event) {
 	$("#modal-load").modal('show');
 	var new_mark = $("#inp-name").val();
 	var operation = $(this).attr('operation');
+	if (operation === 'update') {
+		var data = {new_name: new_mark, name: current_mark, new_active: active};
+	} else {
+		var data = {name: new_mark, active: active};
+	}
 	if (new_mark !== "") {
 		$.ajax({
 			url: "marks/"+operation,
 			type: "POST",
-			data: {new_name: new_mark, name: current_mark, new_active: active},
+			data: data,
 			dataType: "json"
 		}).done(function(dataReturn) {
 				console.log(dataReturn);
@@ -97,7 +102,7 @@ $('#btn-save').click(function (event) {
 			console.log(jqXHR);
 			console.log(textStatus);
 			$("#modal-load").modal('hide');
-		  	alert( "Request failed: " + textStatus );
+		  	alert("Request failed: " + textStatus );
 		});
 	} else {
 		$("#modal-load").modal('hide');

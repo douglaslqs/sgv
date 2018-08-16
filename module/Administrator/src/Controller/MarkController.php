@@ -57,7 +57,7 @@ class MarkController extends AbstractActionController
     {
         $this->objApiRequest->setUri(self::URL_ADD);
         $this->objApiRequest->setParameters($_POST);
-        $this->objRequest->setMethod(ApiRequestService::METHOD_POST);
+        $this->objApiRequest->setMethod(ApiRequestService::METHOD_POST);
         $arrResponse = array();
         try {
             $arrResponse = $this->objApiRequest->request();
