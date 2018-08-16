@@ -227,6 +227,33 @@ $arrResponse = isset($child->response) ? $child->response : array();
       </div>
 <?php endif; ?>
         <?= $this->content ?>
+        <!-- MODAL LOADING  -->
+        <div class="modal fade" id="modal-load" backdrop='false'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-load-title" id="title-modal">Por favor, aguarde um instante</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="modal-load-div-loading">
+                            <img src="/img/loading-medium.gif">
+                            <br>
+                            <span>Carregando...</span>
+                        </div>
+                    </div>
+                </div>
+            <!-- /.modal-content -->
+            </div>
+        <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+        <script type="text/javascript">
+            $("#modal-load").modal({
+                keyboard: false,
+                backdrop: false,
+                show: false
+            });
+        </script>
 
      <!-- <div class="callout callout-info">
         <h4>Tip!</h4>

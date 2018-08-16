@@ -1,20 +1,18 @@
-$(document).ready(function() {
-	//$('#table-data').DataTable()
-	$('#table-data').DataTable({
-		//'paging'      : true,
-		//'lengthChange': false,
-		//'searching'   : true,
-		//'ordering'    : true,
-		//'info'        : true,
-		//'autoWidth'   : false
-	})
+$('#table-data').DataTable({
+	//'paging'      : true,
+	//'lengthChange': false,
+	//'searching'   : true,
+	//'ordering'    : true,
+	//'info'        : true,
+	//'autoWidth'   : false
 });
 $("#table-data tr").css('cursor', 'pointer');
 
+var current_mark; 
 $('#table-data tbody').on('click', 'tr', function () {
-	$("#modal-div-loading").show();
-	$("#modal-div-form").hide();
+	$("#modal-load").modal('show');
 	$("#modal-title").html("Editar");
+	$("#btn-save").attr('operation', 'update');
 	$("#btn-save").text("Salvar alterações");
 	var mark = $(this).find('td').eq(0).text();
 	if (mark !== "") {
@@ -28,12 +26,12 @@ $('#table-data tbody').on('click', 'tr', function () {
 			if (!$.isEmptyObject(dataReturn.data)) {
 				var data = dataReturn.data[0];
 				$("#inp-name").val(data.name);
+				current_mark = data.name;
 				if (data.active === "1") {
 					$("#chk-active").prop('checked', true);
 				} else {
 					$("#chk-active").prop('checked', false);
 				}
-				$("#modal-div-form").show();
 			} else {
 				if (!$.isEmptyObject(dataReturn.result)) {
 					if (dataReturn.result.code === 0) {
@@ -45,23 +43,64 @@ $('#table-data tbody').on('click', 'tr', function () {
 					alert("Retorno inesperado!");
 				}
 			}
-			$("#modal-div-loading").hide();
+			$("#modal-load").modal('hide');
 		}).fail(function(jqXHR, textStatus) {
 			console.log(jqXHR);
 			console.log(textStatus);
+			$("#modal-load").modal('hide');
 		  	alert( "Request failed: " + textStatus );
 		});
 	} else {
+		$("#modal-load").modal('hide');
 		alert("Valor não encontrado!");
 	}
-	});
+});
 
-	$("#btn-register").click(function(event) {
-		event.preventDefault();
-		$("#modal-div-loading").hide();
-		$("#modal-title").html("Cadastrar");
+$("#btn-register").click(function(event) {
+	event.preventDefault();
+	$("#modal-title").html("Cadastrar");
+	$("#btn-save").attr('operation', 'add');
 	$("#btn-save").text("Salvar");
 	$("#inp-name").val("");
 	$("#chk-active").prop("checked", false);
-		$("#modal-default").modal("show");
-	});
+	$("#modal-default").modal("show");
+});
+
+$('#btn-save').click(function (event) {
+	event.preventDefault();
+	var active = 0;
+	if ($("#chk-active").is(':checked')) {
+		active = 1;
+	}
+	$("#modal-load").modal('show');
+	var new_mark = $("#inp-name").val();
+	var operation = $(this).attr('operation');
+	if (new_mark !== "") {
+		$.ajax({
+			url: "marks/"+operation,
+			type: "POST",
+			data: {new_name: new_mark, name: current_mark, new_active: active},
+			dataType: "json"
+		}).done(function(dataReturn) {
+				console.log(dataReturn);
+			if (!$.isEmptyObject(dataReturn.response)) {
+				alert(dataReturn.response.message)
+				if (dataReturn.response.code === 0) {
+					$("#modal-default").modal('hide');
+					location.reload();
+				}
+			} else {
+				alert("Retorno inesperado!");
+			}
+			$("#modal-load").modal('hide');
+		}).fail(function(jqXHR, textStatus) {
+			console.log(jqXHR);
+			console.log(textStatus);
+			$("#modal-load").modal('hide');
+		  	alert( "Request failed: " + textStatus );
+		});
+	} else {
+		$("#modal-load").modal('hide');
+		alert("Informe o nome da Marca!");
+	}
+});

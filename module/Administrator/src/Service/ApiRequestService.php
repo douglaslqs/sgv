@@ -27,10 +27,6 @@ class ApiRequestService
     {
         $this->objRequest = new Request();
         $this->objClient = new Client();
-        $this->objRequest->getHeaders()->addHeaders(array(
-            'Content-Type' => 'application/json; charset=UTF-8',
-            'Authorization' => '123456',
-        ));
     }
 
     /**
@@ -39,13 +35,16 @@ class ApiRequestService
      */
     public function request()
     {
+        $arrHeader = array('Authorization' => '123456');
         $this->objRequest->setUri(self::BASE_URL.$this->getUri());
         $this->objRequest->setMethod($this->getMethod());
         if ($this->getMethod() === self::METHOD_POST) {
             $this->objRequest->setPost(new Parameters($this->getParameters()));
         } else {
+            $arrHeader['Content-Type'] = 'application/json; charset=UTF-8';
             $this->objRequest->setQuery(new Parameters($this->getParameters()));
         }
+        $this->objRequest->getHeaders()->addHeaders($arrHeader);
         //var_dump($this->objRequest->getQuery());exit;
         $response = $this->objClient->dispatch($this->objRequest);
         return json_decode($response->getBody(), true);

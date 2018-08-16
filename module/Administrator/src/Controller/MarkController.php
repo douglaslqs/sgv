@@ -53,6 +53,38 @@ class MarkController extends AbstractActionController
         echo json_encode($arrResponse);exit;
     }
 
+    public function addAction()
+    {
+        $this->objApiRequest->setUri(self::URL_ADD);
+        $this->objApiRequest->setParameters($_POST);
+        $this->objRequest->setMethod(ApiRequestService::METHOD_POST);
+        $arrResponse = array();
+        try {
+            $arrResponse = $this->objApiRequest->request();
+        } catch (Exception $e) {
+            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+            $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
+            $arrResponse['message'] = $e->getMessage();
+        }
+        echo json_encode($arrResponse);exit;
+    }
+
+    public function updateAction()
+    {
+        $this->objApiRequest->setUri(self::URL_UPDATE);
+        $this->objApiRequest->setParameters($_POST);
+        $this->objApiRequest->setMethod(ApiRequestService::METHOD_POST);
+        $arrResponse = array();
+        try {
+            $arrResponse = $this->objApiRequest->request();
+        } catch (Exception $e) {
+            $this->logger->setMethodAndLine(__METHOD__, __LINE__);
+            $this->logger->save(Logger::LOG_APPLICATION, Logger::CRITICAL ,$e->getMessage());
+            $arrResponse['message'] = $e->getMessage();
+        }
+        echo json_encode($arrResponse);exit;
+    }
+
     public function setLogger(\Application\Service\LoggerService $logger)
     {
         $this->logger = $logger;
