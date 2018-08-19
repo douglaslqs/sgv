@@ -17,7 +17,7 @@
             ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
             ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
         ?>
-        
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -55,6 +55,17 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Locate US -->
+          <li class="dropdown messages-menu">
+            <a href="/administrator/location?locate=en_US&redirect=/administrator/marks">
+              <i class="fa fa-language">Inglês</i>
+            </a>
+          </li>
+          <li class="dropdown messages-menu">
+            <a href="/administrator/location?locate=pt_BR&redirect=/administrator/marks">
+              <i class="fa fa-language">Português</i>
+            </a>
+          </li>
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

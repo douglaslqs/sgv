@@ -11,11 +11,13 @@ return [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthFactory::class,
             Controller\MarkController::class => Controller\Factory\MarkFactory::class,
+            Controller\LocationController::class => Controller\Factory\LocationFactory::class,
         ],
         'aliases' => [
             'index' => Controller\IndexController::class,
             'auth' => Controller\AuthController::class,
             'marks' => Controller\MarkController::class,
+            'location' => Controller\LocationController::class,
         ],
     ],
     'router' => [
@@ -66,6 +68,12 @@ return [
             Service\AuthManagerService::class=>Service\Factory\AuthManagerFactory::class,
             Service\AuthAdapterService::class=>Service\Factory\AuthAdapterFactory::class,
             Service\ApiRequestService::class=>Service\Factory\ApiRequestFactory::class,
+            \Zend\I18n\Translator\TranslatorInterface::class => \Zend\I18n\Translator\TranslatorServiceFactory::class,
+        ],
+    ],
+    'controller_plugins' => [
+        'invokables' => [
+            'translate' => \Zend\I18n\View\Helper\Translate::class
         ],
     ],
     'view_manager' => [
@@ -84,4 +92,14 @@ return [
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
     ],
+    'translator' => [
+        'locale' => 'pt_BR',
+        'translation_file_patterns' => [
+            [
+                'type'     => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern'  => '%s.mo',
+            ],
+        ],
+],
 ];
