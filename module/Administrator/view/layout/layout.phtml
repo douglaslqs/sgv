@@ -17,7 +17,7 @@
             ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
             ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
         ?>
-        <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -195,7 +195,7 @@
   <!-- AdminLTE App -->
 <!--  <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script> -->
   <?php
-  echo $this->headScript()
+        $this->headScript()
             ->prependFile($this->basePath() . '/dist/js/adminlte.min.js')
             ->prependFile($this->basePath() . '/bower_components/fastclick/lib/fastclick.js')
             ->prependFile($this->basePath() . '/bower_components/bootstrap/dist/js/bootstrap.min.js')
@@ -247,13 +247,6 @@ $arrResponse = isset($child->response) ? $child->response : array();
         <!-- /.modal-dialog -->
         </div>
         <!-- /.modal -->
-        <script type="text/javascript">
-            $("#modal-load").modal({
-                keyboard: false,
-                backdrop: false,
-                show: false
-            });
-        </script>
 
      <!-- <div class="callout callout-info">
         <h4>Tip!</h4>
@@ -302,7 +295,17 @@ $arrResponse = isset($child->response) ? $child->response : array();
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+<?php
+    echo $this->headScript();
+?>
+<!-- Config modal load -->
+<script type="text/javascript">
+    $("#modal-load").modal({
+        keyboard: false,
+        backdrop: false,
+        show: false
+    });
+</script>
 <!-- === -->
 </body>
 </html>

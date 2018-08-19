@@ -12,7 +12,7 @@ var current_mark;
 $('#table-data tbody').on('click', 'tr', function () {
 	$("#modal-load").modal('show');
 	$("#modal-title").html("Editar");
-	$("#btn-save").attr('operation', 'update');
+	$("#form-data").attr('operation', 'update');
 	$("#btn-save").text("Salvar alterações");
 	var mark = $(this).find('td').eq(0).text();
 	if (mark !== "") {
@@ -56,31 +56,32 @@ $('#table-data tbody').on('click', 'tr', function () {
 	}
 });
 
-$("#btn-register").click(function(event) {
-	event.preventDefault();
+$("#btn-register").click(function(e) {
+	e.preventDefault();
 	$("#modal-title").html("Cadastrar");
-	$("#btn-save").attr('operation', 'add');
+	$("#form-data").attr('operation', 'add');
 	$("#btn-save").text("Salvar");
 	$("#inp-name").val("");
 	$("#chk-active").prop("checked", false);
 	$("#modal-default").modal("show");
 });
 
-$('#btn-save').click(function (event) {
-	event.preventDefault();
-	var active = 0;
-	if ($("#chk-active").is(':checked')) {
-		active = 1;
-	}
-	$("#modal-load").modal('show');
-	var new_mark = $("#inp-name").val();
-	var operation = $(this).attr('operation');
-	if (operation === 'update') {
-		var data = {new_name: new_mark, name: current_mark, new_active: active};
-	} else {
-		var data = {name: new_mark, active: active};
-	}
-	if (new_mark !== "") {
+$("#form-data").validator();
+$("#form-data").on("submit", function(e) {
+	//Se o validador não impedir o evento do form
+	if ($(this).find('.has-error').length===0) {
+		var active = 0;
+		if ($("#chk-active").is(':checked')) {
+			active = 1;
+		}
+		$("#modal-load").modal('show');
+		var new_mark = $("#inp-name").val();
+		var operation = $(this).attr('operation');
+		if (operation === 'update') {
+			var data = {new_name: new_mark, name: current_mark, new_active: active};
+		} else {
+			var data = {name: new_mark, active: active};
+		}
 		$.ajax({
 			url: "marks/"+operation,
 			type: "POST",
@@ -104,8 +105,5 @@ $('#btn-save').click(function (event) {
 			$("#modal-load").modal('hide');
 		  	alert("Request failed: " + textStatus );
 		});
-	} else {
-		$("#modal-load").modal('hide');
-		alert("Informe o nome da Marca!");
 	}
 });

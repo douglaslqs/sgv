@@ -14,7 +14,7 @@ use Administrator\Model\ClientTable;
 
 class Module
 {
-    const NAME_MODEL = 'administrator';
+    const NAME_MODULE = 'administrator';
 
     public function getConfig()
     {
@@ -25,7 +25,7 @@ class Module
     {
         //ATTACHS
     	$app = $e->getApplication();
-        $em = $app->getEventManager();        
+        $em = $app->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
 
         //VERIFICA SE USUÁRIO ESTÁ LOGADO
@@ -35,7 +35,7 @@ class Module
                 $app = $e->getApplication();
 	            $routeMatch = $e->getRouteMatch();
                 $authService = $app->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
-                if ($routeMatch->getMatchedRouteName()===self::NAME_MODEL && empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
+                if (strpos($routeMatch->getMatchedRouteName(), self::NAME_MODULE) !== false && empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
                     $url = $e->getRouter ()->assemble(array("controller" => "auth"),array('name' => 'administrator'));
                     $response = $e->getResponse ();
                             $response->setHeaders($response->getHeaders()->addHeaderLine('Location','/administrator/auth/session-expired'));

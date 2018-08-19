@@ -61,12 +61,12 @@
               <div class="modal-body">
               	<div id="modal-div-form">
 	              	<!-- form start -->
-		            <form id="form-data" role="form" onsubmit="return false;">
+		            <form id="form-data" data-toggle="validator" role="form">
 		              <div class="box-body">
 		                <div class="form-group col-lg-7">
 		                  <label for="inp-name">Nome</label>
-		                  <input type="text" class="form-control" id="inp-name" placeholder="Enter name" data-error="Este campo não pode ser vazio" required>
-		                  <div class="help-block with-errors"></div>
+		                  <input type="text" class="form-control" id="inp-name" placeholder="Enter name" required>
+		                  <div class="help-block with-errors">Este campo não pode ser vazio</div>
 		                </div>
 		                <br>
 		                <div class="checkbox col-lg-5">
@@ -83,12 +83,10 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Fechar</button>
-                <div class="form-group">
-                	<button type="submit" class="btn btn-primary">Salvar alterações</button>
-            	</div>
+                <button type="submit" class="btn btn-primary" id="btn-save">Salvar alterações</button>
               </div>
 
-	            	</form>
+	            	</form>170820184211374
             </div>
             <!-- /.modal-content -->
           </div>
@@ -100,7 +98,7 @@
 	<!-- /.content -->
 </div>
 
-<!-- page script and css -->
+<!-- page script -->
 <!-- DataTables -->
 <?php
   	//echo
@@ -109,5 +107,4 @@
   			->prependFile($this->basePath() . '/js/bootstrap-validator.min.js')
             ->prependFile($this->basePath() . '/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js')
             ->prependFile($this->basePath() . '/bower_components/datatables.net/js/jquery.dataTables.min.js');
-            $this->headLink()->prependStylesheet($this->basePath() . '/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css');
 ?>
