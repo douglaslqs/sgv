@@ -8,32 +8,16 @@
             ->appendName('viewport', 'width=device-width, initial-scale=1.0, user-scalable=no')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
-
+        <!-- DataTables -->
         <!-- Le styles -->
         <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-            ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
-            ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
-            ->prependStylesheet($this->basePath('bower_components/Ionicons/css/ionicons.min.css'))
-            ->prependStylesheet($this->basePath('dist/css/AdminLTE.min.css'))
             ->prependStylesheet($this->basePath('dist/css/skins/_all-skins.min.css'))
+            ->prependStylesheet($this->basePath('dist/css/AdminLTE.min.css'))
+            ->prependStylesheet($this->basePath('bower_components/Ionicons/css/ionicons.min.css'))
+            ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
+            ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
         ?>
-
-       
-
-
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+        
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,9 +37,9 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a href="../../administrator" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>SGV</span>
+      <span class="logo-mini"><b>SGV</b></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>SGV</b> ADMIN</span>
     </a>
@@ -204,15 +188,65 @@
 
   <?php echo $this->partial('partial/menu.phtml');?>
 
+  <!-- scripts default -->
+  <!-- jQuery 3 -->
+  <!-- Bootstrap 3.3.7 -->
+  <!-- FastClick -->
+  <!-- AdminLTE App -->
+<!--  <script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script> -->
+  <?php
+        $this->headScript()
+            ->prependFile($this->basePath() . '/dist/js/adminlte.min.js')
+            ->prependFile($this->basePath() . '/bower_components/fastclick/lib/fastclick.js')
+            ->prependFile($this->basePath() . '/bower_components/bootstrap/dist/js/bootstrap.min.js')
+            ->prependFile($this->basePath() . '/bower_components/jquery/dist/jquery.min.js');
+   ?>
   <!-- =============================================== -->
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
+<?php
+//TRATA RETORNO DA API
+$children = $this->viewModel()->getCurrent()->getChildren();
+foreach($children as $child) {
+    if ($child->captureTo() === 'content') {
+        break;
+    }
+}
+$arrResponse = isset($child->response) ? $child->response : array();
+?>
 
+<?php if (!empty($arrResponse) && $arrResponse['code'] !== 0) : ?>
     <!-- Main content -->
     <section class="content">
-      <?= $this->content ?>
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h4><i class="icon fa fa-warning"></i> <?= $arrResponse['type'] ?>!</h4>
+                <?= $arrResponse['message'] ?>
+      </div>
+<?php endif; ?>
+        <?= $this->content ?>
+        <!-- MODAL LOADING  -->
+        <div class="modal fade" id="modal-load" backdrop='false'>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-load-title" id="title-modal">Por favor, aguarde um instante</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center" id="modal-load-div-loading">
+                            <img src="/img/loading-medium.gif">
+                            <br>
+                            <span>Carregando...</span>
+                        </div>
+                    </div>
+                </div>
+            <!-- /.modal-content -->
+            </div>
+        <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 
      <!-- <div class="callout callout-info">
         <h4>Tip!</h4>
@@ -261,6 +295,17 @@
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
+<?php
+    echo $this->headScript();
+?>
+<!-- Config modal load -->
+<script type="text/javascript">
+    $("#modal-load").modal({
+        keyboard: false,
+        backdrop: false,
+        show: false
+    });
+</script>
+<!-- === -->
 </body>
 </html>

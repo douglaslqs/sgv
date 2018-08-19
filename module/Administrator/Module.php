@@ -14,6 +14,8 @@ use Administrator\Model\ClientTable;
 
 class Module
 {
+    const NAME_MODULE = 'administrator';
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -21,15 +23,19 @@ class Module
 
     public function onBootstrap(\Zend\Mvc\MvcEvent $e)
     {
-        //VERIFICA SE USUÁRIO ESTÁ LOGADO
+        //ATTACHS
     	$app = $e->getApplication();
+        $em = $app->getEventManager();
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
+
+        //VERIFICA SE USUÁRIO ESTÁ LOGADO
         $app->getEventManager()->attach(
             'dispatch',
             function($e) {
                 $app = $e->getApplication();
 	            $routeMatch = $e->getRouteMatch();
                 $authService = $app->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
-                if (empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
+                if (strpos($routeMatch->getMatchedRouteName(), self::NAME_MODULE) !== false && empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
                     $url = $e->getRouter ()->assemble(array("controller" => "auth"),array('name' => 'administrator'));
                     $response = $e->getResponse ();
                             $response->setHeaders($response->getHeaders()->addHeaderLine('Location','/administrator/auth/session-expired'));
@@ -47,7 +53,13 @@ class Module
 	    );
     }
 
-     public function getServiceConfig()
+    public function onRender(\Zend\Mvc\MvcEvent $e)
+    {
+        //$viewModel = $e->getViewModel();
+        //var_dump($e->get);exit;
+    }
+
+    public function getServiceConfig()
     {
     	return array(
     		'factories' => array(

@@ -55,7 +55,7 @@ class Module
 {
     const VERSION = '3.0.2';
 
-    const NAME_MODEL = 'store';
+    const NAME_MODULE = 'store';
 
     private $usernameDb;
 
@@ -66,12 +66,13 @@ class Module
         $em = $application->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'));
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_ROUTE, array($this, 'onRoute'));
-        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRenderError'));
+        $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
     }
 
-    public function onRenderError(\Zend\Mvc\MvcEvent $e)
+    public function onRender(\Zend\Mvc\MvcEvent $e)
     {
-        if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
+        $routeName = $e->getRouteMatch()->getMatchedRouteName();
+        if ($e->getRouteMatch() !== null && strpos($routeName, self::NAME_MODULE) !== false) {
             $response = $e->getResponse();
             $cod = $response->getStatusCode();
             $messageError = $response->getReasonPhrase();
@@ -98,7 +99,8 @@ class Module
 
     public function onDispatchError(\Zend\Mvc\MvcEvent $e)
     {
-        if ($e->isError() && $e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
+        $routeName = $e->getRouteMatch()->getMatchedRouteName();
+        if ($e->isError() && $e->getRouteMatch() !== null && strpos($routeName, self::NAME_MODULE) !== false) {
             $responseService = $e->getApplication()->getServiceManager()->get(ResponseService::class);
             if (empty($responseService->getCode())) {
                 $responseService->setCode(ResponseService::CODE_ERROR);
@@ -128,7 +130,8 @@ class Module
          * Tratamento para verificar se o usuário tem acesso ao banco de dados
          * Verificamos o $username para saber se o token é valido ou se nao existe token
          */
-        if ($e->getRouteMatch() !== null && $e->getRouteMatch()->getMatchedRouteName()===self::NAME_MODEL) {
+        $routeName = $e->getRouteMatch()->getMatchedRouteName();
+        if ($e->getRouteMatch() !== null && strpos($routeName, self::NAME_MODULE) !== false) {
             $application = $e->getApplication();
             $serviceManager = $application->getServiceManager();
             $config = $serviceManager->get('Config');
@@ -166,7 +169,7 @@ class Module
                 $arrRouteParams = $e->getRouteMatch()->getParams();
                 $strControllerName = $arrRouteParams['controller'];
                 $strActionName = $arrRouteParams['action'];
-                $strModuleController = $e->getRouteMatch()->getMatchedRouteName().'/'.$strControllerName;
+                $strModuleController = self::NAME_MODULE.'/'.$strControllerName;
                 if (!empty($objAclService->getRole()) && $objAclService->getRole() != 'admin') {
                     if (!$objAclService->getObjAcl()->hasResource($strModuleController) || !$objAclService->getObjAcl()->isAllowed($objAclService->getRole(),$strModuleController,$strActionName)) {
                         $responseService= $e->getApplication()->getServiceManager()->get(ResponseService::class);

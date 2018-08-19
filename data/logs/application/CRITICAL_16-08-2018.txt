@@ -1,0 +1,1 @@
+20:01:55 : Application\Module::onDispatchError line:110 - Token Access: 123456 - Msg Error: Statement could not be executed (22007 - 1292 - Truncated incorrect DOUBLE value: 'on')

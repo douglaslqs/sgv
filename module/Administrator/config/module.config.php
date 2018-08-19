@@ -10,12 +10,12 @@ return [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
             Controller\AuthController::class => Controller\Factory\AuthFactory::class,
-            Controller\MarcaController::class => Controller\Factory\MarcaFactory::class,
+            Controller\MarkController::class => Controller\Factory\MarkFactory::class,
         ],
         'aliases' => [
             'index' => Controller\IndexController::class,
             'auth' => Controller\AuthController::class,
-            'marca' => Controller\MarcaController::class,
+            'marks' => Controller\MarkController::class,
         ],
     ],
     'router' => [
@@ -65,6 +65,7 @@ return [
             \Zend\Authentication\AuthenticationService::class=>Service\Factory\AuthenticationFactory::class,
             Service\AuthManagerService::class=>Service\Factory\AuthManagerFactory::class,
             Service\AuthAdapterService::class=>Service\Factory\AuthAdapterFactory::class,
+            Service\ApiRequestService::class=>Service\Factory\ApiRequestFactory::class,
         ],
     ],
     'view_manager' => [
