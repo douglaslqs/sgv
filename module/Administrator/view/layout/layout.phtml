@@ -52,17 +52,23 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Locate US -->
           <li class="dropdown messages-menu">
-            <a href="/administrator/location?locate=en_US&redirect=/administrator/marks">
+            <?php
+            if (strpos($this->controller, "\\") === false) {
+              $currentUrl = "/administrator/".$this->controller.'/'.$this->action;
+            } else {
+              $currentUrl = '/administrator';
+            }
+            ?>
+            <a href="/administrator/location?locale=en_US&redirect=<?php echo $currentUrl;?>">
               <i class="fa fa-language">Inglês</i>
             </a>
           </li>
           <li class="dropdown messages-menu">
-            <a href="/administrator/location?locate=pt_BR&redirect=/administrator/marks">
+            <a href="/administrator/location?locale=pt_BR&redirect=<?php echo $currentUrl;?>">
               <i class="fa fa-language">Português</i>
             </a>
           </li>
