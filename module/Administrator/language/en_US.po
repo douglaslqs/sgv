@@ -28,3 +28,31 @@ msgstr "List of Marks"
 
 msgid "Cadastrar"
 msgstr "Register"
+
+msgid "Editar"
+msgstr "Edit"
+
+msgid "Nome"
+msgstr "Name"
+
+msgid "Fechar"
+msgstr "Closed"
+
+msgid "Salvar alterações"
+msgstr "Save changes"
+
+msgid "Salvar"
+msgstr "Save"
+
+msgid "Ativo"
+msgstr "Active"
+
+# Mensagens de alerta:
+msgid "Nenhum dado encontrado!"
+msgstr "No data found!"
+
+msgid "Algo deu errado! Contate o suporte! CODE ERROR:"
+msgstr "Something went wrong! Contact stand! CODE ERROR:"
+
+msgid "Retorno inesperado!"
+msgstr "Unexpected return!"

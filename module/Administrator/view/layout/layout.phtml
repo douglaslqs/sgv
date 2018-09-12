@@ -219,7 +219,10 @@
             ->prependFile($this->basePath() . '/bower_components/jquery/dist/jquery.min.js');
    ?>
   <!-- =============================================== -->
-
+<!-- ./wrapper -->
+<?php
+    echo $this->headScript();
+?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -311,10 +314,7 @@ $arrResponse = isset($child->response) ? $child->response : array();
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-<!-- ./wrapper -->
-<?php
-    echo $this->headScript();
-?>
+
 <!-- Config modal load -->
 <script type="text/javascript">
     $("#modal-load").modal({
