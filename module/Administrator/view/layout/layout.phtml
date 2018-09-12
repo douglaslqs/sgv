@@ -17,7 +17,7 @@
             ->prependStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css'))
             ->prependStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css'))
         ?>
-        
+
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -52,9 +52,26 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
+          <!-- Locate US -->
+          <li class="dropdown messages-menu">
+            <?php
+            if (strpos($this->controller, "\\") === false) {
+              $currentUrl = "/administrator/".$this->controller.'/'.$this->action;
+            } else {
+              $currentUrl = '/administrator';
+            }
+            ?>
+            <a href="/administrator/location?locale=en_US&redirect=<?php echo $currentUrl;?>">
+              <i class="fa fa-language">Inglês</i>
+            </a>
+          </li>
+          <li class="dropdown messages-menu">
+            <a href="/administrator/location?locale=pt_BR&redirect=<?php echo $currentUrl;?>">
+              <i class="fa fa-language">Português</i>
+            </a>
+          </li>
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -202,7 +219,10 @@
             ->prependFile($this->basePath() . '/bower_components/jquery/dist/jquery.min.js');
    ?>
   <!-- =============================================== -->
-
+<!-- ./wrapper -->
+<?php
+    echo $this->headScript();
+?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -294,10 +314,7 @@ $arrResponse = isset($child->response) ? $child->response : array();
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
-<!-- ./wrapper -->
-<?php
-    echo $this->headScript();
-?>
+
 <!-- Config modal load -->
 <script type="text/javascript">
     $("#modal-load").modal({

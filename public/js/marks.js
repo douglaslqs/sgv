@@ -20,7 +20,7 @@ $('#table-data tbody').on('click', 'tr', function () {
 	if (mark !== "") {
 		$("#modal-default").modal('show');
 		$.ajax({
-			url: "marks/get",
+			url: "/marks/get",
 			type: "POST",
 			data: {name : mark},
 			dataType: "json"

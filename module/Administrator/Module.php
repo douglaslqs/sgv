@@ -28,12 +28,18 @@ class Module
         $em = $app->getEventManager();
         $em->attach(\Zend\Mvc\MvcEvent::EVENT_RENDER, array($this, 'onRender'));
 
-        //VERIFICA SE USUÁRIO ESTÁ LOGADO
         $app->getEventManager()->attach(
             'dispatch',
             function($e) {
                 $app = $e->getApplication();
 	            $routeMatch = $e->getRouteMatch();
+                $sessionUser = new \Zend\Session\Container('user');
+                //LOCATION
+                if (isset($sessionUser->locale)) {
+                    $translator = $e->getApplication()->getServiceManager()->get(\Zend\I18n\Translator\TranslatorInterface::class);
+                    $translator->setLocale($sessionUser->locale);
+                }
+                //VERIFICA SE USUÁRIO ESTÁ LOGADO
                 $authService = $app->getServiceManager()->get(\Zend\Authentication\AuthenticationService::class);
                 if (strpos($routeMatch->getMatchedRouteName(), self::NAME_MODULE) !== false && empty($authService->getIdentity()) && $routeMatch->getParam('controller') != 'auth') {
                     $url = $e->getRouter ()->assemble(array("controller" => "auth"),array('name' => 'administrator'));
@@ -46,7 +52,6 @@ class Module
                 $viewModel = $e->getViewModel();
 	            $viewModel->setVariable('controller', $routeMatch->getParam('controller'));
 	            $viewModel->setVariable('action', $routeMatch->getParam('action'));
-                $sessionUser = new \Zend\Session\Container('user');
                 $viewModel->setVariable('username', $sessionUser->offsetGet('name'));
 	        },
 	        -100
