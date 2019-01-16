@@ -58,7 +58,11 @@
           <li class="dropdown messages-menu">
             <?php
             if (strpos($this->controller, "\\") === false) {
-              $currentUrl = "/administrator/".$this->controller.'/'.$this->action;
+              if ($this->action !== 'index') {
+                $currentUrl = "/administrator/".$this->controller.'/'.$this->action;
+              } else {
+                $currentUrl = "/administrator/".$this->controller;
+              }
             } else {
               $currentUrl = '/administrator';
             }
