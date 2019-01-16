@@ -44,6 +44,7 @@ class ApiRequestService
             $arrHeader['Content-Type'] = 'application/json; charset=UTF-8';
             $this->objRequest->setQuery(new Parameters($this->getParameters()));
         }
+
         $this->objRequest->getHeaders()->addHeaders($arrHeader);
         //var_dump($this->objRequest->getQuery());exit;
         $response = $this->objClient->dispatch($this->objRequest);

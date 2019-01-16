@@ -20,6 +20,9 @@ $password = null;
 //busca as credenciais do banco store e seta no adapter
 $headersObj = apache_request_headers();
 $headers    = (array)$headersObj;
+//var_dump($headers);exit;
+session_start();
+//var_dump($_SESSION['user']->client);exit;
 //$headers['X-Auth-Token'] = 123456;//fixado para teste
 if (isset($headers['Authorization'])) {
     $headers['Authorization'] = str_replace(array('-',';'), array('',''), $headers['Authorization']);
@@ -37,11 +40,26 @@ if (isset($headers['Authorization'])) {
         }
     }
     $mysqli->close();
+} else if(isset($_SESSION['user']->client)) {
+    $mysqli = new mysqli('localhost', 'root', '', 'client');
+    if (mysqli_connect_errno()) trigger_error(mysqli_connect_error());
+    $select = "SELECT * FROM access_store
+    WHERE active = 1 AND client = '".$_SESSION['user']->client."'";
+    $returnQuery = $mysqli->query($select);
+    if (is_object($returnQuery) && $returnQuery->num_rows === 1) {
+        while ($dados = $returnQuery->fetch_array(MYSQLI_ASSOC)) {
+            $host     = $dados['host'];
+            $dbname   = $dados['db_name'];
+            $user     = $dados['db_user'];
+            $password = $dados['db_password'];
+        }
+    }
 } else {
     $host     = false;
     $dbname   = false;
     $user     = false;
     $password = false;
+
 }
 
 
@@ -61,6 +79,15 @@ return [
                 'username' => $user,
                 'password' => $password,
             ],
+            'client-adapter' => [
+                'driver' => 'Pdo',
+                'dsn' => 'mysql:dbname=client;host=localhost',
+                'driver_options' => [
+                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+                ],
+                'username' => 'root',
+                'password' => '',
+            ]
         ],
     ],
 

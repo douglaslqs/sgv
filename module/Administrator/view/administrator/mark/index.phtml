@@ -133,7 +133,7 @@ $('#table-data tbody').on('click', 'tr', function () {
 	if (mark !== "") {
 		$("#modal-default").modal('show');
 		$.ajax({
-			url: "get",
+			url: "marks/get",
 			type: "POST",
 			data: {name : mark},
 			dataType: "json"
@@ -198,7 +198,7 @@ $("#form-data").on("submit", function(e) {
 			var data = {name: new_mark, active: active};
 		}
 		$.ajax({
-			url: operation,
+			url: 'marks/'+operation,
 			type: "POST",
 			data: data,
 			dataType: "json"
