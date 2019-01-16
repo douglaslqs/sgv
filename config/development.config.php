@@ -8,6 +8,15 @@
 return [
     // Additional modules to include when in development mode
     'modules' => [
+        'Zend\Mvc\I18n',
+        'Zend\Form',
+        'Zend\I18n',
+        'Zend\Router',
+        'Zend\InputFilter',
+        'Zend\Hydrator',
+        'Zend\Db',
+        'Zend\Filter',
+        'Zend\Validator',
         'Zend\Session',
     ],
     // Configuration overrides during development mode

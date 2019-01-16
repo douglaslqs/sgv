@@ -10,6 +10,7 @@
  * control, so do not include passwords or other sensitive information in this
  * file.
  */
+
 $host     = null;
 $dbname   = null;
 $user     = null;
@@ -49,6 +50,26 @@ use Zend\Session\Validator\RemoteAddr;
 use Zend\Session\Validator\HttpUserAgent;
 
 return [
+    'db' => [
+        'adapters' => [
+            'store-adapter' => [
+                'driver' => 'Pdo',
+                'dsn' => 'mysql:dbname='.$dbname.';host='.$host,
+                'driver_options' => [
+                    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+                ],
+                'username' => $user,
+                'password' => $password,
+            ],
+        ],
+    ],
+
+    'service_manager' => [
+        'factories' => [
+            'Zend\Db\Adapter\Adapter'
+                    => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ],
+    ],
     'session_config' => [
         // Session cookie will expire in 1 hour.
         'cookie_lifetime' => 60*60*1,
@@ -61,7 +82,10 @@ return [
         'validators' => [
             RemoteAddr::class,
             HttpUserAgent::class,
-        ]
+        ],
+        'abstract_factories' => [
+            \Zend\Db\Adapter\AdapterAbstractServiceFactory::class,
+        ],
     ],
     // Session storage configuration.
     'session_storage' => [
