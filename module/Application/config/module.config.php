@@ -65,6 +65,7 @@ return [
             Controller\ColorProductController::class      => Controller\Factory\ColorProductFactory::class,
             Controller\ImageProductController::class      => Controller\Factory\ImageProductFactory::class,
             Controller\ProductOrderController::class      => Controller\Factory\ProductOrderFactory::class,
+            Controller\ProductCategoryController::class   => Controller\Factory\ProductCategoryFactory::class,
             Controller\DeliveryAddressController::class   => Controller\Factory\DeliveryAddressFactory::class,
             Controller\RoleController::class              => Controller\Factory\RoleFactory::class,
             Controller\ResourceController::class          => Controller\Factory\ResourceFactory::class,
@@ -75,6 +76,7 @@ return [
         'aliases' => [
             //'index'            => 'Application\Controller\IndexController',
             'product'             => 'Application\Controller\ProductController',
+            'product-category'    => 'Application\Controller\ProductCategoryController',
             'category'            => 'Application\Controller\CategoryController',
             'mark'                => 'Application\Controller\MarkController',
             'unit-measure'        => 'Application\Controller\UnitMeasureController',

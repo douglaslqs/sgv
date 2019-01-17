@@ -190,44 +190,6 @@ class ProductOrderForm extends Form
 		    ));
 
 		    $inputFilter->add(array(
-		        'name' => $prefixNew.'category',
-		        'required' => $required,
-		        'continue_if_empty' => true,//not empty
-		        'validators' => array(
-		            array(
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 80,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
-		        'name' => $prefixNew.'category_parent',
-		        'required' => $required,
-		        'continue_if_empty' => true,//not empty
-		        'validators' => array(
-		            array(
-		                'name' => 'StringLength',
-		                 'options' => array(
-		                     'min' => 3,
-		                     'max' => 80,
-		                     'messages' => array(
-		                         'stringLengthTooShort' => 'Minimun 3 chacacteres not reached',
-		                         'stringLengthTooLong' => 'Maximun 80 chacacteres ultrapassed',
-		                     ),
-		                ),
-		            ),
-		        ),
-		    ));
-
-		    $inputFilter->add(array(
 		        'name' => $prefixNew.'mark',
 		        'required' => $required,
 		        'continue_if_empty' => true,//not empty

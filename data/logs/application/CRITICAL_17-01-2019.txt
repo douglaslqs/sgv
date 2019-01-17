@@ -2,3 +2,5 @@
 17:21:18 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'category' in 'where clause')
 17:50:58 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'category' in 'where clause')
 17:51:05 : Application\Module::onDispatchError line:112 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'category_parent' in 'where clause')
+18:33:18 : Application\Module::onDispatchError line:114 - Token Access: 123456 - Msg Error: Statement could not be executed (42S22 - 1054 - Unknown column 'product_name' in 'where clause')
+18:38:11 : Application\Module::onDispatchError line:114 - Token Access: 123456 - Msg Error: Class 'Application\Form\ProductCategoryForm' not found
