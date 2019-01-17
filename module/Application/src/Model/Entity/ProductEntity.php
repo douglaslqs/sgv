@@ -4,8 +4,6 @@ namespace Application\Model\Entity;
 class ProductEntity
 {
 	public $name;
-	public $category;
-	public $category_parent;
 	public $mark;
 	public $unit_measure;
 	public $price_purchase;
@@ -21,8 +19,6 @@ class ProductEntity
 	public function exchangeArray($data)
 	{
 		$this->name = isset($data['name']) ? $data['name'] : null;
-		$this->category = isset($data['category']) ? $data['category'] : null;
-		$this->category_parent = isset($data['category_parent']) ? $data['category_parent'] : null;
 		$this->mark = isset($data['mark']) ? $data['mark'] : null;
 		$this->unit_measure = isset($data['unit_measure']) ? $data['unit_measure'] : null;
 		$this->price_purchase = isset($data['price_purchase']) ? $data['price_purchase'] : null;

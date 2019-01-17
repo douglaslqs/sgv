@@ -4,9 +4,7 @@ namespace Application\Model\Entity;
 class ImageProductEntity
 {
 	public $date_register;
-	public $category;
 	public $product;
-	public $category_parent;
 	public $mark;
 	public $type;
 	public $image;
@@ -17,8 +15,6 @@ class ImageProductEntity
 	{
 		$this->date_register = isset($data['date_register']) ? $data['date_register'] : null;
 		$this->product = isset($data['product']) ? $data['product'] : null;
-		$this->category = isset($data['category']) ? $data['category'] : null;
-		$this->category_parent = isset($data['category_parent']) ? $data['category_parent'] : null;
 		$this->mark = isset($data['mark']) ? $data['mark'] : null;
 		$this->type = isset($data['type']) ? $data['type'] : null;
 		$this->image = isset($data['image']) ? $data['image'] : null;

@@ -15,10 +15,7 @@ class ProductTable extends AbstractTable
 	{
 		return array(
                 'name' => isset($arrParams['name']) ? $arrParams['name'] : null,
-                'category' => isset($arrParams['category']) ? $arrParams['category'] : null,
-                'category_parent'=>isset($arrParams['category_parent']) ? $arrParams['category_parent'] : null,
                 'mark' => isset($arrParams['mark']) ? $arrParams['mark'] : null,
-                'unit_measure' => isset($arrParams['unit_measure']) ? $arrParams['unit_measure'] : null,
             );
 	}
 }
