@@ -4,8 +4,6 @@ namespace Application\Model\Entity;
 class StockEntity
 {
 	public $product;
-	public $category;
-	public $category_parent;
 	public $mark;
 	public $measure;
 	public $unit_measure;
@@ -17,8 +15,6 @@ class StockEntity
 	public function exchangeArray($data)
 	{
 		$this->product = isset($data['product']) ? $data['product'] : null;
-		$this->category = isset($data['category']) ? $data['category'] : null;
-		$this->category_parent = isset($data['category_parent']) ? $data['category_parent'] : null;
 		$this->mark = isset($data['mark']) ? $data['mark'] : null;
 		$this->measure = isset($data['measure']) ? $data['measure'] : null;
 		$this->unit_measure = isset($data['unit_measure']) ? $data['unit_measure'] : null;
