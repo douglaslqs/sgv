@@ -14,6 +14,8 @@ use Application\Model\Entity\CategoryEntity;
 use Application\Model\CategoryTable;
 use Application\Model\Entity\ProductEntity;
 use Application\Model\ProductTable;
+use Application\Model\Entity\ProductCategoryEntity;
+use Application\Model\ProductCategoryTable;
 use Application\Model\Entity\ColorProductEntity;
 use Application\Model\ColorProductTable;
 use Application\Model\Entity\RoleResourceAllowEntity;
@@ -214,6 +216,16 @@ class Module
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductEntity());
                     return new TableGateway('product', $dbAdapter, null, $resultSetPrototype);
+                },
+                'Application\Model\ProductCategoryTable' =>  function($sm) {
+                    $tableGateway = $sm->get('ProductCategoryTableGateway');
+                    return new ProductCategoryTable($tableGateway);
+                },
+                'ProductCategoryTableGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('store-adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new ProductCategoryEntity());
+                    return new TableGateway('product_category', $dbAdapter, null, $resultSetPrototype);
                 },
                 'Application\Model\MarkTable' =>  function($sm) {
                     $tableGateway = $sm->get('MarkTableGateway');
