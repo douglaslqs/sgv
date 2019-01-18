@@ -17,6 +17,7 @@ return [
         'Zend\Db',
         'Zend\Filter',
         'Zend\Validator',
+        'Zend\Paginator',
         'Zend\Session',
     ],
     // Configuration overrides during development mode
