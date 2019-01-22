@@ -24,25 +24,36 @@ abstract class AbstractTable
 		try {
 		    $sql = $this->tableGateway->getSql();
 			if (!empty($arrFilter)) {
-				$combined = \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR;
-				if(isset($arrFilter['p_combined'])) {
-					$combined =  \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_AND;
-					unset($arrFilter['p_combined']);
-				}
 				$arrLikes = array();
 				foreach ($arrFilter as $key => $value) {
-					array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,$value.'%'));
+					if (strpos($key, 'p_') !== 0) {
+						array_push($arrLikes,new \Zend\Db\Sql\Predicate\Like($key,$value.'%'));
+					}
 			    }
-				$select = $sql->select()->where(array(
-						new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
-						$combined
-					)
-				));
+			    if (!empty($arrLikes)) {
+					$combined = \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_OR;
+					if(isset($arrFilter['p_combined'])) {
+						$combined =  \Zend\Db\Sql\Predicate\PredicateSet::COMBINED_BY_AND;
+						unset($arrFilter['p_combined']);
+					}
+					$select = $sql->select()->where(array(
+							new \Zend\Db\Sql\Predicate\PredicateSet($arrLikes,
+							$combined
+						)
+					));
+			    } else {
+			    	$select = $sql->select();
+			    }
 			} else {
-				$select = $sql->select()->where($arrFilter);
+				$select = $sql->select();
 			}
 			if (!empty($limit)) {
 				$select->limit(1);
+			}
+
+			if (isset($arrFilter['p_type_return']) && $arrFilter['p_type_return'] === 'paginator') {
+					//Retornar paginator
+					return $this->tableGateway;
 			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;

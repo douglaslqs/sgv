@@ -8,7 +8,6 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\View\Model\JsonModel;
 use Application\Model\MarkTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService as Logger;
@@ -51,7 +50,8 @@ class MarkController extends AbstractRestfulController
         } else {
             $this->responseService->setCode(ResponseService::CODE_METHOD_INCORRECT);
         }
-        return new JsonModel($this->responseService->getArrayCopy());
+        //var_dump($this->responseService->getReturn('object'));exit;
+        return $this->responseService->getReturn();
     }
 
     public function addAction()

@@ -6,6 +6,8 @@ namespace Application\Service;
  * @author Douglas Santos <douglasrock15@hotmail.com>
  *
  */
+use Zend\View\Model\JsonModel;
+
 class ResponseService
 {
 
@@ -31,6 +33,9 @@ class ResponseService
 	const TYPE_INFO = "INFO";
 	const TYPE_ALERT = "ALERT";
 	const TYPE_WARNING = "WARNING";
+
+	const TYPE_RESPONSE_JSON = "json";
+	const TYPE_RESPONSE_ARRAY = "array";
 
 	private $response;
 	private $data;
@@ -133,5 +138,11 @@ class ResponseService
 	{
 		return get_object_vars($this);
 	}
+
+	public function getReturn()
+    {
+    	$this->data = (array)$this->data;
+    	return new JsonModel($this->getArrayCopy());
+    }
 
 }

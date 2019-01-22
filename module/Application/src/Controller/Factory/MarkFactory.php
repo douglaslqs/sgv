@@ -9,7 +9,6 @@ use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 use Application\Model\MarkTable;
 use Application\Form\MarkForm;
-use Application\Controller\controller;
 use Application\Service\ResponseService;
 use Application\Service\FilterService;
 use Application\Service\LoggerService;

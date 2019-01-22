@@ -30,6 +30,7 @@ class MarkController extends AbstractActionController
         $this->objApiRequest->setUri(self::URL_GET);
         $arrResponse = array();
         try {
+            $this->objApiRequest->setTypeReturn(ApiRequestService::TYPE_RETURN_PAGINATOR);
             $arrResponse = $this->objApiRequest->request();
         } catch (Exception $e) {
             $this->logger->setMethodAndLine(__METHOD__, __LINE__);
