@@ -1,6 +1,7 @@
 .vagrant/
 vendor/
 data/cache/*
+data/logs/*
 !data/cache/.gitkeep
 phpunit.xml
 ubuntu-xenial-16.04-cloudimg-console.log
