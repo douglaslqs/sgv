@@ -65,9 +65,6 @@ abstract class AbstractTable
 			$arrFilter = $this->filterArrayWhere($arrParams);
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
-			if (!empty($limit)) {
-				$select->limit(1);
-			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
 			$arrResult = $this->tableGateway->selectWith($select)->toArray();
