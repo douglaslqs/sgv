@@ -229,7 +229,8 @@ class Module
                 },
                 'Application\Model\MarkTable' =>  function($sm) {
                     $tableGateway = $sm->get('MarkTableGateway');
-                    return new MarkTable($tableGateway);
+                    $pgService = $sm->get(Service\PaginatorService::class);
+                    return new MarkTable($tableGateway, $pgService);
                 },
                 'MarkTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -339,7 +340,8 @@ class Module
                 },
                 'Application\Model\RoleResourceAllowTable' =>  function($sm) {
                     $tableGateway = $sm->get('RoleResourceAllowTableGateway');
-                    return new RoleResourceAllowTable($tableGateway);
+                    $pgService = $sm->get(Service\PaginatorService::class);
+                    return new RoleResourceAllowTable($tableGateway, $pgService);
                 },
                 'RoleResourceAllowTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -379,7 +381,8 @@ class Module
                 },
                 'Application\Model\UserTable' =>  function($sm) {
                     $tableGateway = $sm->get('UserTableGateway');
-                    return new UserTable($tableGateway);
+                    $pgService = $sm->get(Service\PaginatorService::class);
+                    return new UserTable($tableGateway, $pgService);
                 },
                 'UserTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');

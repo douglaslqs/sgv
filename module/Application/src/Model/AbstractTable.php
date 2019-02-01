@@ -2,21 +2,29 @@
 namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Application\Service\PaginatorService;
 
 abstract class AbstractTable
 {
 	protected $tableGateway;
+	protected $pgService;
 
 	abstract public function filterArrayWhere();
 
-	public function __construct(TableGateway $tableGateway)
+	public function __construct(TableGateway $tableGateway, PaginatorService $pgService)
 	{
 		$this->tableGateway = $tableGateway;
+		$this->pgService = $pgService;
 	}
 
 	public function getTableGateWay()
 	{
 		return $this->tableGateway;
+	}
+
+	public function getPaginatorService()
+	{
+		return $this->pgService;
 	}
 
 	public function fetch($arrFilter = array(), $limit = null)

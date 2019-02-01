@@ -7,15 +7,13 @@ namespace Application\Service\Factory;
 
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
-use Application\Service\PaginatorService;
 
-class ResponseFactory implements FactoryInterface
+class PaginatorFactory implements FactoryInterface
 {
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-    	$pgService = $container->get(PaginatorService::class);
-        return new $requestedName($pgService);
+        return new $requestedName;
     }
 
 }

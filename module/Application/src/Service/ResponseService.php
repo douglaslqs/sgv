@@ -6,9 +6,9 @@ namespace Application\Service;
  * @author Douglas Santos <douglasrock15@hotmail.com>
  *
  */
+
 class ResponseService
 {
-
 	const CODE_ACCESS_DENIED = -2;
 	const CODE_TOKEN_INVALID = -1;
 	const CODE_SUCCESS = 0;
@@ -33,17 +33,18 @@ class ResponseService
 	const TYPE_WARNING = "WARNING";
 
 	private $response;
+	private $pagination;
 	private $data;
 
-	public function __construct()
+	public function __construct(PaginatorService $pgService)
 	{
+		$this->pagination = $pgService->getArrayCopy();
 		$this->response = array(
 			'code'=> null,
 			'message' => null,
 			'type' => null,
 		);
 	}
-
 
 	private function setMessageAndTypeByCode($code)
 	{
