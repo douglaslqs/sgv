@@ -8,11 +8,29 @@ namespace Application\Service;
  */
 class PaginatorService
 {
-
+	/**
+	 * Total de páginas retornadas.
+	 */
 	private $totalPages;
-	private $range;
+
+	/**
+	 * Intervalo das páginas
+	 */
+	private $range = '0-50';
+
+	/**
+	 * Intervalo ´máximo aceito
+	 */
 	private $acceptRange = 50;
+
+	/**
+	 * Página Atual
+	 */
 	private $currentPage;
+
+	/**
+	 * Links de navegação
+	 */
 	private $links = array();
 
 	public function __construct()
@@ -76,9 +94,9 @@ class PaginatorService
 		return $this->links['last'];
 	}
 
-	public function setRange($intRange)
+	public function setRange($strRage)
 	{
-		$this->range = $intRange;
+		$this->range = $strRage;
 	}
 
 	public function getRange()
@@ -109,6 +127,26 @@ class PaginatorService
 	public function setTotalPages($totalPages)
 	{
 		$this->totalPages = $totalPages;
+	}
+
+	public function getRageIni()
+	{
+		$arrExplode = (int)explode('-', $this->getRange());
+		if (is_array($arrExplode)) {
+			return $arrExplode[0];
+		} else {
+			return 0;
+		}
+	}
+
+	public function getRageEnd()
+	{
+		$arrExplode = (int)explode('-', $this->getRange());
+		if (is_array($arrExplode)) {
+			return $arrExplode[1];
+		} else {
+			return $this->getAcceptRange();
+		}
 	}
 
 	public function getArrayCopy()

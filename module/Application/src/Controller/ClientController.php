@@ -74,7 +74,7 @@ class ClientController extends AbstractRestfulController
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
                     $client = $this->clientTable->fetchRow($arrParams);
-                    $cpfExist = $this->clientTable->fetch(array('document' => $arrParams['document']),1);
+                    $cpfExist = $this->clientTable->fetchRow(array('document' => $arrParams['document']));
                     if (empty($client) && empty($cpfExist)) {
                         $arrParams['password'] = $this->bcrypt->create($arrParams['password']);
                         $returnInsert = $this->clientTable->insert($arrParams);

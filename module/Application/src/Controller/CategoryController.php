@@ -73,7 +73,7 @@ class CategoryController extends AbstractRestfulController
                 if ($this->form->isValid()) {
                     $arrParams = $this->filterService->setData($arrParams)->getData();
                     $category = $this->categoryTable->fetchRow($arrParams);
-                    $categoryParent = $this->categoryTable->fetch(array('name_parent' => $arrParams['name_parent']), 1);
+                    $categoryParent = $this->categoryTable->fetchRow(array('name_parent' => $arrParams['name_parent']));
                     if (empty($category) && is_array($categoryParent)) {
                         $returnInsert = $this->categoryTable->insert($arrParams);
                         if ($returnInsert !== 1) {

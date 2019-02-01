@@ -199,7 +199,8 @@ class Module
     		'factories' => array(
 				'Application\Model\CategoryTable' =>  function($sm) {
     				$tableGateway = $sm->get('CategoryTableGateway');
-    				return new CategoryTable($tableGateway);
+                    $pgService = $sm->get(Service\PaginatorService::class);
+    				return new CategoryTable($tableGateway, $pgService);
     			},
     			'CategoryTableGateway' => function ($sm) {
     				$dbAdapter = $sm->get('store-adapter');

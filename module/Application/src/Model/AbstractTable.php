@@ -27,7 +27,7 @@ abstract class AbstractTable
 		return $this->pgService;
 	}
 
-	public function fetch($arrFilter = array(), $limit = null)
+	public function fetch($arrFilter = array())
 	{
 		try {
 		    $sql = $this->tableGateway->getSql();
@@ -55,8 +55,18 @@ abstract class AbstractTable
 			} else {
 				$select = $sql->select();
 			}
-			if (!empty($limit)) {
-				$select->limit(1);
+			$offset = $this->getPaginatorService()->getRageIni();
+			$limit = $this->getPaginatorService()->getRageEnd();
+			$acceptRange = $this->getPaginatorService()->getAcceptRange();
+			if ($offset > -1 && $limit > 0) {
+				$rage = $limit - $offset;
+				if ($rage <= $acceptRange) {
+					$select->limit($limit)->offset($offset);
+				} else {
+					$select->limit($acceptRange)->offset($offset);
+				}
+			} else {
+				$select->limit($acceptRange)->offset(0);
 			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
@@ -71,6 +81,7 @@ abstract class AbstractTable
 	{
 		try {
 			$arrFilter = $this->filterArrayWhere($arrParams);
+			$arrFilter = array_filter($arrFilter);
 		    $sql = $this->tableGateway->getSql();
 			$select = $sql->select()->where($arrFilter);
 			// output query

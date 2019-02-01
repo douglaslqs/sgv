@@ -36,9 +36,8 @@ class ResponseService
 	private $pagination;
 	private $data;
 
-	public function __construct(PaginatorService $pgService)
+	public function __construct()
 	{
-		$this->pagination = $pgService->getArrayCopy();
 		$this->response = array(
 			'code'=> null,
 			'message' => null,
@@ -82,6 +81,16 @@ class ResponseService
 				$this->response['type']    = self::TYPE_ERROR;
 				break;
 		}
+	}
+
+	public function setPagination(Paginator $paginator)
+	{
+		$this->pagination = $paginator->getArrayCopy();
+	}
+
+	public function getPagination()
+	{
+		return $this->pagination;
 	}
 
 	public function setData($data)
