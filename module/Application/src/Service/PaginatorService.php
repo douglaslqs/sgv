@@ -9,9 +9,9 @@ namespace Application\Service;
 class PaginatorService
 {
 	/**
-	 * Total de páginas retornadas.
+	 * Total de dados retornados.
 	 */
-	private $totalPages;
+	private $totalData;
 
 	/**
 	 * Intervalo das páginas
@@ -22,11 +22,6 @@ class PaginatorService
 	 * Intervalo ´máximo aceito
 	 */
 	private $acceptRange = 50;
-
-	/**
-	 * Página Atual
-	 */
-	private $currentPage;
 
 	/**
 	 * Links de navegação
@@ -96,7 +91,46 @@ class PaginatorService
 
 	public function setRange($strRage)
 	{
-		$this->range = $strRage;
+		$arrRage = explode('-', $strRage);
+		if (!empty($arrRage)) {
+			$range = (int)$arrRage[1] - (int)$arrRage[0];
+			if ($range > $this->getAcceptRange()) {
+				$arrRage[1] = (int)$arrRage[0]+$this->getAcceptRange();
+				$this->range = $arrRage[0].'-'.$arrRage[1];
+			} else {
+				$this->range = $strRage;
+			}
+		}
+		/**
+		 * Set Link Self
+		 */
+		$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		$rangeIni = $this->getRangeIni();
+		$rangeEnd = $this->getRangeEnd();
+		$linkSelf = str_replace('p_range='.$strRage, 'p_range='.$this->getRange(), $currentUrl);
+		$this->setLinkSelf($linkSelf);
+		/**
+		 * Set Link First
+		 */
+		$linkSelf = str_replace('p_range='.$strRage, 'p_range=0-'.$this->getAcceptRange(), $currentUrl);
+		$this->setLinkFirst($linkSelf);
+		/**
+		 * SET Link Prev
+		 */
+		$newRangeIni = $rangeIni - $this->getAcceptRange()-1;
+		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
+		$newRangeEnd = $rangeEnd-1;
+		$newRangeEnd = $newRangeEnd < 1 ? $this->getAcceptRange() : $newRangeEnd;
+		$linkPrev = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
+		$this->setLinkPrev($linkPrev);
+		/**
+		 * Set Link Next
+		 */
+		$newRangeIni = $rangeIni + $this->getAcceptRange()+1;
+		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
+		$newRangeEnd = $rangeEnd+$this->getAcceptRange()+1;
+		$linkNext = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
+		$this->setLinkNext($linkNext);
 	}
 
 	public function getRange()
@@ -114,36 +148,37 @@ class PaginatorService
 		return $this->acceptRange;
 	}
 
-	public function setCurrentPage($currentPage)
+	public function setTotalData($totalData)
 	{
-		$this->currentPage = $currentPage;
+		$this->totalData = $totalData;
 	}
 
-	public function getCurrentPage()
+	public function getTotalData()
 	{
-		return $this->currentPage;
+		return $this->getTotalData;
 	}
 
-	public function setTotalPages($totalPages)
+	public function getRangeIni()
 	{
-		$this->totalPages = $totalPages;
-	}
-
-	public function getRageIni()
-	{
-		$arrExplode = (int)explode('-', $this->getRange());
-		if (is_array($arrExplode)) {
-			return $arrExplode[0];
+		$arrExplode = explode('-', $this->getRange());
+		if (is_array($arrExplode) && !empty($arrExplode[0])) {
+			return (int)$arrExplode[0];
 		} else {
 			return 0;
 		}
 	}
 
-	public function getRageEnd()
+	public function getRangeEnd()
 	{
-		$arrExplode = (int)explode('-', $this->getRange());
-		if (is_array($arrExplode)) {
-			return $arrExplode[1];
+		$arrExplode = explode('-', $this->getRange());
+		if (is_array($arrExplode) && !empty($arrExplode[1])) {
+			$rangeEnd = (int)$arrExplode[1];
+			$interval = $rangeEnd-(int)$arrExplode[0];
+			if ($interval <= $this->getAcceptRange() && $interval > 0) {
+				return $rangeEnd;
+			} else {
+				return $this->getAcceptRange();
+			}
 		} else {
 			return $this->getAcceptRange();
 		}

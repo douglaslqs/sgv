@@ -50,8 +50,8 @@ use Application\Model\Entity\MeasureEntity;
 use Application\Model\MeasureTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
+use Application\Service\PaginatorService;
 use Zend\Db\TableGateway\TableGateway;
-
 
 class Module
 {
@@ -167,6 +167,19 @@ class Module
                     return $response;
                 } */
                 $objServiceManager = $e->getApplication()->getServiceManager();
+
+                /**
+                 * Configura os dados de paginação da API.
+                 */
+                $uri = $e->getRequest()->getUri();
+                parse_str($uri->getQuery(), $params);
+                if (isset($params['p_range'])) {
+                    $pgService = $objServiceManager->get(PaginatorService::class);
+                    $pgService->setRange($params['p_range']);
+                }
+                //var_dump($pgService);exit;
+                /* */
+
                 $objAclService = $objServiceManager->get(Service\AclService::class);
                 $arrRouteParams = $e->getRouteMatch()->getParams();
                 $strControllerName = $arrRouteParams['controller'];
@@ -199,7 +212,7 @@ class Module
     		'factories' => array(
 				'Application\Model\CategoryTable' =>  function($sm) {
     				$tableGateway = $sm->get('CategoryTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
+                    $pgService = $sm->get(Service\ResponseService::class);
     				return new CategoryTable($tableGateway, $pgService);
     			},
     			'CategoryTableGateway' => function ($sm) {
@@ -230,7 +243,7 @@ class Module
                 },
                 'Application\Model\MarkTable' =>  function($sm) {
                     $tableGateway = $sm->get('MarkTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
+                    $pgService = $sm->get(Service\ResponseService::class);
                     return new MarkTable($tableGateway, $pgService);
                 },
                 'MarkTableGateway' => function ($sm) {
@@ -341,7 +354,7 @@ class Module
                 },
                 'Application\Model\RoleResourceAllowTable' =>  function($sm) {
                     $tableGateway = $sm->get('RoleResourceAllowTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
+                    $pgService = $sm->get(Service\ResponseService::class);
                     return new RoleResourceAllowTable($tableGateway, $pgService);
                 },
                 'RoleResourceAllowTableGateway' => function ($sm) {
@@ -382,7 +395,7 @@ class Module
                 },
                 'Application\Model\UserTable' =>  function($sm) {
                     $tableGateway = $sm->get('UserTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
+                    $pgService = $sm->get(Service\ResponseService::class);
                     return new UserTable($tableGateway, $pgService);
                 },
                 'UserTableGateway' => function ($sm) {
