@@ -19,9 +19,15 @@ class PaginatorService
 	private $range = '0-50';
 
 	/**
-	 * Intervalo ´máximo aceito
+	 * Intervalo
 	 */
-	private $acceptRange = 50;
+	private $interval = 10;
+
+	/**
+	 * Intervalo máximo aceito
+	 */
+	private $acceptedInterval = 50;
+
 
 	/**
 	 * Links de navegação
@@ -93,13 +99,15 @@ class PaginatorService
 	{
 		$arrRage = explode('-', $strRage);
 		if (!empty($arrRage)) {
-			$range = (int)$arrRage[1] - (int)$arrRage[0];
-			if ($range > $this->getAcceptRange()) {
-				$arrRage[1] = (int)$arrRage[0]+$this->getAcceptRange();
+			$interval = (int)$arrRage[1] - (int)$arrRage[0];
+			if ($interval > $this->getAcceptedInterval()) {
+				$arrRage[1] = (int)$arrRage[0]+$this->getAcceptedInterval();
 				$this->range = $arrRage[0].'-'.$arrRage[1];
+				$interval = (int)$arrRage[1] - (int)$arrRage[0];
 			} else {
 				$this->range = $strRage;
 			}
+			$this->setInterval($interval);
 		}
 		/**
 		 * Set Link Self
@@ -112,23 +120,24 @@ class PaginatorService
 		/**
 		 * Set Link First
 		 */
-		$linkSelf = str_replace('p_range='.$strRage, 'p_range=0-'.$this->getAcceptRange(), $currentUrl);
+		$linkSelf = str_replace('p_range='.$strRage, 'p_range=0-'.$this->getInterval(), $currentUrl);
 		$this->setLinkFirst($linkSelf);
 		/**
 		 * SET Link Prev
 		 */
-		$newRangeIni = $rangeIni - $this->getAcceptRange()-1;
+		$newRangeIni = $rangeIni - $this->getInterval()-1;
 		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
-		$newRangeEnd = $rangeEnd-1;
-		$newRangeEnd = $newRangeEnd < 1 ? $this->getAcceptRange() : $newRangeEnd;
+		$newRangeEnd = $rangeIni-1;
+		$newRangeEnd = $newRangeEnd < 1 ? $this->getInterval() : $newRangeEnd;
+		$newRangeEnd = $newRangeEnd < $this->getInterval() ? $this->getInterval() : $newRangeEnd;
 		$linkPrev = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
 		$this->setLinkPrev($linkPrev);
 		/**
 		 * Set Link Next
 		 */
-		$newRangeIni = $rangeIni + $this->getAcceptRange()+1;
+		$newRangeIni = $rangeIni + $this->getInterval()+1;
 		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
-		$newRangeEnd = $rangeEnd+$this->getAcceptRange()+1;
+		$newRangeEnd = $rangeEnd+$this->getInterval()+1;
 		$linkNext = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
 		$this->setLinkNext($linkNext);
 	}
@@ -138,14 +147,24 @@ class PaginatorService
 		return $this->range;
 	}
 
-	public function setAcceptRange($intAcceptRange)
+	public function setInterval($interval)
 	{
-		$this->acceptRange = $intAcceptRange;
+		$this->interval = $interval;
 	}
 
-	public function getAcceptRange()
+	public function getInterval()
 	{
-		return $this->acceptRange;
+		return $this->interval;
+	}
+
+	public function setAcceptedInterval($intacceptedInterval)
+	{
+		$this->acceptedInterval = $intacceptedInterval;
+	}
+
+	public function getAcceptedInterval()
+	{
+		return $this->acceptedInterval;
 	}
 
 	public function setTotalData($totalData)
@@ -174,13 +193,13 @@ class PaginatorService
 		if (is_array($arrExplode) && !empty($arrExplode[1])) {
 			$rangeEnd = (int)$arrExplode[1];
 			$interval = $rangeEnd-(int)$arrExplode[0];
-			if ($interval <= $this->getAcceptRange() && $interval > 0) {
+			if ($interval <= $this->getAcceptedInterval() && $interval > 0) {
 				return $rangeEnd;
 			} else {
-				return $this->getAcceptRange();
+				return $this->getAcceptedInterval();
 			}
 		} else {
-			return $this->getAcceptRange();
+			return $this->getAcceptedInterval();
 		}
 	}
 

@@ -55,9 +55,10 @@ abstract class AbstractTable
 			} else {
 				$select = $sql->select();
 			}
+			$totalRows = $this->tableGateway->selectWith($select)->count();
 			$offset = $this->getPaginatorService()->getRangeIni();
 			$limit = $this->getPaginatorService()->getRangeEnd();
-			$acceptRange = $this->getPaginatorService()->getAcceptRange();
+			$acceptRange = $this->getPaginatorService()->getInterval();
 			if ($offset > -1 && $limit > 0) {
 				$rage = $limit - $offset;
 				if ($rage <= $acceptRange) {
@@ -71,16 +72,17 @@ abstract class AbstractTable
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
 			$resultSet = $this->tableGateway->selectWith($select);
-			$totalRows = $resultSet->count();
+
+			//Set total rows and link last on paginator
 			$this->getPaginatorService()->setTotalData($totalRows);
 			$currentLink = $this->getPaginatorService()->getLinkSelf();
-			$rangeIni = $this->getPaginatorService()->getRangeIni();
-			$rangeEnd = $this->getPaginatorService()->getRangeEnd();
+			$offset = $this->getPaginatorService()->getRangeIni();
+			$limit = $this->getPaginatorService()->getRangeEnd();
 			$newRangeIni = $totalRows-$acceptRange;
 			$newRangeIni = $newRangeIni < 0 ? 0 : $newRangeIni;
 			$newRangeEnd = $totalRows < $acceptRange ? $acceptRange : $totalRows;
 
-			$linkLast = str_replace('p_range='.$rangeIni.'-'.$rangeEnd, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
+			$linkLast = str_replace('p_range='.$offset.'-'.$limit, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
 			$this->getPaginatorService()->setLinkLast($linkLast);
 
 			$resultSet = $resultSet->toArray();
