@@ -3,12 +3,13 @@ namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Model\AbstractTable;
+use Application\Service\ResponseService;
 
 class ColorTable extends AbstractTable
 {
-	public function __construct(TableGateway $tableGateway)
+	public function __construct(TableGateway $tableGateway, ResponseService $responseService)
 	{
-		parent::__construct($tableGateway);
+		parent::__construct($tableGateway, $responseService);
 	}
 
 	public function filterArrayWhere($arrParams = array())

@@ -9,9 +9,9 @@ namespace Application\Service;
 class PaginatorService
 {
 	/**
-	 * Total de páginas retornadas.
+	 * Total de dados retornados.
 	 */
-	private $totalPages;
+	private $totalData;
 
 	/**
 	 * Intervalo das páginas
@@ -19,14 +19,15 @@ class PaginatorService
 	private $range = '0-50';
 
 	/**
-	 * Intervalo ´máximo aceito
+	 * Intervalo
 	 */
-	private $acceptRange = 50;
+	private $interval = 10;
 
 	/**
-	 * Página Atual
+	 * Intervalo máximo aceito
 	 */
-	private $currentPage;
+	private $acceptedInterval = 50;
+
 
 	/**
 	 * Links de navegação
@@ -96,7 +97,49 @@ class PaginatorService
 
 	public function setRange($strRage)
 	{
-		$this->range = $strRage;
+		$arrRage = explode('-', $strRage);
+		if (!empty($arrRage)) {
+			$interval = (int)$arrRage[1] - (int)$arrRage[0];
+			if ($interval > $this->getAcceptedInterval()) {
+				$arrRage[1] = (int)$arrRage[0]+$this->getAcceptedInterval();
+				$this->range = $arrRage[0].'-'.$arrRage[1];
+				$interval = (int)$arrRage[1] - (int)$arrRage[0];
+			} else {
+				$this->range = $strRage;
+			}
+			$this->setInterval($interval);
+		}
+		/**
+		 * Set Link Self
+		 */
+		$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		$rangeIni = $this->getRangeIni();
+		$rangeEnd = $this->getRangeEnd();
+		$linkSelf = str_replace('p_range='.$strRage, 'p_range='.$this->getRange(), $currentUrl);
+		$this->setLinkSelf($linkSelf);
+		/**
+		 * Set Link First
+		 */
+		$linkSelf = str_replace('p_range='.$strRage, 'p_range=0-'.$this->getInterval(), $currentUrl);
+		$this->setLinkFirst($linkSelf);
+		/**
+		 * SET Link Prev
+		 */
+		$newRangeIni = $rangeIni - $this->getInterval()-1;
+		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
+		$newRangeEnd = $rangeIni-1;
+		$newRangeEnd = $newRangeEnd < 1 ? $this->getInterval() : $newRangeEnd;
+		$newRangeEnd = $newRangeEnd < $this->getInterval() ? $this->getInterval() : $newRangeEnd;
+		$linkPrev = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
+		$this->setLinkPrev($linkPrev);
+		/**
+		 * Set Link Next
+		 */
+		$newRangeIni = $rangeIni + $this->getInterval()+1;
+		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
+		$newRangeEnd = $rangeEnd+$this->getInterval()+1;
+		$linkNext = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
+		$this->setLinkNext($linkNext);
 	}
 
 	public function getRange()
@@ -104,48 +147,59 @@ class PaginatorService
 		return $this->range;
 	}
 
-	public function setAcceptRange($intAcceptRange)
+	public function setInterval($interval)
 	{
-		$this->acceptRange = $intAcceptRange;
+		$this->interval = $interval;
 	}
 
-	public function getAcceptRange()
+	public function getInterval()
 	{
-		return $this->acceptRange;
+		return $this->interval;
 	}
 
-	public function setCurrentPage($currentPage)
+	public function setAcceptedInterval($intacceptedInterval)
 	{
-		$this->currentPage = $currentPage;
+		$this->acceptedInterval = $intacceptedInterval;
 	}
 
-	public function getCurrentPage()
+	public function getAcceptedInterval()
 	{
-		return $this->currentPage;
+		return $this->acceptedInterval;
 	}
 
-	public function setTotalPages($totalPages)
+	public function setTotalData($totalData)
 	{
-		$this->totalPages = $totalPages;
+		$this->totalData = $totalData;
 	}
 
-	public function getRageIni()
+	public function getTotalData()
 	{
-		$arrExplode = (int)explode('-', $this->getRange());
-		if (is_array($arrExplode)) {
-			return $arrExplode[0];
+		return $this->getTotalData;
+	}
+
+	public function getRangeIni()
+	{
+		$arrExplode = explode('-', $this->getRange());
+		if (is_array($arrExplode) && !empty($arrExplode[0])) {
+			return (int)$arrExplode[0];
 		} else {
 			return 0;
 		}
 	}
 
-	public function getRageEnd()
+	public function getRangeEnd()
 	{
-		$arrExplode = (int)explode('-', $this->getRange());
-		if (is_array($arrExplode)) {
-			return $arrExplode[1];
+		$arrExplode = explode('-', $this->getRange());
+		if (is_array($arrExplode) && !empty($arrExplode[1])) {
+			$rangeEnd = (int)$arrExplode[1];
+			$interval = $rangeEnd-(int)$arrExplode[0];
+			if ($interval <= $this->getAcceptedInterval() && $interval > 0) {
+				return $rangeEnd;
+			} else {
+				return $this->getAcceptedInterval();
+			}
 		} else {
-			return $this->getAcceptRange();
+			return $this->getAcceptedInterval();
 		}
 	}
 

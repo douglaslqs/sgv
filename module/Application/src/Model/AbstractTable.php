@@ -2,7 +2,7 @@
 namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
-use Application\Service\PaginatorService;
+use Application\Service\ResponseService;
 
 abstract class AbstractTable
 {
@@ -11,10 +11,10 @@ abstract class AbstractTable
 
 	abstract public function filterArrayWhere();
 
-	public function __construct(TableGateway $tableGateway, PaginatorService $pgService)
+	public function __construct(TableGateway $tableGateway, ResponseService $responseService)
 	{
 		$this->tableGateway = $tableGateway;
-		$this->pgService = $pgService;
+		$this->pgService = $responseService->getPgService();
 	}
 
 	public function getTableGateWay()
@@ -55,9 +55,10 @@ abstract class AbstractTable
 			} else {
 				$select = $sql->select();
 			}
-			$offset = $this->getPaginatorService()->getRageIni();
-			$limit = $this->getPaginatorService()->getRageEnd();
-			$acceptRange = $this->getPaginatorService()->getAcceptRange();
+			$totalRows = $this->tableGateway->selectWith($select)->count();
+			$offset = $this->getPaginatorService()->getRangeIni();
+			$limit = $this->getPaginatorService()->getRangeEnd();
+			$acceptRange = $this->getPaginatorService()->getInterval();
 			if ($offset > -1 && $limit > 0) {
 				$rage = $limit - $offset;
 				if ($rage <= $acceptRange) {
@@ -70,7 +71,22 @@ abstract class AbstractTable
 			}
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
-			$resultSet = $this->tableGateway->selectWith($select)->toArray();
+			$resultSet = $this->tableGateway->selectWith($select);
+			$totalData = $resultSet->count();
+
+			//Set total rows and link last on paginator
+			$this->getPaginatorService()->setTotalData($totalData);
+			$currentLink = $this->getPaginatorService()->getLinkSelf();
+			$offset = $this->getPaginatorService()->getRangeIni();
+			$limit = $this->getPaginatorService()->getRangeEnd();
+			$newRangeIni = $totalRows-$acceptRange;
+			$newRangeIni = $newRangeIni < 0 ? 0 : $newRangeIni;
+			$newRangeEnd = $totalRows < $acceptRange ? $acceptRange : $totalRows;
+
+			$linkLast = str_replace('p_range='.$offset.'-'.$limit, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
+			$this->getPaginatorService()->setLinkLast($linkLast);
+
+			$resultSet = $resultSet->toArray();
 		} catch (Exception $e) {
 			$resultSet = $e->getMessage();
 		}

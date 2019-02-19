@@ -35,9 +35,11 @@ class ResponseService
 	private $response;
 	private $pagination;
 	private $data;
+	private $pgService;
 
-	public function __construct()
+	public function __construct(PaginatorService $paginator)
 	{
+		$this->pgService = $paginator;
 		$this->response = array(
 			'code'=> null,
 			'message' => null,
@@ -83,14 +85,14 @@ class ResponseService
 		}
 	}
 
-	public function setPagination(Paginator $paginator)
-	{
-		$this->pagination = $paginator->getArrayCopy();
-	}
-
 	public function getPagination()
 	{
 		return $this->pagination;
+	}
+
+	public function getPgService()
+	{
+		return $this->pgService;
 	}
 
 	public function setData($data)
@@ -141,7 +143,10 @@ class ResponseService
 
 	public function getArrayCopy()
 	{
-		return get_object_vars($this);
+		$this->pagination = $this->pgService->getArrayCopy();
+		$arrReturn = get_object_vars($this);
+		unset($arrReturn['pgService']);
+		return $arrReturn;
 	}
 
 }

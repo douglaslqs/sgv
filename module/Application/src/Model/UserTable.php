@@ -3,13 +3,13 @@ namespace Application\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 use Application\Model\AbstractTable;
-use Application\Service\PaginatorService;
+use Application\Service\ResponseService;
 
 class UserTable extends AbstractTable
 {
-	public function __construct(TableGateway $tableGateway, PaginatorService $pgService)
+	public function __construct(TableGateway $tableGateway, ResponseService $responseService)
 	{
-		parent::__construct($tableGateway, $pgService);
+		parent::__construct($tableGateway, $responseService);
 	}
 
 	public function filterArrayWhere($arrParams = array())

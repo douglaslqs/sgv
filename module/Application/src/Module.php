@@ -50,8 +50,8 @@ use Application\Model\Entity\MeasureEntity;
 use Application\Model\MeasureTable;
 use Application\Service\ResponseService;
 use Application\Service\LoggerService;
+use Application\Service\PaginatorService;
 use Zend\Db\TableGateway\TableGateway;
-
 
 class Module
 {
@@ -167,6 +167,19 @@ class Module
                     return $response;
                 } */
                 $objServiceManager = $e->getApplication()->getServiceManager();
+
+                /**
+                 * Configura os dados de paginação da API.
+                 */
+                $uri = $e->getRequest()->getUri();
+                parse_str($uri->getQuery(), $params);
+                if (isset($params['p_range'])) {
+                    $pgService = $objServiceManager->get(PaginatorService::class);
+                    $pgService->setRange($params['p_range']);
+                }
+                //var_dump($pgService);exit;
+                /* */
+
                 $objAclService = $objServiceManager->get(Service\AclService::class);
                 $arrRouteParams = $e->getRouteMatch()->getParams();
                 $strControllerName = $arrRouteParams['controller'];
@@ -199,8 +212,8 @@ class Module
     		'factories' => array(
 				'Application\Model\CategoryTable' =>  function($sm) {
     				$tableGateway = $sm->get('CategoryTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
-    				return new CategoryTable($tableGateway, $pgService);
+                    $responseService = $sm->get(Service\ResponseService::class);
+    				return new CategoryTable($tableGateway, $responseService);
     			},
     			'CategoryTableGateway' => function ($sm) {
     				$dbAdapter = $sm->get('store-adapter');
@@ -210,7 +223,8 @@ class Module
     			},
                 'Application\Model\ProductTable' =>  function($sm) {
                     $tableGateway = $sm->get('ProductTableGateway');
-                    return new ProductTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ProductTable($tableGateway, $responseService);
                 },
                 'ProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -220,7 +234,8 @@ class Module
                 },
                 'Application\Model\ProductCategoryTable' =>  function($sm) {
                     $tableGateway = $sm->get('ProductCategoryTableGateway');
-                    return new ProductCategoryTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ProductCategoryTable($tableGateway, $responseService);
                 },
                 'ProductCategoryTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -230,8 +245,8 @@ class Module
                 },
                 'Application\Model\MarkTable' =>  function($sm) {
                     $tableGateway = $sm->get('MarkTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
-                    return new MarkTable($tableGateway, $pgService);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new MarkTable($tableGateway, $responseService);
                 },
                 'MarkTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -241,7 +256,8 @@ class Module
                 },
                 'Application\Model\UnitMeasureTable' =>  function($sm) {
                     $tableGateway = $sm->get('UnitMeasureTableGateway');
-                    return new UnitMeasureTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new UnitMeasureTable($tableGateway, $responseService);
                 },
                 'UnitMeasureTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -251,7 +267,8 @@ class Module
                 },
                 'Application\Model\MeasureTable' =>  function($sm) {
                     $tableGateway = $sm->get('MeasureTableGateway');
-                    return new MeasureTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new MeasureTable($tableGateway, $responseService);
                 },
                 'MeasureTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -261,7 +278,8 @@ class Module
                 },
                 'Application\Model\ColorTable' =>  function($sm) {
                     $tableGateway = $sm->get('ColorTableGateway');
-                    return new ColorTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ColorTable($tableGateway, $responseService);
                 },
                 'ColorTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -271,7 +289,8 @@ class Module
                 },
                 'Application\Model\ClientTable' =>  function($sm) {
                     $tableGateway = $sm->get('ClientTableGateway');
-                    return new ClientTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ClientTable($tableGateway, $responseService);
                 },
                 'ClientTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -281,7 +300,8 @@ class Module
                 },
                 'Application\Model\OrderTable' =>  function($sm) {
                     $tableGateway = $sm->get('OrderTableGateway');
-                    return new OrderTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new OrderTable($tableGateway, $responseService);
                 },
                 'OrderTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -291,7 +311,8 @@ class Module
                 },
                 'Application\Model\StockTable' =>  function($sm) {
                     $tableGateway = $sm->get('StockTableGateway');
-                    return new StockTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new StockTable($tableGateway, $responseService);
                 },
                 'StockTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -301,7 +322,8 @@ class Module
                 },
                 'Application\Model\ColorProductTable' =>  function($sm) {
                     $tableGateway = $sm->get('ColorProductTableGateway');
-                    return new ColorProductTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ColorProductTable($tableGateway, $responseService);
                 },
                 'ColorProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -311,7 +333,8 @@ class Module
                 },
                 'Application\Model\ProductOrderTable' =>  function($sm) {
                     $tableGateway = $sm->get('ProductOrderTableGateway');
-                    return new ProductOrderTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ProductOrderTable($tableGateway, $responseService);
                 },
                 'ProductOrderTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -321,7 +344,8 @@ class Module
                 },
                 'Application\Model\DeliveryAddressTable' =>  function($sm) {
                     $tableGateway = $sm->get('DeliveryAddressTableGateway');
-                    return new DeliveryAddressTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new DeliveryAddressTable($tableGateway, $responseService);
                 },
                 'DeliveryAddressTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -331,7 +355,8 @@ class Module
                 },
                 'Application\Model\ImageProductTable' =>  function($sm) {
                     $tableGateway = $sm->get('ImageProductTableGateway');
-                    return new ImageProductTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ImageProductTable($tableGateway, $responseService);
                 },
                 'ImageProductTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -341,8 +366,8 @@ class Module
                 },
                 'Application\Model\RoleResourceAllowTable' =>  function($sm) {
                     $tableGateway = $sm->get('RoleResourceAllowTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
-                    return new RoleResourceAllowTable($tableGateway, $pgService);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new RoleResourceAllowTable($tableGateway, $responseService);
                 },
                 'RoleResourceAllowTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -352,7 +377,8 @@ class Module
                 },
                 'Application\Model\RoleTable' =>  function($sm) {
                     $tableGateway = $sm->get('RoleTableGateway');
-                    return new RoleTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new RoleTable($tableGateway, $responseService);
                 },
                 'RoleTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -362,7 +388,8 @@ class Module
                 },
                 'Application\Model\ResourceTable' =>  function($sm) {
                     $tableGateway = $sm->get('ResourceTableGateway');
-                    return new ResourceTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new ResourceTable($tableGateway, $responseService);
                 },
                 'ResourceTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -372,7 +399,8 @@ class Module
                 },
                 'Application\Model\AllowTable' =>  function($sm) {
                     $tableGateway = $sm->get('AllowTableGateway');
-                    return new AllowTable($tableGateway);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new AllowTable($tableGateway, $responseService);
                 },
                 'AllowTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
@@ -382,8 +410,8 @@ class Module
                 },
                 'Application\Model\UserTable' =>  function($sm) {
                     $tableGateway = $sm->get('UserTableGateway');
-                    $pgService = $sm->get(Service\PaginatorService::class);
-                    return new UserTable($tableGateway, $pgService);
+                    $responseService = $sm->get(Service\ResponseService::class);
+                    return new UserTable($tableGateway, $responseService);
                 },
                 'UserTableGateway' => function ($sm) {
                     $dbAdapter = $sm->get('store-adapter');
