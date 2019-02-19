@@ -72,9 +72,10 @@ abstract class AbstractTable
 			// output query
 			//return $sql->getSqlStringForSqlObject($select);exit;
 			$resultSet = $this->tableGateway->selectWith($select);
+			$totalData = $resultSet->count();
 
 			//Set total rows and link last on paginator
-			$this->getPaginatorService()->setTotalData($totalRows);
+			$this->getPaginatorService()->setTotalData($totalData);
 			$currentLink = $this->getPaginatorService()->getLinkSelf();
 			$offset = $this->getPaginatorService()->getRangeIni();
 			$limit = $this->getPaginatorService()->getRangeEnd();
