@@ -55,7 +55,12 @@ abstract class AbstractTable
 			} else {
 				$select = $sql->select();
 			}
-			$totalRows = $this->tableGateway->selectWith($select)->count();
+			//Clone para fazer o count e setar last page do paginator
+			$selectCount = clone $select;
+			$selectCount = $selectCount->columns(array('count' => new \Zend\Db\Sql\Expression('COUNT(1)')));
+			$statement = $sql->prepareStatementForSqlObject($selectCount);
+			$totalRows = (int)$statement->execute()->current()['count'];
+			//var_dump($totalRows);exit;
 			$offset = $this->getPaginatorService()->getRangeIni();
 			$limit = $this->getPaginatorService()->getRangeEnd();
 			$acceptRange = $this->getPaginatorService()->getInterval();
@@ -82,9 +87,9 @@ abstract class AbstractTable
 			$newRangeIni = $totalRows-$acceptRange;
 			$newRangeIni = $newRangeIni < 0 ? 0 : $newRangeIni;
 			$newRangeEnd = $totalRows < $acceptRange ? $acceptRange : $totalRows;
-
 			$linkLast = str_replace('p_range='.$offset.'-'.$limit, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
 			$this->getPaginatorService()->setLinkLast($linkLast);
+			//***//
 
 			$resultSet = $resultSet->toArray();
 		} catch (Exception $e) {
