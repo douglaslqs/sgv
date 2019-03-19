@@ -70,7 +70,8 @@ class Module
     		'factories' => array(
 				'Administrator\Model\ClientTable' =>  function($sm) {
     				$tableGateway = $sm->get('ClientTableGateway');
-    				return new ClientTable($tableGateway);
+                    $responseService = $sm->get(\Application\Service\ResponseService::class);
+    				return new ClientTable($tableGateway, $responseService);
     			},
     			'ClientTableGateway' => function ($sm) {
     				$dbAdapter = $sm->get('client-adapter');
