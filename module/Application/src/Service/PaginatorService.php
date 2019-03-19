@@ -21,7 +21,7 @@ class PaginatorService
 	/**
 	 * Intervalo
 	 */
-	private $interval = 10;
+	private $interval = 20;
 
 	/**
 	 * Intervalo máximo aceito

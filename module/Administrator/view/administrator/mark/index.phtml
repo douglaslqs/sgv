@@ -19,9 +19,9 @@
 			  <table id="table-data" class="table table-bordered table-hover">
 				<thead>
 				<tr>
-				  <th>Nome</th>
-				  <th>Ativa</th>
-				  <th>Data de Cadastro</th>
+				  <th><?php echo $this->translate('Nome') ?></th>
+				  <th><?php echo $this->translate('Ativa') ?></th>
+				  <th><?php echo $this->translate('Data de Cadastro') ?></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -56,7 +56,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
               	</button>
-                <h4 class="modal-title" id="modal-title">Editar Marca</h4>
+                <h4 class="modal-title" id="modal-title"><?php echo $this->translate('Editar Marca') ?></h4>
               </div>
               <div class="modal-body">
               	<div id="modal-div-form">
@@ -114,9 +114,9 @@
 
 <script type="text/javascript">
 	$('#table-data').DataTable({
-	//'paging'      : true,
+	'paging'      : true,
 	//'lengthChange': false,
-	//'searching'   : true,
+	'searching'   : false,
 	//'ordering'    : true,
 	//'info'        : true,
 	//'autoWidth'   : false
@@ -212,8 +212,8 @@ $("#form-data").on("submit", function(e) {
 				}
 			} else {
 				alert("Retorno inesperado!");
+				$("#modal-load").modal('hide');
 			}
-			$("#modal-load").modal('hide');
 		}).fail(function(jqXHR, textStatus) {
 			console.log(jqXHR);
 			console.log(textStatus);
