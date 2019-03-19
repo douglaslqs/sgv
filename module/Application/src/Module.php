@@ -171,11 +171,13 @@ class Module
                 /**
                  * Configura os dados de paginação da API.
                  */
+                $pgService = $objServiceManager->get(PaginatorService::class);
                 $uri = $e->getRequest()->getUri();
                 parse_str($uri->getQuery(), $params);
                 if (isset($params['p_range'])) {
-                    $pgService = $objServiceManager->get(PaginatorService::class);
                     $pgService->setRange($params['p_range']);
+                } else {
+                    $pgService->setRange($pgService->getRange());
                 }
                 //var_dump($pgService);exit;
                 /* */
