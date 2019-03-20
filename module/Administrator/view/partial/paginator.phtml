@@ -41,10 +41,10 @@ $newLinkNext = empty($disableNext) ? $currentUrl.$divisor.explode('?', $links['n
   	<div class="dataTables_paginate paging_simple_numbers" id="table-data_paginate">
   		<ul class="pagination">
   			<li class="paginate_button first <?php echo $disableFirst;?>" id="table-data_first">
-	  			<a href="<?php echo $newLinkFirst;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0">Primeira</a>
+	  			<a href="<?php echo $newLinkFirst;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Primeira');?></a>
 	  		</li>
   			<li class="paginate_button previous <?php echo $disablePrev;?>" id="table-data_previous">
-	  			<a href="<?php echo $newLinkPrev;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0">Anterior</a>
+	  			<a href="<?php echo $newLinkPrev;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Anterior');?></a>
 	  		</li>
 	  		<!--
 	  		<li class="paginate_button active">
@@ -54,10 +54,10 @@ $newLinkNext = empty($disableNext) ? $currentUrl.$divisor.explode('?', $links['n
 	  		</li>
 	  		-->
 	  		<li class="paginate_button next <?php echo $disableNext;?>" id="table-data_next">
-	  			<a href="<?php echo $newLinkNext;?>" aria-controls="table-data" data-dt-idx="3" tabindex="0">Próxima</a>
+	  			<a href="<?php echo $newLinkNext;?>" aria-controls="table-data" data-dt-idx="3" tabindex="0"><?php echo $this->translate('Próxima');?></a>
 	  		</li>
 	  		<li class="paginate_button last <?php echo $disableLast;?>" id="table-data_last">
-	  			<a href="<?php echo $newLinkLast;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0">Última</a>
+	  			<a href="<?php echo $newLinkLast;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Última');?></a>
 	  		</li>
   		</ul>
   </div>
