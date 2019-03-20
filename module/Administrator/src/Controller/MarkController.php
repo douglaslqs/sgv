@@ -27,7 +27,13 @@ class MarkController extends AbstractActionController
 
    	public function indexAction()
    	{
-        $this->objApiRequest->setUri(self::URL_GET);
+        $paramRange = $this->params()->fromQuery('p_range');
+        if ($paramRange) {
+            $this->objApiRequest->setUri(self::URL_GET.'?p_range='.$paramRange);
+        } else {
+            $this->objApiRequest->setUri(self::URL_GET);
+        }
+        //$this->objApiRequest->setUri(self::URL_GET.'?p_range=0-2');
         $arrResponse = array();
         try {
             $arrResponse = $this->objApiRequest->request();

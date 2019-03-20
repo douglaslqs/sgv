@@ -1,6 +1,6 @@
 <section class="content-header">
   <h1>
-	<?php echo $this->translate('Administrar Marcas') ?>
+	<?php echo $this->translate('Administrar Marcas'); ?>
   </h1>
 </section>
 
@@ -40,6 +40,9 @@
 				?>
 				</tbody>
 			  </table>
+			 <!-- PAGINATOR -->
+	  		<?php echo $this->partial('partial/paginator.phtml');?>
+			<!-- PAGINATOR -->
 			</div>
 			<!-- /.box-body -->
 		  </div>
@@ -113,15 +116,22 @@
 ?>
 
 <script type="text/javascript">
-	$('#table-data').DataTable({
-	'paging'      : true,
-	//'lengthChange': false,
-	'searching'   : false,
-	//'ordering'    : true,
-	//'info'        : true,
-	//'autoWidth'   : false
-});
+var table = $('#table-data').DataTable({
+				'paging'      : false,
+				'lengthChange': false,
+				'searching'   : false,
+				'ordering'    : false,
+				'info'        : false,
+				//'autoWidth'   : false
+			});
 $("#table-data tr").css('cursor', 'pointer');
+
+$('#table-data').on( 'page.dt', function (e) {
+	e.preventDefault();
+    var info = table.page.info();
+    console.log('Showing page: '+info.page+' of '+info.pages);
+    return false;
+} );
 
 var current_mark;
 $('#table-data tbody').on('click', 'tr', function () {

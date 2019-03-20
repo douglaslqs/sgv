@@ -1,0 +1,64 @@
+<?php $links = $this->pagination['links'];
+parse_str(parse_url($links['self'], PHP_URL_QUERY), $arrParamSelf);
+parse_str(parse_url($links['prev'], PHP_URL_QUERY), $arrParamPrev);
+parse_str(parse_url($links['first'], PHP_URL_QUERY), $arrParamFirts);
+parse_str(parse_url($links['last'], PHP_URL_QUERY), $arrParamLast);
+parse_str(parse_url($links['next'], PHP_URL_QUERY), $arrParamNext);
+
+
+$disableFirst = $arrParamFirts === $arrParamSelf ? 'disabled' : '';
+$disablePrev = $arrParamPrev === $arrParamSelf ? 'disabled' : '';
+$disableLast = $arrParamLast === $arrParamSelf ? 'disabled' : '';
+$disableNext = $arrParamNext === $arrParamSelf ? 'disabled' : '';
+$disableNext = empty($disableLast) ? $disableNext : $disableLast;
+
+$intPageEnd = explode('-', $arrParamLast['p_range'])[1];
+$intPageNext = explode('-', $arrParamNext['p_range'])[0];
+if ($intPageNext > $intPageEnd) {
+	$disableNext = 'disabled';
+	$disableLast = 'disabled';
+}
+
+$currentUrl = $this->serverUrl(true);
+if (strpos($currentUrl, 'p_range') !== false) {
+	$strQueryString = parse_url($currentUrl, PHP_URL_QUERY);
+	parse_str($strQueryString, $arrQueryString);
+	unset($arrQueryString['p_range']);
+	$newQueryString = http_build_query($arrQueryString);
+	if (!empty($newQueryString)) {
+		$currentUrl = explode('?', $currentUrl)[0].'?'.http_build_query($arrQueryString);
+	} else {
+		$currentUrl = explode('?', $currentUrl)[0];
+	}
+}
+$divisor = strpos($currentUrl, '?') !== false ? '&' : '?';
+$newLinkPrev = empty($disablePrev) ? $currentUrl.$divisor.explode('?', $links['prev'])[1] : '#1';
+$newLinkFirst = empty($disableFirst) ? $currentUrl.$divisor.explode('?', $links['first'])[1] : '#1';
+$newLinkLast = empty($disableLast) ? $currentUrl.$divisor.explode('?', $links['last'])[1] : '#1';
+$newLinkNext = empty($disableNext) ? $currentUrl.$divisor.explode('?', $links['next'])[1] : '#1';
+?>
+<div class="col-sm-12 text-center">
+  	<div class="dataTables_paginate paging_simple_numbers" id="table-data_paginate">
+  		<ul class="pagination">
+  			<li class="paginate_button first <?php echo $disableFirst;?>" id="table-data_first">
+	  			<a href="<?php echo $newLinkFirst;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Primeira');?></a>
+	  		</li>
+  			<li class="paginate_button previous <?php echo $disablePrev;?>" id="table-data_previous">
+	  			<a href="<?php echo $newLinkPrev;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Anterior');?></a>
+	  		</li>
+	  		<!--
+	  		<li class="paginate_button active">
+	  			<a href="#" aria-controls="table-data" data-dt-idx="1" tabindex="0">1</a>
+	  		</li><li class="paginate_button ">
+	  			<a href="#" aria-controls="table-data" data-dt-idx="2" tabindex="0">2</a>
+	  		</li>
+	  		-->
+	  		<li class="paginate_button next <?php echo $disableNext;?>" id="table-data_next">
+	  			<a href="<?php echo $newLinkNext;?>" aria-controls="table-data" data-dt-idx="3" tabindex="0"><?php echo $this->translate('Próxima');?></a>
+	  		</li>
+	  		<li class="paginate_button last <?php echo $disableLast;?>" id="table-data_last">
+	  			<a href="<?php echo $newLinkLast;?>" aria-controls="table-data" data-dt-idx="0" tabindex="0"><?php echo $this->translate('Última');?></a>
+	  		</li>
+  		</ul>
+  </div>
+</div>

@@ -60,17 +60,11 @@ abstract class AbstractTable
 			$selectCount = $selectCount->columns(array('count' => new \Zend\Db\Sql\Expression('COUNT(1)')));
 			$statement = $sql->prepareStatementForSqlObject($selectCount);
 			$totalRows = (int)$statement->execute()->current()['count'];
-			//var_dump($totalRows);exit;
+
 			$offset = $this->getPaginatorService()->getRangeIni();
-			$limit = $this->getPaginatorService()->getRangeEnd();
 			$acceptRange = $this->getPaginatorService()->getInterval();
-			if ($offset > -1 && $limit > 0) {
-				$rage = $limit - $offset;
-				if ($rage <= $acceptRange) {
-					$select->limit($limit)->offset($offset);
-				} else {
-					$select->limit($acceptRange)->offset($offset);
-				}
+			if ($offset > -1) {
+				$select->limit($acceptRange)->offset($offset);
 			} else {
 				$select->limit($acceptRange)->offset(0);
 			}
@@ -82,12 +76,11 @@ abstract class AbstractTable
 			//Set total rows and link last on paginator
 			$this->getPaginatorService()->setTotalData($totalData);
 			$currentLink = $this->getPaginatorService()->getLinkSelf();
-			$offset = $this->getPaginatorService()->getRangeIni();
-			$limit = $this->getPaginatorService()->getRangeEnd();
 			$newRangeIni = $totalRows-$acceptRange;
 			$newRangeIni = $newRangeIni < 0 ? 0 : $newRangeIni;
 			$newRangeEnd = $totalRows < $acceptRange ? $acceptRange : $totalRows;
-			$linkLast = str_replace('p_range='.$offset.'-'.$limit, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
+			$rangeEnd = $this->getPaginatorService()->getRangeEnd();
+			$linkLast = str_replace('p_range='.$offset.'-'.$rangeEnd, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentLink);
 			$this->getPaginatorService()->setLinkLast($linkLast);
 			//***//
 

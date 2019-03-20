@@ -16,7 +16,7 @@ class PaginatorService
 	/**
 	 * Intervalo das páginas
 	 */
-	private $range = '0-50';
+	private $range = '0-10';
 
 	/**
 	 * Intervalo
@@ -37,11 +37,11 @@ class PaginatorService
 	public function __construct()
 	{
 		$this->links = array(
-			'self'=> '',
-			'first' => '',
-			'prev' => '',
-			'next' => '',
-			'last' => '',
+			'self'=> '#1',
+			'first' => '#1',
+			'prev' => '#1',
+			'next' => '#1',
+			'last' => '#1',
 		);
 	}
 
@@ -107,14 +107,20 @@ class PaginatorService
 			} else {
 				$this->range = $strRage;
 			}
-			$this->setInterval($interval);
+			if ($interval > 0) {
+				$this->setInterval($interval);
+			}
 		}
+		$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		if (strpos($currentUrl, 'p_range') === false) {
+			$currentUrl = $currentUrl.'?p_range='.$this->getRange();
+		}
+
+		$rangeIni = $this->getRangeIni();
+		$rangeEnd = $this->getRangeEnd();
 		/**
 		 * Set Link Self
 		 */
-		$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-		$rangeIni = $this->getRangeIni();
-		$rangeEnd = $this->getRangeEnd();
 		$linkSelf = str_replace('p_range='.$strRage, 'p_range='.$this->getRange(), $currentUrl);
 		$this->setLinkSelf($linkSelf);
 		/**
@@ -135,9 +141,9 @@ class PaginatorService
 		/**
 		 * Set Link Next
 		 */
-		$newRangeIni = $rangeIni + $this->getInterval()+1;
+		$newRangeIni = $rangeIni + $this->getInterval();
 		$newRangeIni = $newRangeIni > 0 ? $newRangeIni : 0;
-		$newRangeEnd = $rangeEnd+$this->getInterval()+1;
+		$newRangeEnd = $rangeEnd+$this->getInterval();
 		$linkNext = str_replace('p_range='.$strRage, 'p_range='.$newRangeIni.'-'.$newRangeEnd, $currentUrl);
 		$this->setLinkNext($linkNext);
 	}
