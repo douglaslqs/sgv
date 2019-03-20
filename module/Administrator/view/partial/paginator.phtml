@@ -5,10 +5,19 @@ parse_str(parse_url($links['first'], PHP_URL_QUERY), $arrParamFirts);
 parse_str(parse_url($links['last'], PHP_URL_QUERY), $arrParamLast);
 parse_str(parse_url($links['next'], PHP_URL_QUERY), $arrParamNext);
 
+
 $disableFirst = $arrParamFirts === $arrParamSelf ? 'disabled' : '';
 $disablePrev = $arrParamPrev === $arrParamSelf ? 'disabled' : '';
 $disableLast = $arrParamLast === $arrParamSelf ? 'disabled' : '';
 $disableNext = $arrParamNext === $arrParamSelf ? 'disabled' : '';
+$disableNext = empty($disableLast) ? $disableNext : $disableLast;
+
+$intPageEnd = explode('-', $arrParamLast['p_range'])[1];
+$intPageNext = explode('-', $arrParamNext['p_range'])[0];
+if ($intPageNext > $intPageEnd) {
+	$disableNext = 'disabled';
+	$disableLast = 'disabled';
+}
 
 $currentUrl = $this->serverUrl(true);
 if (strpos($currentUrl, 'p_range') !== false) {
@@ -23,12 +32,10 @@ if (strpos($currentUrl, 'p_range') !== false) {
 	}
 }
 $divisor = strpos($currentUrl, '?') !== false ? '&' : '?';
-//$newLinkSelf = $currentUrl.$divisor.explode('?', $links['self'])[1];
-$newLinkPrev = $currentUrl.$divisor.explode('?', $links['prev'])[1];
-$newLinkFirst = $currentUrl.$divisor.explode('?', $links['first'])[1];
-$newLinkLast = $currentUrl.$divisor.explode('?', $links['last'])[1];
-$newLinkNext = $currentUrl.$divisor.explode('?', $links['next'])[1];
-
+$newLinkPrev = empty($disablePrev) ? $currentUrl.$divisor.explode('?', $links['prev'])[1] : '#1';
+$newLinkFirst = empty($disableFirst) ? $currentUrl.$divisor.explode('?', $links['first'])[1] : '#1';
+$newLinkLast = empty($disableLast) ? $currentUrl.$divisor.explode('?', $links['last'])[1] : '#1';
+$newLinkNext = empty($disableNext) ? $currentUrl.$divisor.explode('?', $links['next'])[1] : '#1';
 ?>
 <div class="col-sm-12 text-center">
   	<div class="dataTables_paginate paging_simple_numbers" id="table-data_paginate">

@@ -107,7 +107,9 @@ class PaginatorService
 			} else {
 				$this->range = $strRage;
 			}
-			$this->setInterval($interval);
+			if ($interval > 0) {
+				$this->setInterval($interval);
+			}
 		}
 		$currentUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 		if (strpos($currentUrl, 'p_range') === false) {
